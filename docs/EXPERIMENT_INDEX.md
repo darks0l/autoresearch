@@ -1,8 +1,8 @@
 # AutoResearch — Experiment Index
 
-> 125 experiments, 27 kept, 98 rejected
-> Best: 2.838 (exp117) | Baseline: 0.421
-> Last updated: 2026-03-21T21:18:06.088Z
+> 136 experiments, 31 kept, 105 rejected
+> Best: 3.668 (exp128) | Baseline: 0.421
+> Last updated: 2026-03-21T21:24:13.551Z
 
 | # | Score | Status | Hypothesis |
 |---|-------|--------|------------|
@@ -131,3 +131,14 @@
 | exp122 | 2.838 | ❌ | Manual mutation — implement via OpenClaw agent |
 | exp123 | 2.838 | ❌ | Manual mutation — implement via OpenClaw agent |
 | exp124 | 2.838 | ❌ | Manual mutation — implement via OpenClaw agent |
+| baseline | 2.838 | ✅ | Initial strategy — baseline measurement |
+| exp126 | 2.919 | ✅ | Add regime-based position sizing by increasing exposure in trending regimes (hig |
+| exp127 | 2.923 | ✅ | Reduce Hurst lookback from 50 to 30 bars to make regime detection more responsiv |
+| exp128 | 3.668 | ✅ | Reduce ATR trail multiple from 2.0 to 1.5 to exit winners earlier and capture pr |
+| exp129 | 1.261 | ❌ | Add a volume surge filter to entry signals, requiring current volume to exceed 1 |
+| exp130 | 3.668 | ❌ | Add a volume confirmation filter to exit signals, requiring volume to drop below |
+| exp131 | 3.668 | ❌ | Add a momentum confirmation filter requiring price to be above the 50-period SMA |
+| exp132 | 1.048 | ❌ | Replace the Hurst-based regime detection with a simpler trend strength filter us |
+| exp133 | 3.57 | ❌ | Replace the Donchian breakout entry with a Volume Weighted Average Price (VWAP)  |
+| exp134 | -999 | ❌ | Replace the Donchian breakout system with a pure EMA crossover trend-following a |
+| exp135 | 3.262 | ❌ | Replace the complex Hurst regime detection with a simpler volatility-adjusted br |
