@@ -1,8 +1,8 @@
 # AutoResearch — Experiment Index
 
-> 119 experiments, 26 kept, 93 rejected
+> 125 experiments, 27 kept, 98 rejected
 > Best: 2.838 (exp117) | Baseline: 0.421
-> Last updated: 2026-03-21T20:31:19.284Z
+> Last updated: 2026-03-21T21:18:06.088Z
 
 | # | Score | Status | Hypothesis |
 |---|-------|--------|------------|
@@ -125,3 +125,9 @@
 | exp117 | 2.838 | ✅ | Complete strategy redesign: switched from VWAP reversion (overfit to synthetic d |
 | baseline | 2.838 | ✅ | Initial strategy — baseline measurement |
 | baseline | 2.838 | ✅ | Initial strategy — baseline measurement |
+| baseline | 2.838 | ✅ | Initial strategy — baseline measurement |
+| exp120 | 2.838 | ❌ | Manual mutation — implement via OpenClaw agent |
+| exp121 | 2.838 | ❌ | Manual mutation — implement via OpenClaw agent |
+| exp122 | 2.838 | ❌ | Manual mutation — implement via OpenClaw agent |
+| exp123 | 2.838 | ❌ | Manual mutation — implement via OpenClaw agent |
+| exp124 | 2.838 | ❌ | Manual mutation — implement via OpenClaw agent |
