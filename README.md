@@ -214,6 +214,7 @@ This makes the research loop **convergent** — the agent avoids re-testing fail
 |----------|-------------|---------|
 | `AUTORESEARCH_MODEL` | LLM for mutation proposals | `claude-sonnet-4-6` |
 | `BANKR_API_KEY` | Bankr LLM Gateway key | — |
+| `UNISWAP_API_KEY` | Uniswap Developer Platform API key | — |
 | `BASE_RPC_URL` | Base RPC endpoint | `mainnet.base.org` |
 | `MAX_EXPERIMENTS` | Experiments per run | `30` |
 | `REPORT_EVERY` | Report interval | `5` |
@@ -251,12 +252,14 @@ cp -r autoresearch ~/.openclaw/skills/autoresearch
 - [x] **Phase 2:** Benchmark suite — 3 baseline strategies ✅
 - [x] **Phase 3:** Autonomous research loop — mutation → test → learn ✅
 - [x] **Phase 4:** LCM memory — persistent cross-session learning ✅
-- [x] **Phase 5:** Bankr LLM Gateway for mutations — **LIVE** (claude-haiku-4.5, 30 experiments) ✅
+- [x] **Phase 5:** Bankr LLM Gateway for mutations — **LIVE** (claude-haiku-4.5 → claude-sonnet-4.5, 117+ experiments) ✅
 - [x] **Phase 6:** Regime-aware adaptive strategy (Hurst exponent + EMA trend + ATR volatility) ✅
 - [x] **Phase 7:** Production execution engine with Bankr swap integration ✅
 - [x] **Phase 8:** Multi-source real data feed (DeFiLlama + CoinGecko + Base RPC) ✅
-- [ ] **Phase 9:** Multi-strategy tournament mode
-- [ ] **Phase 10:** Persistent live trading daemon
+- [x] **Phase 9:** Uniswap Developer Platform API integration ✅
+- [x] **Phase 10:** Persistent live trading daemon — **RUNNING** (cron, 15 experiments/hour, auto-sync) ✅
+- [x] **Phase 11:** Demo video + Synthesis Hackathon submission published ✅
+- [ ] **Phase 12:** Multi-strategy tournament mode
 
 ## Prize Tracks
 
@@ -265,7 +268,7 @@ cp -r autoresearch ~/.openclaw/skills/autoresearch
 | **Open Track** | Full autonomous research system — AI discovers trading strategies, not just executes them |
 | **Let the Agent Cook** | Fully autonomous 75-experiment loop — zero human intervention, LLM-driven mutations, self-improving |
 | **Best Bankr LLM Gateway Use** | Core dependency — claude-haiku-4.5 via Bankr Gateway generates every strategy mutation. 30 live experiments consumed real Bankr credits. Bankr wallet is the execution layer for live trades. |
-| **Agentic Finance / Uniswap** | Backtests against real Uniswap V3 Base pools (ETH/USDC 0.05%, 0.3%), production data feed from DeFiLlama/CoinGecko |
+| **Agentic Finance / Best Uniswap API Integration** | Integrated Uniswap Developer Platform API key for pool data access. Backtests against real Uniswap V3 Base pools (ETH/USDC 0.05%, ETH/USDC 0.3%, cbETH/WETH). Multi-source data pipeline with Uniswap V3 subgraph, DeFiLlama, and CoinGecko fallback. Strategy discovers optimal DEX trading parameters autonomously. |
 | **Autonomous Trading Agent (Base)** | Novel approach — AI-discovered strategies vs hand-coded rules. Production execution engine with risk management, live Bankr swaps on Base |
 | **Agent Services on Base** | Installable as OpenClaw skill + Bankr-compatible service. Other agents can import and run autoresearch |
 
