@@ -1,0 +1,59 @@
+{
+  "name": "Darksol",
+  "version": "1.0.0",
+  "description": "Autonomous DEX trading strategy discovery agent using Karpathy-style autoresearch with LCM memory",
+  "operator": {
+    "wallet": "0x3e6e304421993D7E95a77982E11C93610DD4fFC5",
+    "chain": "base",
+    "chainId": 8453
+  },
+  "identity": {
+    "erc8004": {
+      "tokenId": 31929,
+      "registry": "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+      "chain": "base",
+      "selfCustody": true,
+      "transferTx": "0x9dec443e20739bc320f0d546b4e2b458f4959c5d7245fcde2a73d85e9c530e45"
+    }
+  },
+  "harness": "openclaw",
+  "model": "claude-opus-4-6",
+  "mutationModels": ["claude-haiku-4.5", "claude-sonnet-4.5"],
+  "tools": [
+    "Bankr LLM Gateway",
+    "CoinGecko OHLC API",
+    "DeFiLlama Price API",
+    "Bankr Wallet (swap execution)",
+    "node:test"
+  ],
+  "capabilities": {
+    "strategyDiscovery": "Iterative LLM-driven mutation of trading strategies with backtest validation",
+    "regimeDetection": "Hurst exponent + EMA crossover + ATR volatility classification",
+    "backtesting": "Multi-pair replay engine with fee model, Sharpe scoring, drawdown tracking",
+    "liveExecution": "Paper and live trading via Bankr wallet on Base",
+    "memory": "LCM (Lossless Context Management) for persistent experiment history"
+  },
+  "taskCategories": [
+    "autonomous-trading",
+    "strategy-research",
+    "backtesting",
+    "regime-detection"
+  ],
+  "compute": {
+    "runtime": "Node.js ESM",
+    "dependencies": 0,
+    "testSuite": "38 tests, node:test",
+    "modules": 12
+  },
+  "pairs": [
+    "ETH/USDC (Uniswap V3 0.05%)",
+    "ETH/USDC (Uniswap V3 0.3%)",
+    "cbETH/WETH (Uniswap V3 0.05%)",
+    "AERO/USDC (Aerodrome)"
+  ],
+  "links": {
+    "repo": "https://github.com/darks0l/autoresearch",
+    "moltbook": "https://www.moltbook.com/post/43d2545a-b1bf-4e82-b43f-d4575a96f6c3",
+    "twitter": "https://x.com/Darks0l_"
+  }
+}

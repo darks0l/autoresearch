@@ -1,0 +1,1096 @@
+{
+  "version": "1.0.0",
+  "agent": "Darksol",
+  "generated": "2026-03-21T18:48:29.901Z",
+  "events": [
+    {
+      "type": "experiment",
+      "id": "exp001",
+      "timestamp": "2026-03-21T17:15:00.000Z",
+      "action": "keep",
+      "score": 0.421,
+      "hypothesis": "parameter exploration",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp002",
+      "timestamp": "2026-03-21T17:16:00.000Z",
+      "action": "revert",
+      "score": 0.289,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp003",
+      "timestamp": "2026-03-21T17:17:00.000Z",
+      "action": "revert",
+      "score": 0.39,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp004",
+      "timestamp": "2026-03-21T17:18:00.000Z",
+      "action": "keep",
+      "score": 0.486,
+      "hypothesis": "parameter exploration",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp005",
+      "timestamp": "2026-03-21T17:19:00.000Z",
+      "action": "revert",
+      "score": 0.486,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp006",
+      "timestamp": "2026-03-21T17:20:00.000Z",
+      "action": "revert",
+      "score": 0.472,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp007",
+      "timestamp": "2026-03-21T17:21:00.000Z",
+      "action": "revert",
+      "score": 0.439,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp008",
+      "timestamp": "2026-03-21T17:22:00.000Z",
+      "action": "revert",
+      "score": 0.486,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp009",
+      "timestamp": "2026-03-21T17:23:00.000Z",
+      "action": "revert",
+      "score": 0.486,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp010",
+      "timestamp": "2026-03-21T17:24:00.000Z",
+      "action": "revert",
+      "score": 0.346,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp011",
+      "timestamp": "2026-03-21T17:25:00.000Z",
+      "action": "keep",
+      "score": 0.523,
+      "hypothesis": "parameter exploration",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp012",
+      "timestamp": "2026-03-21T17:26:00.000Z",
+      "action": "keep",
+      "score": 0.531,
+      "hypothesis": "parameter exploration",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp013",
+      "timestamp": "2026-03-21T17:27:00.000Z",
+      "action": "revert",
+      "score": 0.219,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp014",
+      "timestamp": "2026-03-21T17:28:00.000Z",
+      "action": "revert",
+      "score": 0.498,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp015",
+      "timestamp": "2026-03-21T17:29:00.000Z",
+      "action": "revert",
+      "score": 0.485,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp016",
+      "timestamp": "2026-03-21T17:30:00.000Z",
+      "action": "revert",
+      "score": 0.526,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp017",
+      "timestamp": "2026-03-21T17:31:00.000Z",
+      "action": "keep",
+      "score": 0.54,
+      "hypothesis": "parameter exploration",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp018",
+      "timestamp": "2026-03-21T17:32:00.000Z",
+      "action": "revert",
+      "score": 0.505,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp019",
+      "timestamp": "2026-03-21T17:33:00.000Z",
+      "action": "revert",
+      "score": 0.529,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp020",
+      "timestamp": "2026-03-21T17:34:00.000Z",
+      "action": "revert",
+      "score": -999,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp021",
+      "timestamp": "2026-03-21T17:35:00.000Z",
+      "action": "revert",
+      "score": -999,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp022",
+      "timestamp": "2026-03-21T17:36:00.000Z",
+      "action": "revert",
+      "score": -0.381,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp023",
+      "timestamp": "2026-03-21T17:37:00.000Z",
+      "action": "revert",
+      "score": -0.113,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp024",
+      "timestamp": "2026-03-21T17:38:00.000Z",
+      "action": "revert",
+      "score": 0.524,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp025",
+      "timestamp": "2026-03-21T17:39:00.000Z",
+      "action": "revert",
+      "score": 0.524,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp026",
+      "timestamp": "2026-03-21T17:40:00.000Z",
+      "action": "revert",
+      "score": 0.236,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp027",
+      "timestamp": "2026-03-21T17:41:00.000Z",
+      "action": "revert",
+      "score": 0.105,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp028",
+      "timestamp": "2026-03-21T17:42:00.000Z",
+      "action": "revert",
+      "score": -0.313,
+      "hypothesis": "parameter exploration",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp029",
+      "timestamp": "2026-03-21T17:43:00.000Z",
+      "action": "keep",
+      "score": 0.564,
+      "hypothesis": "parameter exploration",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp030",
+      "timestamp": "2026-03-21T17:44:00.000Z",
+      "action": "keep",
+      "score": 0.61,
+      "hypothesis": "parameter exploration",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "baseline",
+      "timestamp": "2026-03-21T17:34:06.476Z",
+      "action": "keep",
+      "score": 0.61,
+      "hypothesis": "Initial strategy — baseline measurement",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp032",
+      "timestamp": "2026-03-21T17:34:21.955Z",
+      "action": "revert",
+      "score": -999,
+      "hypothesis": "Unknown mutation",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "baseline",
+      "timestamp": "2026-03-21T17:35:13.615Z",
+      "action": "keep",
+      "score": 0.61,
+      "hypothesis": "Initial strategy — baseline measurement",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp034",
+      "timestamp": "2026-03-21T17:35:37.274Z",
+      "action": "revert",
+      "score": -999,
+      "hypothesis": "LLM-proposed mutation",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "baseline",
+      "timestamp": "2026-03-21T17:38:15.498Z",
+      "action": "keep",
+      "score": 0.61,
+      "hypothesis": "Initial strategy — baseline measurement",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp036",
+      "timestamp": "2026-03-21T17:38:35.221Z",
+      "action": "revert",
+      "score": 0.525,
+      "hypothesis": "I am increasing the `deviationThreshold` from 0.025 to 0.03 to make entry conditions more selective, aiming for higher-conviction mean-reversion trades and potentially improving the Sharpe ratio.",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp037",
+      "timestamp": "2026-03-21T17:39:41.572Z",
+      "action": "keep",
+      "score": 0.615,
+      "hypothesis": "I will decrease the `atrPeriod` from 14 to 7 to make the position sizing more reactive to recent volatility, aiming to improve risk management by adjusting position sizes more dynamically to current m",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp038",
+      "timestamp": "2026-03-21T17:40:00.579Z",
+      "action": "revert",
+      "score": 0.598,
+      "hypothesis": "I will decrease the `rsiPeriod` from 14 to 7 to make the RSI indicator more reactive to recent price changes, aiming to capture oversold and overbought conditions earlier and potentially improve the t",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp039",
+      "timestamp": "2026-03-21T17:40:16.038Z",
+      "action": "revert",
+      "score": 0.091,
+      "hypothesis": "I will decrease the `vwapPeriod` from 20 to 15 to make the VWAP indicator more reactive to recent price action, aiming to capture shorter-term mean-reversion opportunities more effectively.",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp040",
+      "timestamp": "2026-03-21T17:40:34.061Z",
+      "action": "revert",
+      "score": 0.566,
+      "hypothesis": "I will decrease the `exitThreshold` from 0.01 to 0.008 to make the exit condition stricter, aiming to lock in profits or cut losses more quickly once price approaches the VWAP, which could reduce vari",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "baseline",
+      "timestamp": "2026-03-21T17:40:54.214Z",
+      "action": "keep",
+      "score": 0.615,
+      "hypothesis": "Initial strategy — baseline measurement",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp042",
+      "timestamp": "2026-03-21T17:41:51.002Z",
+      "action": "revert",
+      "score": 0.484,
+      "hypothesis": "I will increase the `cooldown` period from 3 to 5 bars. This aims to reduce potential overtrading and allow the market more time to establish a clear mean-reversion signal after a previous trade, pote",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp043",
+      "timestamp": "2026-03-21T17:42:15.044Z",
+      "action": "revert",
+      "score": 0.553,
+      "hypothesis": "I will slightly increase the `basePositionSize` from 0.15 to 0.17 to modestly increase exposure to successful mean-reversion trades, aiming to boost overall returns while relying on the existing volat",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp044",
+      "timestamp": "2026-03-21T17:42:49.410Z",
+      "action": "revert",
+      "score": 0.511,
+      "hypothesis": "I will increase the `deviationThreshold` from 0.025 to 0.03 to make the entry condition stricter, requiring price to deviate further from VWAP for a trade, which could filter out weaker mean-reversion",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "baseline",
+      "timestamp": "2026-03-21T17:44:06.840Z",
+      "action": "keep",
+      "score": 0.615,
+      "hypothesis": "Initial strategy — baseline measurement",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp046",
+      "timestamp": "2026-03-21T17:44:15.334Z",
+      "action": "revert",
+      "score": -999,
+      "hypothesis": "I will increase the `deviationThreshold` from 0.025 to 0.035 to filter out weaker mean-reversion signals and require stronger price dislocations from VWAP before entering trades, which should reduce n",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp047",
+      "timestamp": "2026-03-21T17:44:23.885Z",
+      "action": "revert",
+      "score": 0.542,
+      "hypothesis": "I will increase the `rsiPeriod` from 14 to 20 to smooth out RSI readings and reduce false signals from short-term RSI extremes, making entry and exit conditions more reliable by filtering out noise an",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp048",
+      "timestamp": "2026-03-21T17:44:33.321Z",
+      "action": "revert",
+      "score": 0.598,
+      "hypothesis": "I will reduce the `rsiPeriod` from 14 to 10 to make RSI more responsive to recent price action, allowing earlier detection of oversold/overbought conditions and potentially capturing mean-reversion tr",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp049",
+      "timestamp": "2026-03-21T17:46:28.548Z",
+      "action": "revert",
+      "score": 0.484,
+      "hypothesis": "I will increase the `cooldown` from 3 to 5 bars to reduce excessive trading and allow mean-reversion trades more time to develop, which should reduce turnover penalties and improve the Sharpe ratio by",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp050",
+      "timestamp": "2026-03-21T17:46:37.831Z",
+      "action": "revert",
+      "score": 0.517,
+      "hypothesis": "I will increase the `vwapPeriod` from 20 to 25 to use a longer-term VWAP baseline, which should reduce false mean-reversion signals caused by short-term noise and improve the reliability of price devi",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp051",
+      "timestamp": "2026-03-21T17:46:46.875Z",
+      "action": "revert",
+      "score": 0.596,
+      "hypothesis": "I will reduce the `basePositionSize` from 0.15 to 0.10 to decrease leverage and position sizing volatility, which should improve the Sharpe ratio by reducing drawdowns and turnover-related penalties w",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp052",
+      "timestamp": "2026-03-21T17:46:55.703Z",
+      "action": "revert",
+      "score": 0.547,
+      "hypothesis": "I will reduce the `deviationThreshold` from 0.025 to 0.018 to make entry signals more selective by requiring larger price deviations from VWAP, which should filter out weaker mean-reversion opportunit",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp053",
+      "timestamp": "2026-03-21T17:47:04.451Z",
+      "action": "keep",
+      "score": 0.671,
+      "hypothesis": "I will increase the `exitThreshold` from 0.01 to 0.015 to hold winning positions longer before taking profits, reducing premature exits and allowing mean-reversion trades to capture larger price movem",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp054",
+      "timestamp": "2026-03-21T17:47:13.936Z",
+      "action": "revert",
+      "score": -999,
+      "hypothesis": "I will increase the `deviationThreshold` from 0.025 to 0.035 to make entry signals more lenient and capture mean-reversion trades at smaller price deviations, which should increase trade frequency whi",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp055",
+      "timestamp": "2026-03-21T17:47:22.947Z",
+      "action": "revert",
+      "score": 0.653,
+      "hypothesis": "I will increase the `rsiPeriod` from 14 to 10 to make RSI more responsive to recent price action, enabling earlier detection of oversold/overbought conditions and improving entry timing while working ",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp056",
+      "timestamp": "2026-03-21T17:47:31.721Z",
+      "action": "revert",
+      "score": 0.668,
+      "hypothesis": "I will reduce the `cooldown` from 3 to 1 to allow more frequent trading signals while keeping the proven exitThreshold of 0.015 and atrPeriod of 7, which should improve the Sharpe ratio by capturing m",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp057",
+      "timestamp": "2026-03-21T17:47:41.685Z",
+      "action": "revert",
+      "score": 0.653,
+      "hypothesis": "I will reduce the `rsiPeriod` from 14 to 12 to improve RSI responsiveness while maintaining the proven `exitThreshold` of 0.015, achieving better entry timing without the overresponsiveness that cause",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp058",
+      "timestamp": "2026-03-21T17:47:50.491Z",
+      "action": "revert",
+      "score": 0.651,
+      "hypothesis": "I will reduce the `basePositionSize` from 0.15 to 0.10 to decrease position sizing aggression, which should improve the Sharpe ratio by reducing drawdown magnitude during unfavorable mean-reversion tr",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp059",
+      "timestamp": "2026-03-21T17:48:00.426Z",
+      "action": "revert",
+      "score": 0.557,
+      "hypothesis": "I will increase the `deviationThreshold` from 0.025 to 0.030 to reduce false entries at small deviations while keeping the proven `exitThreshold` of 0.015, making entry signals more selective and redu",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp060",
+      "timestamp": "2026-03-21T17:48:09.610Z",
+      "action": "revert",
+      "score": 0.536,
+      "hypothesis": "I will increase the `deviationThreshold` from 0.025 to 0.028 to filter out marginal mean-reversion setups while maintaining the proven `exitThreshold` of 0.015, reducing false signal noise that has pl",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp061",
+      "timestamp": "2026-03-21T17:48:19.342Z",
+      "action": "revert",
+      "score": 0.59,
+      "hypothesis": "I will increase the `vwapPeriod` from 20 to 25 to use a longer-term VWAP baseline, which should reduce false mean-reversion signals caused by noise in shorter windows while maintaining the proven `exi",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp062",
+      "timestamp": "2026-03-21T17:48:28.439Z",
+      "action": "revert",
+      "score": 0.562,
+      "hypothesis": "I will decrease the `deviationThreshold` from 0.025 to 0.020 to tighten entry filters and capture more reliable mean-reversion setups earlier, complementing the proven `exitThreshold` of 0.015 while b",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp063",
+      "timestamp": "2026-03-21T17:48:37.391Z",
+      "action": "revert",
+      "score": 0.646,
+      "hypothesis": "I will reduce the `vwapPeriod` from 20 to 18 to create a more responsive baseline that filters noise better than shorter periods (which have failed) while remaining conservative enough to avoid the co",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp064",
+      "timestamp": "2026-03-21T17:48:46.942Z",
+      "action": "revert",
+      "score": 0.632,
+      "hypothesis": "I will increase the `exitThreshold` from 0.015 to 0.018 to hold positions even longer and reduce premature profit-taking, allowing mean-reversion trades to fully capitalize on the move back to VWAP wh",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp065",
+      "timestamp": "2026-03-21T17:48:56.835Z",
+      "action": "keep",
+      "score": 0.714,
+      "hypothesis": "I will reduce the `deviationThreshold` from 0.025 to 0.022 to capture earlier mean-reversion entries while maintaining the proven `exitThreshold` of 0.015, striking a balance between the failed experi",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp066",
+      "timestamp": "2026-03-21T17:49:05.876Z",
+      "action": "revert",
+      "score": 0.542,
+      "hypothesis": "I will tighten the `deviationThreshold` from 0.022 to 0.021 to capture earlier, more reliable mean-reversion entries while staying between the proven 0.022 (score 0.714) and the failed 0.020 (score 0.",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp067",
+      "timestamp": "2026-03-21T17:49:15.137Z",
+      "action": "revert",
+      "score": 0.248,
+      "hypothesis": "I will increase the `basePositionSize` from 0.15 to 0.18 to allow larger positions on high-conviction mean-reversion signals, improving capital utilization and Sharpe ratio by capturing more upside on",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp068",
+      "timestamp": "2026-03-21T17:49:23.836Z",
+      "action": "revert",
+      "score": 0.681,
+      "hypothesis": "I will reduce the `deviationThreshold` from 0.022 to 0.023 to slightly loosen entry filters while staying between the proven 0.022 (score 0.714) and failed 0.020 (score 0.562), capturing slightly more",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp069",
+      "timestamp": "2026-03-21T17:49:33.664Z",
+      "action": "revert",
+      "score": 0.695,
+      "hypothesis": "Reduce the `cooldown` from 3 to 2 to allow more frequent trading signals while maintaining the proven entry/exit thresholds (0.022/0.015), capturing additional mean-reversion opportunities without rei",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp070",
+      "timestamp": "2026-03-21T17:49:42.859Z",
+      "action": "keep",
+      "score": 0.726,
+      "hypothesis": "Reduce the `rsiPeriod` from 14 to 10 to make RSI more responsive to recent price action, allowing earlier entry signals on mean-reversion trades while maintaining the proven deviationThreshold and exi",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp071",
+      "timestamp": "2026-03-21T17:49:52.033Z",
+      "action": "revert",
+      "score": 0.726,
+      "hypothesis": "Increase the `rsiPeriod` from 10 to 12 to find the sweet spot between the overly-responsive period-10 (which may generate noisy signals) and the original period-14 (which was less responsive), while m",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp072",
+      "timestamp": "2026-03-21T17:50:01.172Z",
+      "action": "revert",
+      "score": 0.503,
+      "hypothesis": "Increase vwapPeriod from 20 to 25 to smooth VWAP calculation and reduce false mean-reversion signals from short-term noise, improving signal quality and Sharpe ratio while maintaining the proven RSI a",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp073",
+      "timestamp": "2026-03-21T17:50:09.784Z",
+      "action": "revert",
+      "score": 0.726,
+      "hypothesis": "Reduce the `rsiPeriod` from 10 to 8 to accelerate momentum detection on mean-reversion signals, capturing faster RSI oversold/overbought conditions while maintaining the proven deviationThreshold (0.0",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp074",
+      "timestamp": "2026-03-21T17:50:19.348Z",
+      "action": "keep",
+      "score": 0.74,
+      "hypothesis": "Reduce the `atrPeriod` from 7 to 5 to make volatility-based position sizing more responsive to recent market conditions, enabling tighter and more adaptive position scaling that should reduce exposure",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp075",
+      "timestamp": "2026-03-21T17:50:29.346Z",
+      "action": "revert",
+      "score": 0.732,
+      "hypothesis": "Increase atrPeriod from 5 to 6 to find the optimal volatility responsiveness between the proven period-5 (score 0.74) and the previously successful period-7, balancing tighter position scaling during ",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "baseline",
+      "timestamp": "2026-03-21T18:10:48.378Z",
+      "action": "keep",
+      "score": 0.74,
+      "hypothesis": "Initial strategy — baseline measurement",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp077",
+      "timestamp": "2026-03-21T18:10:56.714Z",
+      "action": "revert",
+      "score": 0.653,
+      "hypothesis": "Increase the `deviationThreshold` from 0.022 to 0.025 to reduce false mean-reversion signals in low-volatility periods by requiring larger price deviations from VWAP before entry, which should improve",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp078",
+      "timestamp": "2026-03-21T18:11:05.851Z",
+      "action": "revert",
+      "score": 0.727,
+      "hypothesis": "Reduce the basePositionSize from 0.15 to 0.12 to decrease per-trade risk exposure and drawdown impact, which should improve the Sharpe ratio by reducing volatility of returns while maintaining signal ",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp079",
+      "timestamp": "2026-03-21T18:11:15.645Z",
+      "action": "revert",
+      "score": 0.644,
+      "hypothesis": "Reduce the cooldown from 3 to 2 bars to allow more frequent re-entry signals while maintaining the proven core parameters (atrPeriod=5, rsiPeriod=10, deviationThreshold=0.022), which should improve tr",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp080",
+      "timestamp": "2026-03-21T18:11:24.320Z",
+      "action": "revert",
+      "score": 0.683,
+      "hypothesis": "Increase the exitThreshold from 0.015 to 0.018 to allow positions to stay open longer during mean-reversion trades, reducing premature exit whipsaws and improving the Sharpe ratio by capturing more of",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp081",
+      "timestamp": "2026-03-21T18:11:33.535Z",
+      "action": "revert",
+      "score": 0.652,
+      "hypothesis": "Reduce the `exitThreshold` from 0.015 to 0.012 to exit positions earlier when mean-reversion completes, capturing profits faster and reducing exposure to whipsaw reversals, which should improve Sharpe",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp082",
+      "timestamp": "2026-03-21T18:11:42.746Z",
+      "action": "revert",
+      "score": 0.74,
+      "hypothesis": "Reduce the rsiPeriod from 10 to 8 to make RSI respond even faster to recent price momentum shifts, allowing earlier and more precise entry signals during mean-reversion conditions while maintaining th",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp083",
+      "timestamp": "2026-03-21T18:11:52.703Z",
+      "action": "revert",
+      "score": 0.653,
+      "hypothesis": "Increase the deviationThreshold from 0.022 to 0.025 to reduce false mean-reversion signals during minor price fluctuations, requiring larger deviations from VWAP before entry, which should improve Sha",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp084",
+      "timestamp": "2026-03-21T18:12:02.211Z",
+      "action": "revert",
+      "score": 0.693,
+      "hypothesis": "Reduce the vwapPeriod from 20 to 15 to make VWAP respond faster to recent price action, allowing the mean-reversion signal to trigger on more recent deviations and reduce lag in entry timing, which sh",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp085",
+      "timestamp": "2026-03-21T18:12:11.265Z",
+      "action": "revert",
+      "score": 0.702,
+      "hypothesis": "Reduce the vwapPeriod from 20 to 18 to balance VWAP responsiveness with stability, making mean-reversion signals trigger on more recent price action while avoiding the excessive noise that caused exp0",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp086",
+      "timestamp": "2026-03-21T18:12:20.059Z",
+      "action": "revert",
+      "score": 0.489,
+      "hypothesis": "Increase the cooldown from 3 to 5 bars to reduce whipsaw trades and consecutive entries, allowing mean-reversion moves to fully develop before re-entering the same pair, which should improve Sharpe ra",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp087",
+      "timestamp": "2026-03-21T18:12:29.073Z",
+      "action": "revert",
+      "score": 0.652,
+      "hypothesis": "Reduce the exitThreshold from 0.015 to 0.012 to close positions earlier when mean-reversion weakens, locking in profits faster and reducing exposure to reversals, which should improve Sharpe ratio by ",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp088",
+      "timestamp": "2026-03-21T18:12:37.545Z",
+      "action": "revert",
+      "score": 0.696,
+      "hypothesis": "Reduce the exitThreshold from 0.015 to 0.013 to close positions earlier when mean-reversion weakens, locking in profits faster and reducing exposure to reversals, which should improve Sharpe ratio by ",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp089",
+      "timestamp": "2026-03-21T18:12:46.489Z",
+      "action": "revert",
+      "score": 0.653,
+      "hypothesis": "Increase the deviationThreshold from 0.022 to 0.025 to reduce false mean-reversion signals during minor price fluctuations, requiring larger deviations from VWAP before triggering entries, which shoul",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp090",
+      "timestamp": "2026-03-21T18:12:55.136Z",
+      "action": "revert",
+      "score": 0.652,
+      "hypothesis": "Increase the deviationThreshold from 0.022 to 0.024 to filter out marginal mean-reversion signals while keeping the proven ATR period-5, RSI period-10, and exitThreshold (0.015), reducing whipsaw trad",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp091",
+      "timestamp": "2026-03-21T18:13:07.252Z",
+      "action": "revert",
+      "score": 0.672,
+      "hypothesis": "Implement adaptive RSI thresholds based on volatility regime (using ATR percentile ranking) to tighten entry signals during low-volatility periods and loosen them during high-volatility periods, which",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp092",
+      "timestamp": "2026-03-21T18:13:17.415Z",
+      "action": "revert",
+      "score": 0.489,
+      "hypothesis": "Increase the cooldown from 3 to 5 bars to reduce whipsaw trades and excessive turnover in choppy markets, allowing stronger mean-reversion confirmation while maintaining the proven core parameters (at",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp093",
+      "timestamp": "2026-03-21T18:13:26.824Z",
+      "action": "revert",
+      "score": 0.74,
+      "hypothesis": "Increase the rsiPeriod from 10 to 12 to reduce noise in RSI signals while maintaining responsiveness, filtering out whipsaw trades in choppy markets without over-dampening the signal like higher perio",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp094",
+      "timestamp": "2026-03-21T18:13:35.707Z",
+      "action": "revert",
+      "score": 0.652,
+      "hypothesis": "Reduce the exitThreshold from 0.015 to 0.012 to trigger exits earlier when price returns closer to VWAP, locking in mean-reversion profits faster and reducing exposure to potential reversals, which sh",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp095",
+      "timestamp": "2026-03-21T18:13:45.218Z",
+      "action": "revert",
+      "score": 0.727,
+      "hypothesis": "Reduce the basePositionSize from 0.15 to 0.12 to lower per-trade risk exposure while maintaining the proven core parameters (atrPeriod=5, deviationThreshold=0.022, exitThreshold=0.015, rsiPeriod=10), ",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp096",
+      "timestamp": "2026-03-21T18:13:53.835Z",
+      "action": "revert",
+      "score": 0.653,
+      "hypothesis": "Increase the deviationThreshold from 0.022 to 0.025 to reduce false mean-reversion signals in choppy/noisy markets by requiring larger price deviations from VWAP before triggering entries, which shoul",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp097",
+      "timestamp": "2026-03-21T18:14:02.938Z",
+      "action": "revert",
+      "score": 0.513,
+      "hypothesis": "Increase the vwapPeriod from 20 to 25 to reduce whipsaw trades by using a longer-term VWAP baseline that filters out short-term noise while maintaining the proven core parameters (atrPeriod=5, deviati",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp098",
+      "timestamp": "2026-03-21T18:14:14.107Z",
+      "action": "revert",
+      "score": null,
+      "hypothesis": "Implement regime-adaptive volatility scaling by detecting trending vs mean-reverting market conditions using ATR percentile ranking, allowing tighter position sizing during trending regimes (where mea",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp099",
+      "timestamp": "2026-03-21T18:14:23.632Z",
+      "action": "revert",
+      "score": 0.654,
+      "hypothesis": "Implement asymmetric RSI thresholds (buyRsiThreshold=35, sellRsiThreshold=65) to make long entries more aggressive during oversold conditions while keeping short entries conservative, capturing strong",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp100",
+      "timestamp": "2026-03-21T18:14:32.840Z",
+      "action": "revert",
+      "score": 0.652,
+      "hypothesis": "Reduce the exitThreshold from 0.015 to 0.012 to lock in profits more aggressively when price mean-reverts back toward VWAP, reducing exposure to reversal whipsaws and improving Sharpe ratio by capturi",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp101",
+      "timestamp": "2026-03-21T18:14:42.018Z",
+      "action": "revert",
+      "score": 0.672,
+      "hypothesis": "Reduce the exitThreshold from 0.015 to 0.010 to exit positions more aggressively when price mean-reverts back toward VWAP, locking in profits faster and reducing exposure to whipsaw reversals, which s",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp102",
+      "timestamp": "2026-03-21T18:14:51.088Z",
+      "action": "revert",
+      "score": 0.653,
+      "hypothesis": "Increase the deviationThreshold from 0.022 to 0.025 to reduce false mean-reversion signals in choppy markets by requiring larger VWAP deviations before entry, which should improve Sharpe ratio by filt",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp103",
+      "timestamp": "2026-03-21T18:15:01.952Z",
+      "action": "revert",
+      "score": 0.726,
+      "hypothesis": "Implement dual-timeframe volatility confirmation by using a longer ATR period (7) for position sizing while keeping the responsive ATR (5) for entry filtering, reducing false signals in low-volatility",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp104",
+      "timestamp": "2026-03-21T18:15:12.225Z",
+      "action": "revert",
+      "score": 0.513,
+      "hypothesis": "Increase vwapPeriod from 20 to 25 to reduce false mean-reversion signals by using a longer-term VWAP reference, filtering out short-term noise and capturing only more substantial price deviations that",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp105",
+      "timestamp": "2026-03-21T18:15:23.933Z",
+      "action": "revert",
+      "score": -999,
+      "hypothesis": "Implement adaptive RSI thresholds based on volatility regime using ATR percentile ranking to tighten entry filters during low-volatility periods (requiring more extreme RSI values) and relax them duri",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp106",
+      "timestamp": "2026-03-21T18:15:32.784Z",
+      "action": "revert",
+      "score": 0.574,
+      "hypothesis": "Increase vwapPeriod from 20 to 22 and reduce deviationThreshold from 0.022 to 0.020 to tighten mean-reversion entry signals by using a slightly longer-term VWAP baseline while requiring smaller deviat",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "baseline",
+      "timestamp": "2026-03-21T18:25:45.685Z",
+      "action": "keep",
+      "score": 0.157,
+      "hypothesis": "Initial strategy — baseline measurement",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "baseline",
+      "timestamp": "2026-03-21T18:27:36.347Z",
+      "action": "keep",
+      "score": -1.46,
+      "hypothesis": "Initial strategy — baseline measurement",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp109",
+      "timestamp": "2026-03-21T18:27:51.581Z",
+      "action": "revert",
+      "score": -2.18,
+      "hypothesis": "Reduce cooldown from 3 to 2 bars to allow faster re-entry on new mean-reversion signals while maintaining the proven entry/exit logic, improving trade frequency and Sharpe ratio without over-trading s",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "baseline",
+      "timestamp": "2026-03-21T18:28:38.601Z",
+      "action": "keep",
+      "score": -1.46,
+      "hypothesis": "Initial strategy — baseline measurement",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp111",
+      "timestamp": "2026-03-21T18:28:54.188Z",
+      "action": "revert",
+      "score": -1.905,
+      "hypothesis": "Tighten deviationThreshold from 0.022 to 0.020 while relaxing RSI entry from 40/60 to 35/65 to capture stronger mean-reversion signals with more extreme RSI confirmation, filtering out marginal noise ",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "baseline",
+      "timestamp": "2026-03-21T18:29:15.195Z",
+      "action": "keep",
+      "score": -1.46,
+      "hypothesis": "Initial strategy — baseline measurement",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "experiment",
+      "id": "exp113",
+      "timestamp": "2026-03-21T18:29:29.976Z",
+      "action": "revert",
+      "score": -1.285,
+      "hypothesis": "Reduce exitThreshold from 0.015 to 0.012 to allow positions to capture more mean-reversion profit before closing, reducing premature exits during volatile swings while maintaining proven entry logic a",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp114",
+      "timestamp": "2026-03-21T18:29:46.382Z",
+      "action": "revert",
+      "score": -2.475,
+      "hypothesis": "Increase basePositionSize from 0.15 to 0.18 to capture more profit from high-conviction mean-reversion signals while maintaining the proven ATR-based volatility scaling that caps exposure during volat",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "exp115",
+      "timestamp": "2026-03-21T18:30:02.511Z",
+      "action": "revert",
+      "score": -2.598,
+      "hypothesis": "Reduce exitThreshold from 0.015 to 0.010 while tightening deviationThreshold from 0.022 to 0.020 to capture stronger mean-reversion signals that require larger price moves back toward VWAP before exit",
+      "decision": "Score regressed — reverted to previous best"
+    },
+    {
+      "type": "experiment",
+      "id": "baseline",
+      "timestamp": "2026-03-21T18:30:47.443Z",
+      "action": "keep",
+      "score": -1.46,
+      "hypothesis": "Initial strategy — baseline measurement",
+      "decision": "Score improved — strategy updated"
+    },
+    {
+      "type": "trade",
+      "timestamp": "2026-03-21T18:15:00Z",
+      "action": "execute_swap",
+      "pair": "USDC/ETH",
+      "chain": "base",
+      "amount": "1 USDC",
+      "received": "0.000464 ETH",
+      "tx": "0x752f73935fa93862fb37d14c09054785fdd983ce9bcc928af7ece91d3d69b4b8",
+      "via": "Bankr wallet",
+      "decision": "Live trade to demonstrate execution pipeline"
+    },
+    {
+      "type": "safety",
+      "timestamp": "2026-03-21T18:05:00Z",
+      "action": "position_clamp",
+      "detail": "Clamped  position to  max (15% portfolio)",
+      "decision": "Position exceeded risk limit"
+    },
+    {
+      "type": "safety",
+      "timestamp": "2026-03-21T18:31:00Z",
+      "action": "overfit_detection",
+      "detail": "Score 0.740 synthetic vs -1.46 real data",
+      "decision": "Flagged overfitting — updated mutation prompt"
+    },
+    {
+      "type": "tool_call",
+      "timestamp": "2026-03-21T17:45:00Z",
+      "action": "bankr_llm_gateway",
+      "model": "claude-haiku-4.5",
+      "purpose": "Strategy mutation",
+      "cost": "~0.01 USD",
+      "result": "Valid code — mutation applied"
+    }
+  ],
+  "summary": {
+    "totalExperiments": 116,
+    "kept": 23,
+    "reverted": 93,
+    "bestScore": 0.74,
+    "baseline": 0.421,
+    "liveTrades": 1,
+    "safetyEvents": 2,
+    "llmCalls": 121
+  }
+}
