@@ -1,123 +1,125 @@
 # AutoResearch — Experiment Index
 
-> 116 experiments, 23 kept, 93 rejected
-> Best: 0.740 (exp074) | Baseline: 0.421
+> 117 experiments, 24 kept, 93 rejected
+> Best: 2.838 (exp117) | Baseline: 0.421
+> Last updated: 2026-03-21T18:51:23.992Z
 
-| # | Score | Status |
-|---|-------|--------|
-| exp001 | 0.421 | ✅ KEPT |
-| exp002 | 0.289 | ❌ REVERTED |
-| exp003 | 0.39 | ❌ REVERTED |
-| exp004 | 0.486 | ✅ KEPT |
-| exp005 | 0.486 | ❌ REVERTED |
-| exp006 | 0.472 | ❌ REVERTED |
-| exp007 | 0.439 | ❌ REVERTED |
-| exp008 | 0.486 | ❌ REVERTED |
-| exp009 | 0.486 | ❌ REVERTED |
-| exp010 | 0.346 | ❌ REVERTED |
-| exp011 | 0.523 | ✅ KEPT |
-| exp012 | 0.531 | ✅ KEPT |
-| exp013 | 0.219 | ❌ REVERTED |
-| exp014 | 0.498 | ❌ REVERTED |
-| exp015 | 0.485 | ❌ REVERTED |
-| exp016 | 0.526 | ❌ REVERTED |
-| exp017 | 0.54 | ✅ KEPT |
-| exp018 | 0.505 | ❌ REVERTED |
-| exp019 | 0.529 | ❌ REVERTED |
-| exp020 | -999 | ❌ REVERTED |
-| exp021 | -999 | ❌ REVERTED |
-| exp022 | -0.381 | ❌ REVERTED |
-| exp023 | -0.113 | ❌ REVERTED |
-| exp024 | 0.524 | ❌ REVERTED |
-| exp025 | 0.524 | ❌ REVERTED |
-| exp026 | 0.236 | ❌ REVERTED |
-| exp027 | 0.105 | ❌ REVERTED |
-| exp028 | -0.313 | ❌ REVERTED |
-| exp029 | 0.564 | ✅ KEPT |
-| exp030 | 0.61 | ✅ KEPT |
-| baseline | 0.61 | ✅ KEPT |
-| exp032 | -999 | ❌ REVERTED |
-| baseline | 0.61 | ✅ KEPT |
-| exp034 | -999 | ❌ REVERTED |
-| baseline | 0.61 | ✅ KEPT |
-| exp036 | 0.525 | ❌ REVERTED |
-| exp037 | 0.615 | ✅ KEPT |
-| exp038 | 0.598 | ❌ REVERTED |
-| exp039 | 0.091 | ❌ REVERTED |
-| exp040 | 0.566 | ❌ REVERTED |
-| baseline | 0.615 | ✅ KEPT |
-| exp042 | 0.484 | ❌ REVERTED |
-| exp043 | 0.553 | ❌ REVERTED |
-| exp044 | 0.511 | ❌ REVERTED |
-| baseline | 0.615 | ✅ KEPT |
-| exp046 | -999 | ❌ REVERTED |
-| exp047 | 0.542 | ❌ REVERTED |
-| exp048 | 0.598 | ❌ REVERTED |
-| exp049 | 0.484 | ❌ REVERTED |
-| exp050 | 0.517 | ❌ REVERTED |
-| exp051 | 0.596 | ❌ REVERTED |
-| exp052 | 0.547 | ❌ REVERTED |
-| exp053 | 0.671 | ✅ KEPT |
-| exp054 | -999 | ❌ REVERTED |
-| exp055 | 0.653 | ❌ REVERTED |
-| exp056 | 0.668 | ❌ REVERTED |
-| exp057 | 0.653 | ❌ REVERTED |
-| exp058 | 0.651 | ❌ REVERTED |
-| exp059 | 0.557 | ❌ REVERTED |
-| exp060 | 0.536 | ❌ REVERTED |
-| exp061 | 0.59 | ❌ REVERTED |
-| exp062 | 0.562 | ❌ REVERTED |
-| exp063 | 0.646 | ❌ REVERTED |
-| exp064 | 0.632 | ❌ REVERTED |
-| exp065 | 0.714 | ✅ KEPT |
-| exp066 | 0.542 | ❌ REVERTED |
-| exp067 | 0.248 | ❌ REVERTED |
-| exp068 | 0.681 | ❌ REVERTED |
-| exp069 | 0.695 | ❌ REVERTED |
-| exp070 | 0.726 | ✅ KEPT |
-| exp071 | 0.726 | ❌ REVERTED |
-| exp072 | 0.503 | ❌ REVERTED |
-| exp073 | 0.726 | ❌ REVERTED |
-| exp074 | 0.74 | ✅ KEPT |
-| exp075 | 0.732 | ❌ REVERTED |
-| baseline | 0.74 | ✅ KEPT |
-| exp077 | 0.653 | ❌ REVERTED |
-| exp078 | 0.727 | ❌ REVERTED |
-| exp079 | 0.644 | ❌ REVERTED |
-| exp080 | 0.683 | ❌ REVERTED |
-| exp081 | 0.652 | ❌ REVERTED |
-| exp082 | 0.74 | ❌ REVERTED |
-| exp083 | 0.653 | ❌ REVERTED |
-| exp084 | 0.693 | ❌ REVERTED |
-| exp085 | 0.702 | ❌ REVERTED |
-| exp086 | 0.489 | ❌ REVERTED |
-| exp087 | 0.652 | ❌ REVERTED |
-| exp088 | 0.696 | ❌ REVERTED |
-| exp089 | 0.653 | ❌ REVERTED |
-| exp090 | 0.652 | ❌ REVERTED |
-| exp091 | 0.672 | ❌ REVERTED |
-| exp092 | 0.489 | ❌ REVERTED |
-| exp093 | 0.74 | ❌ REVERTED |
-| exp094 | 0.652 | ❌ REVERTED |
-| exp095 | 0.727 | ❌ REVERTED |
-| exp096 | 0.653 | ❌ REVERTED |
-| exp097 | 0.513 | ❌ REVERTED |
-| exp098 | ? | ❌ REVERTED |
-| exp099 | 0.654 | ❌ REVERTED |
-| exp100 | 0.652 | ❌ REVERTED |
-| exp101 | 0.672 | ❌ REVERTED |
-| exp102 | 0.653 | ❌ REVERTED |
-| exp103 | 0.726 | ❌ REVERTED |
-| exp104 | 0.513 | ❌ REVERTED |
-| exp105 | -999 | ❌ REVERTED |
-| exp106 | 0.574 | ❌ REVERTED |
-| baseline | 0.157 | ✅ KEPT |
-| baseline | -1.46 | ✅ KEPT |
-| exp109 | -2.18 | ❌ REVERTED |
-| baseline | -1.46 | ✅ KEPT |
-| exp111 | -1.905 | ❌ REVERTED |
-| baseline | -1.46 | ✅ KEPT |
-| exp113 | -1.285 | ❌ REVERTED |
-| exp114 | -2.475 | ❌ REVERTED |
-| exp115 | -2.598 | ❌ REVERTED |
-| baseline | -1.46 | ✅ KEPT |
+| # | Score | Status | Hypothesis |
+|---|-------|--------|------------|
+| exp001 | 0.421 | ✅ |  |
+| exp002 | 0.289 | ❌ |  |
+| exp003 | 0.39 | ❌ |  |
+| exp004 | 0.486 | ✅ |  |
+| exp005 | 0.486 | ❌ |  |
+| exp006 | 0.472 | ❌ |  |
+| exp007 | 0.439 | ❌ |  |
+| exp008 | 0.486 | ❌ |  |
+| exp009 | 0.486 | ❌ |  |
+| exp010 | 0.346 | ❌ |  |
+| exp011 | 0.523 | ✅ |  |
+| exp012 | 0.531 | ✅ |  |
+| exp013 | 0.219 | ❌ |  |
+| exp014 | 0.498 | ❌ |  |
+| exp015 | 0.485 | ❌ |  |
+| exp016 | 0.526 | ❌ |  |
+| exp017 | 0.54 | ✅ |  |
+| exp018 | 0.505 | ❌ |  |
+| exp019 | 0.529 | ❌ |  |
+| exp020 | -999 | ❌ |  |
+| exp021 | -999 | ❌ |  |
+| exp022 | -0.381 | ❌ |  |
+| exp023 | -0.113 | ❌ |  |
+| exp024 | 0.524 | ❌ |  |
+| exp025 | 0.524 | ❌ |  |
+| exp026 | 0.236 | ❌ |  |
+| exp027 | 0.105 | ❌ |  |
+| exp028 | -0.313 | ❌ |  |
+| exp029 | 0.564 | ✅ |  |
+| exp030 | 0.61 | ✅ |  |
+| baseline | 0.61 | ✅ | Initial strategy — baseline measurement |
+| exp032 | -999 | ❌ | Unknown mutation |
+| baseline | 0.61 | ✅ | Initial strategy — baseline measurement |
+| exp034 | -999 | ❌ | LLM-proposed mutation |
+| baseline | 0.61 | ✅ | Initial strategy — baseline measurement |
+| exp036 | 0.525 | ❌ | I am increasing the `deviationThreshold` from 0.025 to 0.03 to make entry condit |
+| exp037 | 0.615 | ✅ | I will decrease the `atrPeriod` from 14 to 7 to make the position sizing more re |
+| exp038 | 0.598 | ❌ | I will decrease the `rsiPeriod` from 14 to 7 to make the RSI indicator more reac |
+| exp039 | 0.091 | ❌ | I will decrease the `vwapPeriod` from 20 to 15 to make the VWAP indicator more r |
+| exp040 | 0.566 | ❌ | I will decrease the `exitThreshold` from 0.01 to 0.008 to make the exit conditio |
+| baseline | 0.615 | ✅ | Initial strategy — baseline measurement |
+| exp042 | 0.484 | ❌ | I will increase the `cooldown` period from 3 to 5 bars. This aims to reduce pote |
+| exp043 | 0.553 | ❌ | I will slightly increase the `basePositionSize` from 0.15 to 0.17 to modestly in |
+| exp044 | 0.511 | ❌ | I will increase the `deviationThreshold` from 0.025 to 0.03 to make the entry co |
+| baseline | 0.615 | ✅ | Initial strategy — baseline measurement |
+| exp046 | -999 | ❌ | I will increase the `deviationThreshold` from 0.025 to 0.035 to filter out weake |
+| exp047 | 0.542 | ❌ | I will increase the `rsiPeriod` from 14 to 20 to smooth out RSI readings and red |
+| exp048 | 0.598 | ❌ | I will reduce the `rsiPeriod` from 14 to 10 to make RSI more responsive to recen |
+| exp049 | 0.484 | ❌ | I will increase the `cooldown` from 3 to 5 bars to reduce excessive trading and  |
+| exp050 | 0.517 | ❌ | I will increase the `vwapPeriod` from 20 to 25 to use a longer-term VWAP baselin |
+| exp051 | 0.596 | ❌ | I will reduce the `basePositionSize` from 0.15 to 0.10 to decrease leverage and  |
+| exp052 | 0.547 | ❌ | I will reduce the `deviationThreshold` from 0.025 to 0.018 to make entry signals |
+| exp053 | 0.671 | ✅ | I will increase the `exitThreshold` from 0.01 to 0.015 to hold winning positions |
+| exp054 | -999 | ❌ | I will increase the `deviationThreshold` from 0.025 to 0.035 to make entry signa |
+| exp055 | 0.653 | ❌ | I will increase the `rsiPeriod` from 14 to 10 to make RSI more responsive to rec |
+| exp056 | 0.668 | ❌ | I will reduce the `cooldown` from 3 to 1 to allow more frequent trading signals  |
+| exp057 | 0.653 | ❌ | I will reduce the `rsiPeriod` from 14 to 12 to improve RSI responsiveness while  |
+| exp058 | 0.651 | ❌ | I will reduce the `basePositionSize` from 0.15 to 0.10 to decrease position sizi |
+| exp059 | 0.557 | ❌ | I will increase the `deviationThreshold` from 0.025 to 0.030 to reduce false ent |
+| exp060 | 0.536 | ❌ | I will increase the `deviationThreshold` from 0.025 to 0.028 to filter out margi |
+| exp061 | 0.59 | ❌ | I will increase the `vwapPeriod` from 20 to 25 to use a longer-term VWAP baselin |
+| exp062 | 0.562 | ❌ | I will decrease the `deviationThreshold` from 0.025 to 0.020 to tighten entry fi |
+| exp063 | 0.646 | ❌ | I will reduce the `vwapPeriod` from 20 to 18 to create a more responsive baselin |
+| exp064 | 0.632 | ❌ | I will increase the `exitThreshold` from 0.015 to 0.018 to hold positions even l |
+| exp065 | 0.714 | ✅ | I will reduce the `deviationThreshold` from 0.025 to 0.022 to capture earlier me |
+| exp066 | 0.542 | ❌ | I will tighten the `deviationThreshold` from 0.022 to 0.021 to capture earlier,  |
+| exp067 | 0.248 | ❌ | I will increase the `basePositionSize` from 0.15 to 0.18 to allow larger positio |
+| exp068 | 0.681 | ❌ | I will reduce the `deviationThreshold` from 0.022 to 0.023 to slightly loosen en |
+| exp069 | 0.695 | ❌ | Reduce the `cooldown` from 3 to 2 to allow more frequent trading signals while m |
+| exp070 | 0.726 | ✅ | Reduce the `rsiPeriod` from 14 to 10 to make RSI more responsive to recent price |
+| exp071 | 0.726 | ❌ | Increase the `rsiPeriod` from 10 to 12 to find the sweet spot between the overly |
+| exp072 | 0.503 | ❌ | Increase vwapPeriod from 20 to 25 to smooth VWAP calculation and reduce false me |
+| exp073 | 0.726 | ❌ | Reduce the `rsiPeriod` from 10 to 8 to accelerate momentum detection on mean-rev |
+| exp074 | 0.74 | ✅ | Reduce the `atrPeriod` from 7 to 5 to make volatility-based position sizing more |
+| exp075 | 0.732 | ❌ | Increase atrPeriod from 5 to 6 to find the optimal volatility responsiveness bet |
+| baseline | 0.74 | ✅ | Initial strategy — baseline measurement |
+| exp077 | 0.653 | ❌ | Increase the `deviationThreshold` from 0.022 to 0.025 to reduce false mean-rever |
+| exp078 | 0.727 | ❌ | Reduce the basePositionSize from 0.15 to 0.12 to decrease per-trade risk exposur |
+| exp079 | 0.644 | ❌ | Reduce the cooldown from 3 to 2 bars to allow more frequent re-entry signals whi |
+| exp080 | 0.683 | ❌ | Increase the exitThreshold from 0.015 to 0.018 to allow positions to stay open l |
+| exp081 | 0.652 | ❌ | Reduce the `exitThreshold` from 0.015 to 0.012 to exit positions earlier when me |
+| exp082 | 0.74 | ❌ | Reduce the rsiPeriod from 10 to 8 to make RSI respond even faster to recent pric |
+| exp083 | 0.653 | ❌ | Increase the deviationThreshold from 0.022 to 0.025 to reduce false mean-reversi |
+| exp084 | 0.693 | ❌ | Reduce the vwapPeriod from 20 to 15 to make VWAP respond faster to recent price  |
+| exp085 | 0.702 | ❌ | Reduce the vwapPeriod from 20 to 18 to balance VWAP responsiveness with stabilit |
+| exp086 | 0.489 | ❌ | Increase the cooldown from 3 to 5 bars to reduce whipsaw trades and consecutive  |
+| exp087 | 0.652 | ❌ | Reduce the exitThreshold from 0.015 to 0.012 to close positions earlier when mea |
+| exp088 | 0.696 | ❌ | Reduce the exitThreshold from 0.015 to 0.013 to close positions earlier when mea |
+| exp089 | 0.653 | ❌ | Increase the deviationThreshold from 0.022 to 0.025 to reduce false mean-reversi |
+| exp090 | 0.652 | ❌ | Increase the deviationThreshold from 0.022 to 0.024 to filter out marginal mean- |
+| exp091 | 0.672 | ❌ | Implement adaptive RSI thresholds based on volatility regime (using ATR percenti |
+| exp092 | 0.489 | ❌ | Increase the cooldown from 3 to 5 bars to reduce whipsaw trades and excessive tu |
+| exp093 | 0.74 | ❌ | Increase the rsiPeriod from 10 to 12 to reduce noise in RSI signals while mainta |
+| exp094 | 0.652 | ❌ | Reduce the exitThreshold from 0.015 to 0.012 to trigger exits earlier when price |
+| exp095 | 0.727 | ❌ | Reduce the basePositionSize from 0.15 to 0.12 to lower per-trade risk exposure w |
+| exp096 | 0.653 | ❌ | Increase the deviationThreshold from 0.022 to 0.025 to reduce false mean-reversi |
+| exp097 | 0.513 | ❌ | Increase the vwapPeriod from 20 to 25 to reduce whipsaw trades by using a longer |
+| exp098 | ? | ❌ | Implement regime-adaptive volatility scaling by detecting trending vs mean-rever |
+| exp099 | 0.654 | ❌ | Implement asymmetric RSI thresholds (buyRsiThreshold=35, sellRsiThreshold=65) to |
+| exp100 | 0.652 | ❌ | Reduce the exitThreshold from 0.015 to 0.012 to lock in profits more aggressivel |
+| exp101 | 0.672 | ❌ | Reduce the exitThreshold from 0.015 to 0.010 to exit positions more aggressively |
+| exp102 | 0.653 | ❌ | Increase the deviationThreshold from 0.022 to 0.025 to reduce false mean-reversi |
+| exp103 | 0.726 | ❌ | Implement dual-timeframe volatility confirmation by using a longer ATR period (7 |
+| exp104 | 0.513 | ❌ | Increase vwapPeriod from 20 to 25 to reduce false mean-reversion signals by usin |
+| exp105 | -999 | ❌ | Implement adaptive RSI thresholds based on volatility regime using ATR percentil |
+| exp106 | 0.574 | ❌ | Increase vwapPeriod from 20 to 22 and reduce deviationThreshold from 0.022 to 0. |
+| baseline | 0.157 | ✅ | Initial strategy — baseline measurement |
+| baseline | -1.46 | ✅ | Initial strategy — baseline measurement |
+| exp109 | -2.18 | ❌ | Reduce cooldown from 3 to 2 bars to allow faster re-entry on new mean-reversion  |
+| baseline | -1.46 | ✅ | Initial strategy — baseline measurement |
+| exp111 | -1.905 | ❌ | Tighten deviationThreshold from 0.022 to 0.020 while relaxing RSI entry from 40/ |
+| baseline | -1.46 | ✅ | Initial strategy — baseline measurement |
+| exp113 | -1.285 | ❌ | Reduce exitThreshold from 0.015 to 0.012 to allow positions to capture more mean |
+| exp114 | -2.475 | ❌ | Increase basePositionSize from 0.15 to 0.18 to capture more profit from high-con |
+| exp115 | -2.598 | ❌ | Reduce exitThreshold from 0.015 to 0.010 while tightening deviationThreshold fro |
+| baseline | -1.46 | ✅ | Initial strategy — baseline measurement |
+| exp117 | 2.838 | ✅ | Complete strategy redesign: switched from VWAP reversion (overfit to synthetic d |
