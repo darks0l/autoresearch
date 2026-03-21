@@ -1,8 +1,8 @@
 # AutoResearch — Experiment Index
 
-> 136 experiments, 31 kept, 105 rejected
-> Best: 3.668 (exp128) | Baseline: 0.421
-> Last updated: 2026-03-21T21:24:13.551Z
+> 152 experiments, 34 kept, 118 rejected
+> Best: 3.777 (exp151) | Baseline: 0.421
+> Last updated: 2026-03-21T21:40:17.796Z
 
 | # | Score | Status | Hypothesis |
 |---|-------|--------|------------|
@@ -142,3 +142,19 @@
 | exp133 | 3.57 | ❌ | Replace the Donchian breakout entry with a Volume Weighted Average Price (VWAP)  |
 | exp134 | -999 | ❌ | Replace the Donchian breakout system with a pure EMA crossover trend-following a |
 | exp135 | 3.262 | ❌ | Replace the complex Hurst regime detection with a simpler volatility-adjusted br |
+| baseline | 3.668 | ✅ | Initial strategy — baseline measurement |
+| exp137 | 3.741 | ✅ | Replace the Hurst exponent regime detection with a simpler trend-following appro |
+| exp138 | 2.967 | ❌ | Add a volatility regime filter that scales down position sizes by 50% during hig |
+| exp139 | 3.538 | ❌ | Add a volume momentum filter that requires current volume to be above the 20-per |
+| exp140 | 3.448 | ❌ | Add a dual-timeframe momentum filter using both short-term (5-period) and medium |
+| exp141 | 3.739 | ❌ | Add a win-rate optimization mechanism that tracks recent trade outcomes per pair |
+| exp142 | 3.705 | ❌ | Add a pair correlation filter that only enters new positions in pairs showing po |
+| exp143 | -0.421 | ❌ | Add a volume spike filter that only enters breakout trades when current volume e |
+| exp144 | 2.889 | ❌ | Replace momentum-based position sizing with a simple volatility-normalized syste |
+| exp145 | 3.476 | ❌ | Add a volume-weighted position sizing mechanism that scales positions by 0.6x to |
+| exp146 | 3.496 | ❌ | Add a market regime filter that only takes long positions when the 50-period EMA |
+| exp147 | 2.178 | ❌ | Replace the Donchian breakout entry with a simpler EMA crossover entry combined  |
+| exp148 | 1.717 | ❌ | Add a volume-based entry filter that requires current volume to exceed the 20-pe |
+| exp149 | -999 | ❌ | Replace the complex Donchian/ROC momentum system with a simpler high-conviction  |
+| exp150 | 3.655 | ❌ | Add a volatility-adjusted profit target that scales from 1.5x to 3.0x ATR based  |
+| exp151 | 3.777 | ✅ | Add a multi-timeframe trend filter that calculates a longer-term 50-period EMA s |
