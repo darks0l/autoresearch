@@ -1,8 +1,8 @@
 # AutoResearch — Experiment Index
 
-> 118 experiments, 25 kept, 93 rejected
+> 119 experiments, 26 kept, 93 rejected
 > Best: 2.838 (exp117) | Baseline: 0.421
-> Last updated: 2026-03-21T19:30:58.874Z
+> Last updated: 2026-03-21T20:31:19.284Z
 
 | # | Score | Status | Hypothesis |
 |---|-------|--------|------------|
@@ -123,4 +123,5 @@
 | exp115 | -2.598 | ❌ | Reduce exitThreshold from 0.015 to 0.010 while tightening deviationThreshold fro |
 | baseline | -1.46 | ✅ | Initial strategy — baseline measurement |
 | exp117 | 2.838 | ✅ | Complete strategy redesign: switched from VWAP reversion (overfit to synthetic d |
+| baseline | 2.838 | ✅ | Initial strategy — baseline measurement |
 | baseline | 2.838 | ✅ | Initial strategy — baseline measurement |
