@@ -1,0 +1,35 @@
+{
+  "name": "@darksol/autoresearch",
+  "version": "0.1.0",
+  "description": "Autonomous trading strategy discovery for Base DEX — Karpathy-style autoresearch with LCM memory",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "autoresearch": "./scripts/run-autoresearch.js"
+  },
+  "scripts": {
+    "fetch-data": "node scripts/fetch-data.js",
+    "benchmarks": "node scripts/run-benchmarks.js",
+    "backtest": "node src/backtest.js",
+    "research": "node scripts/run-autoresearch.js",
+    "test": "node --test test/*.test.js"
+  },
+  "keywords": [
+    "trading",
+    "autoresearch",
+    "defi",
+    "base",
+    "uniswap",
+    "aerodrome",
+    "openclaw",
+    "bankr",
+    "llm",
+    "autonomous"
+  ],
+  "author": "Darksol <chris00claw@gmail.com>",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

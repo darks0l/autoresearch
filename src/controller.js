@@ -1,0 +1,341 @@
+/**
+ * AutoResearch Controller
+ * The autonomous loop: mutate → backtest → keep/revert → learn → repeat
+ */
+
+import { readFile, writeFile, copyFile } from 'node:fs/promises';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import CONFIG from './config.js';
+import { runBacktest, formatResult } from './backtest.js';
+import { loadAllPairs } from './data.js';
+import {
+  initMemory, nextExperimentId, logExperiment,
+  getExperimentSummary, getPatternInsights, loadIndex,
+} from './memory.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const STRATEGY_PATH = resolve(__dirname, '../strategies/strategy.js');
+
+/**
+ * Generate a strategy mutation using an LLM
+ */
+async function generateMutation(currentCode, experimentSummary, patternInsights, currentScore) {
+  const model = CONFIG.research.mutationModel;
+  const prompt = buildMutationPrompt(currentCode, experimentSummary, patternInsights, currentScore);
+
+  // Try Bankr LLM Gateway first if configured
+  if (CONFIG.bankr.useBankrLLM && CONFIG.bankr.apiKey) {
+    try {
+      return await callBankrLLM(prompt);
+    } catch (e) {
+      console.log(`  [bankr-llm] Failed: ${e.message}, falling back...`);
+    }
+  }
+
+  // Fall back to direct model call (for OpenClaw agent context)
+  // In production, this runs inside an OpenClaw sub-agent
+  return {
+    hypothesis: 'Manual mutation — implement via OpenClaw agent',
+    code: currentCode,
+    description: prompt,
+  };
+}
+
+/**
+ * Build the mutation prompt
+ */
+function buildMutationPrompt(currentCode, experimentSummary, patternInsights, currentScore) {
+  return `You are an autonomous trading strategy researcher. Your goal is to improve the Sharpe ratio and score of a Base DEX trading strategy.
+
+## Current Strategy (score: ${currentScore})
+\`\`\`javascript
+${currentCode}
+\`\`\`
+
+## Experiment History
+${experimentSummary}
+
+## Pattern Analysis
+${patternInsights}
+
+## Available Indicators
+From indicators.js: sma, ema, rsi, macd, bollingerBands, atr, vwap, roc, stddev, percentileRank
+
+## Rules
+- ONLY modify the Strategy class and its methods
+- Keep the same import structure
+- Do NOT add new dependencies
+- Each change should be ONE atomic hypothesis (e.g., "try RSI period 8 instead of 14")
+- Focus on: parameter tuning, signal combinations, entry/exit timing, position sizing
+
+## Data Context
+- Base DEX pairs: ETH/USDC (Uniswap V3), AERO/USDC (Aerodrome), cbETH/WETH
+- Hourly bars, 500-bar history window
+- Fee model: 2-5 bps maker/taker + 1-3 bps slippage
+- Scoring: sharpe × √(min(trades/50, 1.0)) - drawdown_penalty - turnover_penalty
+
+## Your Task
+Propose ONE specific change. Respond with:
+1. HYPOTHESIS: One sentence describing what you're changing and why
+2. CODE: The complete modified strategy.js file
+3. PARAMETERS: Key parameter values as JSON
+
+Do not explain the code. Just the hypothesis, the full file, and the parameters.`;
+}
+
+/**
+ * Call Bankr LLM Gateway
+ */
+async function callBankrLLM(prompt) {
+  const resp = await fetch(CONFIG.bankr.llmGateway, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${CONFIG.bankr.apiKey}`,
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 4000,
+    }),
+  });
+
+  if (!resp.ok) throw new Error(`Bankr LLM error: ${resp.status}`);
+  const data = await resp.json();
+  const content = data.choices?.[0]?.message?.content || '';
+
+  return parseMutationResponse(content);
+}
+
+/**
+ * Parse LLM mutation response
+ */
+function parseMutationResponse(content) {
+  const hypothesisMatch = content.match(/HYPOTHESIS:\s*(.+?)(?:\n|$)/i);
+  const codeMatch = content.match(/```javascript\n([\s\S]+?)```/);
+  const paramsMatch = content.match(/PARAMETERS:\s*```json\n([\s\S]+?)```/i);
+
+  return {
+    hypothesis: hypothesisMatch?.[1]?.trim() || 'Unknown mutation',
+    code: codeMatch?.[1]?.trim() || null,
+    parameters: paramsMatch ? JSON.parse(paramsMatch[1]) : {},
+    raw: content,
+  };
+}
+
+/**
+ * Load current strategy source code
+ */
+async function loadStrategy() {
+  return await readFile(STRATEGY_PATH, 'utf-8');
+}
+
+/**
+ * Write new strategy code
+ */
+async function writeStrategy(code) {
+  // Backup first
+  const backupPath = STRATEGY_PATH + '.backup';
+  await copyFile(STRATEGY_PATH, backupPath);
+  await writeFile(STRATEGY_PATH, code);
+}
+
+/**
+ * Revert strategy from backup
+ */
+async function revertStrategy() {
+  const backupPath = STRATEGY_PATH + '.backup';
+  await copyFile(backupPath, STRATEGY_PATH);
+}
+
+/**
+ * Import strategy dynamically (bust cache with query string)
+ */
+async function importStrategy() {
+  const cacheBuster = `?t=${Date.now()}`;
+  const { Strategy } = await import(`file://${STRATEGY_PATH}${cacheBuster}`);
+  return new Strategy();
+}
+
+/**
+ * Run a single experiment
+ * @returns {{ kept: boolean, record: Object }}
+ */
+export async function runExperiment(allPairs, mutation) {
+  const expId = await nextExperimentId();
+  const originalCode = await loadStrategy();
+
+  console.log(`\n━━━ ${expId}: ${mutation.hypothesis} ━━━`);
+
+  // Apply mutation
+  if (mutation.code) {
+    await writeStrategy(mutation.code);
+  }
+
+  // Backtest
+  let result;
+  try {
+    const strategy = await importStrategy();
+    result = runBacktest(strategy, allPairs);
+  } catch (e) {
+    console.log(`  [ERROR] Backtest failed: ${e.message}`);
+    await revertStrategy();
+    return {
+      kept: false,
+      record: await logExperiment({
+        id: expId,
+        timestamp: Date.now(),
+        hypothesis: mutation.hypothesis,
+        mutation: mutation.description || '',
+        diff: '',
+        result: { score: -999, sharpe: 0, totalReturnPct: 0, maxDrawdownPct: 100, numTrades: 0 },
+        kept: false,
+        reason: `Backtest error: ${e.message}`,
+        parameters: mutation.parameters || {},
+      }),
+    };
+  }
+
+  // Compare with previous best
+  const index = await loadIndex();
+  const previousBest = index.bestScore || -Infinity;
+  const improved = result.score > previousBest;
+
+  console.log(`  Score: ${result.score} (prev best: ${previousBest}) → ${improved ? '✓ KEPT' : '✗ REVERTED'}`);
+  console.log(`  Sharpe: ${result.sharpe} | DD: ${result.maxDrawdownPct}% | Trades: ${result.numTrades}`);
+
+  if (!improved && mutation.code) {
+    await revertStrategy();
+  }
+
+  const record = await logExperiment({
+    id: expId,
+    timestamp: Date.now(),
+    hypothesis: mutation.hypothesis,
+    mutation: mutation.description || '',
+    diff: mutation.code ? `[${mutation.code.length} chars]` : '[no code change]',
+    result,
+    kept: improved,
+    reason: improved
+      ? `Improved score by ${(result.score - previousBest).toFixed(3)}`
+      : `Score ${result.score} did not beat ${previousBest}`,
+    parameters: mutation.parameters || {},
+  });
+
+  return { kept: improved, record };
+}
+
+/**
+ * Run the full autoresearch loop
+ * @param {Object} options
+ * @param {number} [options.maxExperiments] - Override max experiments
+ * @param {Function} [options.mutationFn] - Custom mutation function (for OpenClaw agent integration)
+ * @param {Function} [options.onExperiment] - Callback after each experiment
+ * @param {Function} [options.onBatch] - Callback after each batch (for reporting)
+ */
+export async function runAutoresearch(options = {}) {
+  const {
+    maxExperiments = CONFIG.research.maxExperiments,
+    mutationFn = generateMutation,
+    onExperiment,
+    onBatch,
+    batchSize = CONFIG.reporting.batchSize,
+  } = options;
+
+  console.log('═══════════════════════════════════════════');
+  console.log('  AUTORESEARCH — Autonomous Strategy Discovery');
+  console.log('  Target: Base DEX (Uniswap V3 + Aerodrome)');
+  console.log(`  Max experiments: ${maxExperiments}`);
+  console.log('═══════════════════════════════════════════\n');
+
+  await initMemory();
+
+  // Load historical data once
+  console.log('Loading historical data...');
+  const allPairs = await loadAllPairs('1h');
+  console.log('Data loaded.\n');
+
+  // Baseline backtest
+  console.log('Running baseline backtest...');
+  const baselineStrategy = await importStrategy();
+  const baselineResult = runBacktest(baselineStrategy, allPairs);
+  console.log(`Baseline score: ${baselineResult.score}`);
+  console.log(formatResult(baselineResult));
+
+  await logExperiment({
+    id: 'baseline',
+    timestamp: Date.now(),
+    hypothesis: 'Initial strategy — baseline measurement',
+    mutation: '',
+    diff: '',
+    result: baselineResult,
+    kept: true,
+    reason: 'Baseline',
+    parameters: {},
+  });
+
+  // Research loop
+  let experimentCount = 0;
+  let batchCount = 0;
+  const batchResults = [];
+
+  while (experimentCount < maxExperiments) {
+    // Build context for mutation
+    const currentCode = await loadStrategy();
+    const experimentSummary = await getExperimentSummary();
+    const patternInsights = await getPatternInsights();
+    const index = await loadIndex();
+    const currentScore = index.bestScore || baselineResult.score;
+
+    // Check score target
+    if (currentScore >= CONFIG.research.scoreTarget) {
+      console.log(`\n🎯 Score target reached: ${currentScore} >= ${CONFIG.research.scoreTarget}`);
+      break;
+    }
+
+    // Generate mutation
+    const mutation = await mutationFn(currentCode, experimentSummary, patternInsights, currentScore);
+
+    if (!mutation || !mutation.code) {
+      console.log('  [skip] No valid mutation generated');
+      experimentCount++;
+      continue;
+    }
+
+    // Run experiment
+    const { kept, record } = await runExperiment(allPairs, mutation);
+    experimentCount++;
+    batchResults.push(record);
+
+    if (onExperiment) {
+      await onExperiment(record, experimentCount, maxExperiments);
+    }
+
+    // Batch reporting
+    if (batchResults.length >= batchSize) {
+      batchCount++;
+      if (onBatch) {
+        await onBatch(batchResults, batchCount, index);
+      }
+      batchResults.length = 0;
+    }
+
+    // Small delay to not hammer APIs
+    await new Promise(r => setTimeout(r, 1000));
+  }
+
+  // Final report
+  const finalIndex = await loadIndex();
+  console.log('\n═══════════════════════════════════════════');
+  console.log('  AUTORESEARCH COMPLETE');
+  console.log(`  Experiments: ${finalIndex.totalExperiments}`);
+  console.log(`  Best score: ${finalIndex.bestScore} (${finalIndex.bestExperiment})`);
+  console.log(`  Baseline: ${baselineResult.score}`);
+  console.log(`  Improvement: ${((finalIndex.bestScore - baselineResult.score) / Math.abs(baselineResult.score) * 100).toFixed(1)}%`);
+  console.log('═══════════════════════════════════════════');
+
+  return finalIndex;
+}
+
+export default { runExperiment, runAutoresearch };
