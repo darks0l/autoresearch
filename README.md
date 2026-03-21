@@ -9,7 +9,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-gold.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org)
-[![Tests](https://img.shields.io/badge/Tests-17%2F17-brightgreen.svg)](test/)
+[![Tests](https://img.shields.io/badge/Tests-38%2F38-brightgreen.svg)](test/)
 [![Base](https://img.shields.io/badge/Chain-Base-blue.svg)](https://base.org)
 [![Bankr Compatible](https://img.shields.io/badge/Bankr-Compatible-purple.svg)](https://bankr.bot)
 [![OpenClaw](https://img.shields.io/badge/OpenClaw-Skill-cyan.svg)](https://openclaw.ai)
@@ -348,7 +348,7 @@ The Hurst exponent is estimated via Rescaled Range (R/S) analysis over the last 
 | Indicators | 10 |
 | Tests | 38/38 passing |
 | Runtime dependencies | 0 |
-| Experiments run | 106 (fully autonomous) |
+| Experiments run | 116 (fully autonomous) |
 | Best score vs baseline | **+75.8%** improvement |
 | Base DEX pairs | 4 |
 | Benchmark strategies | 3 |
@@ -383,6 +383,16 @@ npm test
   > *"One day, frontier AI research used to be done by meat computers in between eating, sleeping, having other fun... That era is long gone."* — @karpathy, March 2026
 
 - **[OpenClaw — Lossless Context Management (LCM)](https://github.com/openclaw/openclaw)** — The memory system that makes our research loop convergent instead of random. LCM provides DAG-based conversation summarization that preserves every detail losslessly. We use it to give the agent **persistent cross-session memory of all experiments** — the agent queries what worked, what failed, and what parameter ranges are exhausted before proposing mutations. Without LCM, each session would start from scratch.
+
+## Submission Documentation
+
+| Document | Description |
+|----------|-------------|
+| [Build Log](docs/BUILD_LOG.md) | Full development timeline with timestamps |
+| [Conversation Log](docs/CONVERSATION_LOG.md) | Complete human-agent collaboration record |
+| [Test Results](docs/TEST_RESULTS.md) | Full test output — 38/38 passing |
+| [On-Chain Receipts](docs/ON_CHAIN_RECEIPTS.md) | Verified Basescan TX + Bankr LLM credit usage |
+| [Experiment Index](docs/EXPERIMENT_INDEX.md) | All 116 experiments with scores and status |
 
 ## License
 
