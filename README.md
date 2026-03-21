@@ -134,8 +134,9 @@ score = sharpe × √(min(trades/50, 1.0)) − drawdown_penalty − turnover_pen
 
 | Strategy | Score | Sharpe | Return % | Max DD | Trades |
 |----------|-------|--------|----------|--------|--------|
-| **AutoResearch Best (exp128)** | **3.668** | **4.002** | **+5.6%** | **9.3%** | **42** |
-| Previous Best (exp117) | 2.838 | 2.838 | +5.6% | 5.9% | 65 |
+| **AutoResearch Best (exp161)** | **4.512** | **4.512** | **+6.2%** | **3.3%** | **84** |
+| Previous Best (exp151) | 3.777 | 3.777 | +5.6% | — | 69 |
+| Single-Indicator Best (exp128) | 3.668 | 4.002 | +5.6% | 9.3% | 42 |
 | VWAP Reversion (exp074, synthetic-tuned) | -1.460 | -1.348 | -6.0% | 16.1% | 127 |
 | VWAP Reversion (baseline) | -1.460 | — | — | — | — |
 
@@ -157,7 +158,7 @@ The VWAP reversion strategy scored 0.740 on synthetic data but **-1.460 on real 
 - RSI dip-buying (enter on pullbacks, not reversals)
 - ATR trailing stops (dynamic risk management)
 
-Result: **Score 3.668 on real data (Sharpe 4.002)** — the agent learned that real crypto markets trend, adapted its approach, added regime-based position sizing, and produced a genuinely profitable strategy. The daemon continues to autonomously iterate.
+Result: **Score 4.512 on real data (Sharpe 4.512, 73.8% win rate, 3.3% max DD)** — the agent progressed through three structural eras: VWAP mean-reversion → adaptive trend-following → ensemble voting with multi-signal confirmation. Each era required architectural redesign, not just parameter tuning.
 
 ## Experiment History (Live Bankr LLM Run — 30 experiments)
 
@@ -178,15 +179,26 @@ The second round of 30 experiments was powered by **claude-haiku-4.5 via Bankr L
 - Exit threshold: `0.015` (up from 0.010)
 - Base position size: `0.15` with 0.5–2.0× ATR scaling
 
-### Daemon Run #4 — Regime-Aware Evolution (claude-sonnet-4.5 via Bankr LLM)
+### Daemon Runs #4-6 — Regime-Aware Evolution (claude-sonnet-4.5 via Bankr LLM)
 
 | Exp | Hypothesis | Score | Kept | Insight |
 |-----|-----------|-------|------|---------|
 | exp126 | Regime-based position sizing (Hurst exponent) | 2.919 | ✅ | **Increase exposure in trending regimes, reduce in choppy** |
-| exp127 | Hurst lookback 50→30 bars | 2.923 | ✅ | **Faster regime detection for hourly data** |
 | exp128 | ATR trail multiple 2.0→1.5 | 3.668 | ✅ | **Tighter trailing stops = Sharpe 4.002** |
+| exp137 | ROC momentum + ATR profit-taking exit | 3.741 | ✅ | **Simplified regime detection, reduced DD 9.3% → 7.1%** |
+| exp151 | Multi-timeframe trend filter (50-EMA slope) | 3.777 | ✅ | **Filters counter-trend trades** |
 
-**Key insight from 135+ experiments:** Parameter tuning on synthetic data hits diminishing returns above 0.74. The real breakthrough came from structural redesign — switching from mean-reversion to trend-following, then adding regime-aware position sizing. The overfitting discovery and subsequent adaptation is itself a valuable finding. The daemon continues autonomous iteration toward score 5.0.
+### Structural Change — Ensemble Strategy (exp161)
+
+After 160 experiments hit a ceiling at 3.777, a **manual structural redesign** broke through:
+- **Ensemble voting:** 3 independent sub-strategies (Donchian breakout, RSI dip-buy, MACD momentum) vote independently. Requires 2+ votes.
+- **Conviction-weighted sizing:** 2 votes = normal size, 3 votes = 1.4x
+- **Multi-signal exits:** Any exit condition triggers close (fail-fast)
+- **Macro trend filter:** 100-EMA slope as regime gate
+
+| exp161 | Ensemble voting + macro filter | **4.512** | ✅ | **+19.4% over previous best, 73.8% win rate, 3.3% DD** |
+
+**Key insight from 161 experiments:** The daemon excels at parameter tuning within an architecture, but breaking score ceilings requires structural redesign — new code patterns, not new numbers. The three eras (mean-reversion → trend-following → ensemble) each required architectural changes the LLM couldn't discover through mutation alone.
 
 ## Strategy Interface
 

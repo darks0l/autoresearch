@@ -176,6 +176,29 @@ autoresearch-skill/
     └── run-autoresearch.js # Launch autonomous loop
 ```
 
+## Core Mandate
+
+**Track up. Iterate. Document.**
+
+This is not a one-shot tool. AutoResearch exists to continuously improve:
+
+1. **Track up** — Every change must beat the current best score. No lateral moves, no "interesting but worse." The number goes up or the change reverts.
+2. **Iterate** — Run experiments in batches. When parameter tuning plateaus, make **structural changes** (new strategy architectures, new signal sources, ensemble methods). The daemon handles parameter tuning; the agent handles architectural evolution.
+3. **Document** — Every experiment is logged. Every structural change is documented in BUILD_LOG.md and CONVERSATION_LOG.md. The git history IS the experiment log. Future agents can read the full evolution chain.
+
+### Structural Changes
+
+When the daemon hits a score ceiling (8+ consecutive reverts, diminishing returns), the agent should:
+- Identify the architectural limitation (not parameter limitation)
+- Design a new strategy structure (ensemble, multi-timeframe, cross-pair, etc.)
+- Build it manually, backtest it, log it as a new experiment
+- Let the daemon resume parameter tuning on the new architecture
+
+**Score progression through structural eras:**
+- Era 1: VWAP mean-reversion → peaked at 0.740 (synthetic), -1.46 (real)
+- Era 2: Adaptive trend-following → peaked at 3.777
+- Era 3: Ensemble voting + macro filter → 4.512 (current)
+
 ## Rules (for the agent)
 
 1. **Only edit `strategies/strategy.js`** — this is the single mutable file
@@ -185,6 +208,8 @@ autoresearch-skill/
 5. Time budget: 120 seconds per backtest
 6. Always log experiments to memory before moving on
 7. Query experiment history before proposing mutations
+8. **When plateaued:** Propose structural changes, not more parameter tweaks
+9. **Always document:** Update BUILD_LOG.md and CONVERSATION_LOG.md on structural changes
 
 ---
 
