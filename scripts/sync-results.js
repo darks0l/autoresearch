@@ -43,11 +43,11 @@ try {
   // Update README stats
   const readmePath = resolve(ROOT, 'README.md');
   let readme = readFileSync(readmePath, 'utf-8');
-  // Update experiment count
-  readme = readme.replace(/Experiments run \| \d+/g, `Experiments run | ${total}`);
+  // Update experiment count (match with or without suffix text)
+  readme = readme.replace(/Experiments run \| [\d+]+(?: \([^)]*\))?/g, `Experiments run | ${total}+ (fully autonomous, daemon iterating)`);
   // Update best score improvement
   const improvement = (((best.score - 0.421) / 0.421) * 100).toFixed(1);
-  readme = readme.replace(/Best score vs baseline \| \*\*\+[\d.]+%\*\*/g, `Best score vs baseline | **+${improvement}%**`);
+  readme = readme.replace(/Best score vs baseline \| \*\*\+[\d.]+%\*\*[^|]*/g, `Best score vs baseline | **+${improvement}%** improvement (0.421 → ${best.score}) `);
   writeFileSync(readmePath, readme);
 
   // Git commit and push

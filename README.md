@@ -134,7 +134,8 @@ score = sharpe × √(min(trades/50, 1.0)) − drawdown_penalty − turnover_pen
 
 | Strategy | Score | Sharpe | Return % | Max DD | Trades |
 |----------|-------|--------|----------|--------|--------|
-| **AutoResearch Best (exp117)** | **2.838** | **2.838** | **+5.6%** | **5.9%** | **65** |
+| **AutoResearch Best (exp128)** | **3.668** | **4.002** | **+5.6%** | **9.3%** | **42** |
+| Previous Best (exp117) | 2.838 | 2.838 | +5.6% | 5.9% | 65 |
 | VWAP Reversion (exp074, synthetic-tuned) | -1.460 | -1.348 | -6.0% | 16.1% | 127 |
 | VWAP Reversion (baseline) | -1.460 | — | — | — | — |
 
@@ -156,7 +157,7 @@ The VWAP reversion strategy scored 0.740 on synthetic data but **-1.460 on real 
 - RSI dip-buying (enter on pullbacks, not reversals)
 - ATR trailing stops (dynamic risk management)
 
-Result: **Score 2.838 on real data** — the agent learned that real crypto markets trend, adapted its approach, and produced a genuinely profitable strategy.
+Result: **Score 3.668 on real data (Sharpe 4.002)** — the agent learned that real crypto markets trend, adapted its approach, added regime-based position sizing, and produced a genuinely profitable strategy. The daemon continues to autonomously iterate.
 
 ## Experiment History (Live Bankr LLM Run — 30 experiments)
 
@@ -177,7 +178,15 @@ The second round of 30 experiments was powered by **claude-haiku-4.5 via Bankr L
 - Exit threshold: `0.015` (up from 0.010)
 - Base position size: `0.15` with 0.5–2.0× ATR scaling
 
-**Key insight from 117 experiments:** Parameter tuning on synthetic data hits diminishing returns above 0.74. The real breakthrough came from structural redesign — switching from mean-reversion to trend-following when tested against real market data. The overfitting discovery is itself a valuable finding.
+### Daemon Run #4 — Regime-Aware Evolution (claude-sonnet-4.5 via Bankr LLM)
+
+| Exp | Hypothesis | Score | Kept | Insight |
+|-----|-----------|-------|------|---------|
+| exp126 | Regime-based position sizing (Hurst exponent) | 2.919 | ✅ | **Increase exposure in trending regimes, reduce in choppy** |
+| exp127 | Hurst lookback 50→30 bars | 2.923 | ✅ | **Faster regime detection for hourly data** |
+| exp128 | ATR trail multiple 2.0→1.5 | 3.668 | ✅ | **Tighter trailing stops = Sharpe 4.002** |
+
+**Key insight from 135+ experiments:** Parameter tuning on synthetic data hits diminishing returns above 0.74. The real breakthrough came from structural redesign — switching from mean-reversion to trend-following, then adding regime-aware position sizing. The overfitting discovery and subsequent adaptation is itself a valuable finding. The daemon continues autonomous iteration toward score 5.0.
 
 ## Strategy Interface
 
@@ -431,9 +440,9 @@ The Hurst exponent is estimated via Rescaled Range (R/S) analysis over the last 
 | Indicators | 10 |
 | Tests | 45/45 passing |
 | Runtime dependencies | 0 |
-| Experiments run | 136 (fully autonomous) |
+| Experiments run | 135+ (fully autonomous, daemon iterating) |
 | Best score (real data) | **2.838** (Sharpe 2.838, +5.6% return, 5.9% max DD) |
-| Best score vs baseline | **+771.3%** improvement (0.421 → 2.838) |
+| Best score vs baseline | **+771.0%** improvement (0.421 → 3.668, Sharpe 4.002) |
 | Base DEX pairs | 4 |
 | Benchmark strategies | 3 |
 | Strategies | 2 (VWAP reversion + regime-adaptive) |

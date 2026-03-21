@@ -4,11 +4,11 @@
  * Design philosophy: Don't fight the trend.
  * - Long-only bias in crypto uptrends
  * - Momentum breakout entries (Donchian channel)
- * - ATR trailing stops
- * - Regime-based position sizing (Hurst exponent)
+ * - ATR trailing stops with profit-taking exits
+ * - ROC-based position sizing (simple trend detection)
  * - Skip shorting unless clear mean-reversion pair
  */
-import { rsi, atr, ema, sma, bollingerBands } from '../src/indicators.js';
+import { rsi, atr, ema, sma, bollingerBands, roc } from '../src/indicators.js';
 
 export class Strategy {
   constructor() {
@@ -18,48 +18,29 @@ export class Strategy {
     this.rsiPeriod = 14;
     this.atrPeriod = 14;
     this.atrTrailMultiple = 1.5;
+    this.atrProfitMultiple = 2.0;  // Profit target at 2x ATR
     this.basePositionSize = 0.10;
     this.cooldown = 6;
     this.maxPositions = 3;
-    this.hurstLookback = 30;   // Lookback for Hurst calculation
+    this.rocPeriod = 20;       // ROC for momentum detection
     this.lastTradeBar = {};
     this.stops = {};
     this.peaks = {};
+    this.entries = {};         // Track entry prices
   }
 
-  // Calculate Hurst exponent using R/S analysis
-  calculateHurst(prices) {
-    if (prices.length < this.hurstLookback) return 0.5; // Neutral default
+  // Calculate momentum-based position sizing
+  calculateMomentumMultiplier(rocValue) {
+    // ROC > 0: positive momentum (increase size)
+    // ROC < 0: negative momentum (decrease size)
+    // Scale from 0.5x to 1.5x based on ROC
+    if (isNaN(rocValue)) return 1.0;
     
-    const data = prices.slice(-this.hurstLookback);
-    const n = data.length;
-    const mean = data.reduce((a, b) => a + b, 0) / n;
+    // Normalize ROC to a multiplier (cap at +/-20%)
+    const normalizedROC = Math.max(-0.2, Math.min(0.2, rocValue));
+    const multiplier = 1.0 + 2.5 * normalizedROC; // Maps -0.2 to +0.2 => 0.5 to 1.5
     
-    // Mean-centered cumulative deviation
-    let cumDev = 0;
-    const cumDevs = [];
-    for (let i = 0; i < n; i++) {
-      cumDev += data[i] - mean;
-      cumDevs.push(cumDev);
-    }
-    
-    // Range
-    const range = Math.max(...cumDevs) - Math.min(...cumDevs);
-    
-    // Standard deviation
-    const variance = data.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / n;
-    const stdDev = Math.sqrt(variance);
-    
-    if (stdDev === 0 || range === 0) return 0.5;
-    
-    // R/S ratio
-    const rs = range / stdDev;
-    
-    // Hurst = log(R/S) / log(n/2)
-    const hurst = Math.log(rs) / Math.log(n / 2);
-    
-    // Clamp to reasonable range
-    return Math.max(0.3, Math.min(0.8, hurst));
+    return Math.max(0.5, Math.min(1.5, multiplier));
   }
 
   onBar(barData, portfolio) {
@@ -82,11 +63,13 @@ export class Strategy {
       const emaSlowVals = ema(closes, this.emaSlow);
       const rsiValues = rsi(closes, this.rsiPeriod);
       const atrValues = atr(highs, lows, closes, this.atrPeriod);
+      const rocValues = roc(closes, this.rocPeriod);
 
       const f = emaFastVals[idx];
       const s = emaSlowVals[idx];
       const r = rsiValues[idx];
       const a = atrValues[idx];
+      const rocVal = rocValues[idx];
 
       if (isNaN(f) || isNaN(s) || isNaN(r) || isNaN(a)) continue;
 
@@ -102,34 +85,32 @@ export class Strategy {
       const channelHigh = Math.max(...channelHighs);
       const channelLow = Math.min(...channelLows);
 
-      // Calculate Hurst exponent for regime detection
-      const hurst = this.calculateHurst(closes);
-      
-      // Regime-based position sizing multiplier
-      // Hurst > 0.5: trending (increase size)
-      // Hurst < 0.5: mean-reverting (decrease size)
-      // Scale from 0.5x to 1.5x based on Hurst
-      const regimeMultiplier = 0.5 + 2.0 * (hurst - 0.3) / 0.5; // Maps 0.3-0.8 to 0.5-1.5
+      // Momentum-based position sizing multiplier
+      const momentumMultiplier = this.calculateMomentumMultiplier(rocVal);
       
       // ATR sizing
       const atrPct = a / price;
       const volScale = Math.min(1.8, Math.max(0.4, 0.015 / atrPct));
-      const maxPos = totalEquity * this.basePositionSize * volScale * regimeMultiplier;
+      const maxPos = totalEquity * this.basePositionSize * volScale * momentumMultiplier;
 
       // Manage existing position
       if (currentPos > 0) {
+        const entryPrice = this.entries[pair] || price;
+        const profitTarget = entryPrice + this.atrProfitMultiple * a;
+        
         // Update peak
         if (!this.peaks[pair] || price > this.peaks[pair]) {
           this.peaks[pair] = price;
           this.stops[pair] = price - this.atrTrailMultiple * a;
         }
 
-        // Stop hit or trend reversal
-        if (price <= (this.stops[pair] || 0) || (!uptrend && r > 65)) {
+        // Exit conditions: stop hit, profit target, or trend reversal
+        if (price <= (this.stops[pair] || 0) || price >= profitTarget || (!uptrend && r > 65)) {
           signals.push({ pair, targetPosition: 0 });
           this.lastTradeBar[pair] = idx;
           delete this.stops[pair];
           delete this.peaks[pair];
+          delete this.entries[pair];
           continue;
         }
         continue; // Hold position
@@ -147,6 +128,7 @@ export class Strategy {
           this.lastTradeBar[pair] = idx;
           this.peaks[pair] = price;
           this.stops[pair] = price - this.atrTrailMultiple * a;
+          this.entries[pair] = price;
         }
       }
     }
