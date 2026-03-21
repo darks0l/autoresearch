@@ -128,29 +128,34 @@ score = sharpe × √(min(trades/50, 1.0)) − drawdown_penalty − turnover_pen
 
 | Strategy | Score | Sharpe | Return % | Max DD | Trades |
 |----------|-------|--------|----------|--------|--------|
-| **AutoResearch Best** | **0.486** | **0.716** | **+3.2%** | **4.7%** | **23** |
+| **AutoResearch Best (exp074)** | **0.740** | **0.740** | **+8.6%** | **14.2%** | **55** |
+| AutoResearch v1 (30 synth exps) | 0.610 | 0.751 | +8.6% | 14.8% | 33 |
 | VWAP Reversion (baseline) | 0.421 | 0.421 | +1.8% | 5.8% | 55 |
 | Mean Reversion | -4.24 | -4.08 | -16.8% | 18.1% | 1958 |
 | Momentum | -999 | -16.4 | -88.3% | 88.3% | 7278 |
 
-*AutoResearch improved over baseline by 15.4% in 10 experiments — and it's still learning.*
+*AutoResearch improved over baseline by **+75.8%** across 75 experiments powered by Bankr LLM Gateway (claude-haiku-4.5).*
 
-## Experiment History
+## Experiment History (Live Bankr LLM Run — 30 experiments)
 
-| # | Hypothesis | Score | Kept | Insight |
-|---|-----------|-------|------|---------|
-| 1 | Baseline: VWAP + RSI 40/60 | 0.421 | ✅ | Starting point |
-| 2 | VWAP period 20→30 | 0.289 | ❌ | Slower VWAP loses responsiveness |
-| 3 | Deviation 0.02→0.015 | 0.390 | ❌ | Tighter threshold = noise trading |
-| 4 | Deviation 0.02→0.03 | 0.486 | ✅ | **Wider filter catches real moves** |
-| 5 | Cooldown 3→2 | 0.486 | ❌ | No improvement, same score |
-| 6 | Deviation 0.025 | 0.472 | ❌ | Between 0.02 and 0.03, worse than 0.03 |
-| 7 | RSI 35/65 | 0.439 | ❌ | Wider RSI bands miss entries |
-| 8 | RSI 45/55 | 0.486 | ❌ | Tighter RSI, same score (no gain) |
-| 9 | BB width filter | 0.486 | ❌ | Added complexity, no improvement |
-| 10 | Remove RSI entirely | 0.346 | ❌ | RSI confirmed essential |
+The second round of 30 experiments was powered by **claude-haiku-4.5 via Bankr LLM Gateway** with full system prompt engineering for reliable code generation. Hit rate: 4/30 kept (13%).
 
-**Key insight from memory:** `dev 0.03 + RSI 40/60` is a local optimum for parameter tuning. Need structural strategy changes (multi-timeframe, regime detection) to break through.
+| Exp | Hypothesis | Score | Kept | Insight |
+|-----|-----------|-------|------|---------|
+| exp037 | ATR period 14→7 | 0.615 | ✅ | Faster ATR improves position sizing |
+| exp053 | exitThreshold 0.01→0.015 | 0.671 | ✅ | **Hold longer, catch full mean-reversion** |
+| exp065 | deviationThreshold 0.025→0.022 | 0.714 | ✅ | **Earlier entries at tighter threshold** |
+| exp070 | RSI period 14→10 | 0.726 | ✅ | **Faster RSI = better entry timing** |
+| exp074 | ATR period 7→5 | 0.740 | ✅ | **Most responsive volatility scaling wins** |
+
+**Winning parameter set discovered by AI:**
+- VWAP deviation threshold: `0.022` (down from 0.025)
+- RSI period: `10` (down from 14) with 40/60 bands
+- ATR period: `5` (down from 7) for position sizing
+- Exit threshold: `0.015` (up from 0.010)
+- Base position size: `0.15` with 0.5–2.0× ATR scaling
+
+**Key insight from 75 experiments:** Parameter tuning has diminishing returns above 0.74. Next breakthrough requires structural changes — multi-timeframe signals, regime detection, or asymmetric long/short bias.
 
 ## Strategy Interface
 
@@ -225,8 +230,8 @@ cp -r autoresearch ~/.openclaw/skills/autoresearch
 - [x] **Phase 2:** Benchmark suite — 3 baseline strategies ✅
 - [x] **Phase 3:** Autonomous research loop — mutation → test → learn ✅
 - [x] **Phase 4:** LCM memory — persistent cross-session learning ✅
-- [ ] **Phase 5:** Real subgraph data (Uniswap V3 + Aerodrome on-chain)
-- [ ] **Phase 6:** Bankr LLM Gateway for mutations (when credits loaded)
+- [x] **Phase 5:** Bankr LLM Gateway for mutations — **LIVE** (claude-haiku-4.5, 30 experiments) ✅
+- [ ] **Phase 6:** Real subgraph data (Uniswap V3 + Aerodrome on-chain)
 - [ ] **Phase 7:** Live execution via Bankr wallet (paper → live)
 - [ ] **Phase 8:** Multi-strategy tournament mode
 

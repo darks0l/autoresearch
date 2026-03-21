@@ -56,7 +56,7 @@ export const CONFIG = {
     maxExperiments: 200,
     backtestTimeout: 120_000,  // 120s per backtest
     // LLM for strategy mutations
-    mutationModel: process.env.AUTORESEARCH_MODEL || 'anthropic/claude-sonnet-4-6',
+    mutationModel: process.env.AUTORESEARCH_MODEL || 'claude-haiku-4.5',
     // Parallel branches
     maxParallelBranches: 1,
     // Commit strategy
@@ -73,7 +73,7 @@ export const CONFIG = {
     llmGateway: 'https://llm.bankr.bot/v1/chat/completions',
     walletAddress: process.env.BANKR_WALLET || '0x8f9fa2bfd50079c1767d63effbfe642216bfcb01',
     // Use Bankr LLM for mutations if available
-    useBankrLLM: false,
+    useBankrLLM: true,
     // Live execution (paper by default)
     liveMode: false,
   },

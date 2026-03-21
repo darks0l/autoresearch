@@ -1,17 +1,17 @@
 /**
- * strategy.js — Exp 30: Exit threshold 0.01 (from 0.008), hold longer
+ * strategy.js — Exp 74: ATR period 5 (from 7), more responsive volatility scaling
  */
 import { vwap, rsi, atr } from '../src/indicators.js';
 
 export class Strategy {
   constructor() {
     this.vwapPeriod = 20;
-    this.deviationThreshold = 0.025;
-    this.exitThreshold = 0.01;
-    this.rsiPeriod = 14;
+    this.deviationThreshold = 0.022;
+    this.exitThreshold = 0.015;
+    this.rsiPeriod = 10;
     this.basePositionSize = 0.15;
     this.cooldown = 3;
-    this.atrPeriod = 14;
+    this.atrPeriod = 5;
     this.lastTradeBar = {};
   }
 

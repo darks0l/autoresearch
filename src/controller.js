@@ -76,12 +76,25 @@ From indicators.js: sma, ema, rsi, macd, bollingerBands, atr, vwap, roc, stddev,
 - Scoring: sharpe × √(min(trades/50, 1.0)) - drawdown_penalty - turnover_penalty
 
 ## Your Task
-Propose ONE specific change. Respond with:
-1. HYPOTHESIS: One sentence describing what you're changing and why
-2. CODE: The complete modified strategy.js file
-3. PARAMETERS: Key parameter values as JSON
+Propose ONE specific change. You MUST respond in this EXACT format:
 
-Do not explain the code. Just the hypothesis, the full file, and the parameters.`;
+HYPOTHESIS: [one sentence describing what you're changing and why]
+
+\`\`\`javascript
+[THE COMPLETE strategy.js FILE — not a diff, not a snippet, the ENTIRE file including imports]
+\`\`\`
+
+PARAMETERS:
+\`\`\`json
+{"paramName": "value"}
+\`\`\`
+
+CRITICAL RULES:
+- The code block MUST be the complete strategy.js file, starting with import statements
+- Only import from '../src/indicators.js' — available exports: vwap, rsi, atr, ema, sma, macd, bollingerBands, roc, stddev, percentileRank
+- The class MUST be named Strategy with an onBar(barData, portfolio) method
+- You MUST include \`export class Strategy\` and \`export default { Strategy }\`
+- Do NOT add any dependencies or imports beyond indicators.js`;
 }
 
 /**
@@ -95,8 +108,14 @@ async function callBankrLLM(prompt) {
       'Authorization': `Bearer ${CONFIG.bankr.apiKey}`,
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
-      messages: [{ role: 'user', content: prompt }],
+      model: CONFIG.research.mutationModel,
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a precise trading strategy code generator. You ALWAYS respond with exactly: a HYPOTHESIS line, then a complete javascript code block, then a PARAMETERS json block. You NEVER skip the code block. You NEVER explain yourself beyond the hypothesis line.',
+        },
+        { role: 'user', content: prompt },
+      ],
       max_tokens: 4000,
     }),
   });
@@ -112,14 +131,27 @@ async function callBankrLLM(prompt) {
  * Parse LLM mutation response
  */
 function parseMutationResponse(content) {
-  const hypothesisMatch = content.match(/HYPOTHESIS:\s*(.+?)(?:\n|$)/i);
-  const codeMatch = content.match(/```javascript\n([\s\S]+?)```/);
-  const paramsMatch = content.match(/PARAMETERS:\s*```json\n([\s\S]+?)```/i);
+  // Flexible hypothesis extraction
+  const hypothesisMatch = content.match(/HYPOTHESIS:\s*(.+?)(?:\n|$)/i)
+    || content.match(/^#+\s*Hypothesis[:\s]*(.+?)(?:\n|$)/im)
+    || content.match(/hypothesis[:\s]+(.+?)(?:\n|$)/i);
+
+  // Flexible code block extraction (js, javascript, or untagged)
+  const codeMatch = content.match(/```(?:javascript|js)?\n([\s\S]+?)```/);
+
+  // Flexible parameters extraction
+  const paramsMatch = content.match(/PARAMETERS:\s*```json\n([\s\S]+?)```/i)
+    || content.match(/```json\n([\s\S]+?)```/);
+
+  let parameters = {};
+  if (paramsMatch) {
+    try { parameters = JSON.parse(paramsMatch[1]); } catch { /* ignore bad JSON */ }
+  }
 
   return {
-    hypothesis: hypothesisMatch?.[1]?.trim() || 'Unknown mutation',
+    hypothesis: hypothesisMatch?.[1]?.trim() || 'LLM-proposed mutation',
     code: codeMatch?.[1]?.trim() || null,
-    parameters: paramsMatch ? JSON.parse(paramsMatch[1]) : {},
+    parameters,
     raw: content,
   };
 }
