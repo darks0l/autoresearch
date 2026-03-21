@@ -245,14 +245,22 @@ function generateSyntheticData(pairName, startTs, endTs, interval = '1h') {
 }
 
 /**
- * Load all configured pairs
+ * Load all configured pairs (built-in + custom)
  * @returns {Map<string, Bar[]>}
  */
 export async function loadAllPairs(interval = '1h') {
-  const pairs = new Map();
-  console.log(`Loading ${CONFIG.data.pairs.length} pairs (${interval})...`);
+  // Merge built-in pairs with any user/agent-added custom pairs
+  let customPairs = [];
+  try {
+    const { loadCustomPairs } = await import('./discovery.js');
+    customPairs = loadCustomPairs();
+  } catch { /* discovery module optional */ }
 
-  for (const pair of CONFIG.data.pairs) {
+  const allPairConfigs = [...CONFIG.data.pairs, ...customPairs];
+  const pairs = new Map();
+  console.log(`Loading ${allPairConfigs.length} pairs (${interval}) [${CONFIG.data.pairs.length} built-in + ${customPairs.length} custom]...`);
+
+  for (const pair of allPairConfigs) {
     try {
       const bars = await loadPairData(pair, interval);
       pairs.set(pair.name, bars);

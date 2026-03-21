@@ -23,3 +23,4 @@ export * from './indicators.js';
 export { detectRegime, trendStrength, volatilityRegime, hurstExponent, regimeSummary } from './regime.js';
 export { executeSignals, getExecutionState, resetExecutionState, runLiveLoop } from './executor.js';
 export { loadHistorical, fetchCurrentMarket, buildLiveBarData } from './datafeed.js';
+export { addPair, removePair, listPairs, discoverPools, autoDiscoverAndAdd } from './discovery.js';
