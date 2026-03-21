@@ -285,6 +285,14 @@ npm test
 # 17 tests, 0 failures, ~100ms
 ```
 
+## Inspiration & Acknowledgments
+
+- **[Andrej Karpathy — autoresearch](https://github.com/karpathy/autoresearch)** — The original concept: give an AI agent a training setup and let it experiment autonomously overnight. Karpathy's system modifies `train.py`, trains for 5 minutes, keeps or discards, and repeats. We adapted this loop from LLM training to **DEX trading strategy discovery** — same philosophy (mutate → evaluate → keep/revert → learn), different domain.
+
+  > *"One day, frontier AI research used to be done by meat computers in between eating, sleeping, having other fun... That era is long gone."* — @karpathy, March 2026
+
+- **[OpenClaw — Lossless Context Management (LCM)](https://github.com/openclaw/openclaw)** — The memory system that makes our research loop convergent instead of random. LCM provides DAG-based conversation summarization that preserves every detail losslessly. We use it to give the agent **persistent cross-session memory of all experiments** — the agent queries what worked, what failed, and what parameter ranges are exhausted before proposing mutations. Without LCM, each session would start from scratch.
+
 ## License
 
 MIT
