@@ -143,12 +143,12 @@ export async function loadPairData(pair, interval = '1h') {
   const cacheDir = CONFIG.data.cacheDir;
   const cacheFile = join(cacheDir, `${pair.name.replace('/', '-')}_${interval}.json`);
 
-  // Check cache (valid for 1 hour)
+  // Check cache (valid for 7 days — historical data doesn't change)
   if (existsSync(cacheFile)) {
     try {
       const cached = JSON.parse(await readFile(cacheFile, 'utf-8'));
       const age = Date.now() - (cached._fetchedAt || 0);
-      if (age < 3600_000) {
+      if (age < 604_800_000) {
         console.log(`  [cache hit] ${pair.name} ${interval} (${cached.bars.length} bars)`);
         return cached.bars;
       }

@@ -72,9 +72,12 @@ From indicators.js: sma, ema, rsi, macd, bollingerBands, atr, vwap, roc, stddev,
 
 ## Data Context
 - Base DEX pairs: ETH/USDC (Uniswap V3), AERO/USDC (Aerodrome), cbETH/WETH
-- Hourly bars, 500-bar history window
+- Hourly bars, ~700-bar history window (REAL CoinGecko market data, NOT synthetic)
 - Fee model: 2-5 bps maker/taker + 1-3 bps slippage
 - Scoring: sharpe × √(min(trades/50, 1.0)) - drawdown_penalty - turnover_penalty
+- IMPORTANT: Current strategy was previously optimized on SYNTHETIC data and has NEGATIVE score on real data
+- The strategy needs STRUCTURAL changes, not just parameter tweaks
+- Consider: completely different signal logic, regime-based switching, trend-following instead of mean-reversion
 
 ## Regime Detection (available)
 The system includes a regime detector (src/regime.js) with:

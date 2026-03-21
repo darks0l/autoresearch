@@ -96,7 +96,7 @@ export async function getLLMCredits() {
     });
     if (!resp.ok) return { credits: 0, available: false };
     const data = await resp.json();
-    return { credits: data.credits || 0, available: true };
+    return { credits: data.balanceUsd || data.effectiveBalanceUsd || data.credits || 0, available: true };
   } catch {
     return { credits: 0, available: false };
   }

@@ -56,7 +56,7 @@ export const CONFIG = {
     maxExperiments: 200,
     backtestTimeout: 120_000,  // 120s per backtest
     // LLM for strategy mutations
-    mutationModel: process.env.AUTORESEARCH_MODEL || 'claude-haiku-4.5',
+    mutationModel: process.env.AUTORESEARCH_MODEL || 'claude-sonnet-4.5',
     // Parallel branches
     maxParallelBranches: 1,
     // Commit strategy
