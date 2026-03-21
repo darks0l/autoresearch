@@ -142,6 +142,16 @@ async function main() {
   console.log(`  All-time best: ${state.bestScore.toFixed(3)} (${state.bestExperiment})`);
   console.log(`  Total: ${state.totalExperiments} experiments across ${state.totalRuns} runs`);
   console.log(`═══════════════════════════════════════════\n`);
+
+  // Auto-sync results to GitHub
+  try {
+    const { execSync } = await import('child_process');
+    console.log('📤 Syncing results to GitHub...');
+    execSync('node scripts/sync-results.js', { cwd: process.cwd(), encoding: 'utf-8', timeout: 60000 });
+    console.log('✅ Results synced to GitHub');
+  } catch (syncErr) {
+    console.error('⚠️  GitHub sync failed:', syncErr.message);
+  }
 }
 
 main().catch(err => {
