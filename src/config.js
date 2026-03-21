@@ -6,6 +6,8 @@ export const CONFIG = {
   data: {
     // Uniswap V3 Base subgraph
     uniswapSubgraph: 'https://api.studio.thegraph.com/query/48211/uniswap-v3-base/version/latest',
+    // Uniswap Developer Platform API key
+    uniswapApiKey: process.env.UNISWAP_API_KEY || '',
     // Aerodrome Base subgraph
     aerodromeSubgraph: 'https://api.studio.thegraph.com/query/50472/aerodrome-base/version/latest',
     // Base RPC for on-chain reads
