@@ -1,12 +1,13 @@
 /**
- * strategy.js — Exp 18: Deviation 0.02 + ATR position sizing 0.15
+ * strategy.js — Exp 30: Exit threshold 0.01 (from 0.008), hold longer
  */
 import { vwap, rsi, atr } from '../src/indicators.js';
 
 export class Strategy {
   constructor() {
     this.vwapPeriod = 20;
-    this.deviationThreshold = 0.02;
+    this.deviationThreshold = 0.025;
+    this.exitThreshold = 0.01;
     this.rsiPeriod = 14;
     this.basePositionSize = 0.15;
     this.cooldown = 3;
@@ -47,7 +48,7 @@ export class Strategy {
       } else if (deviation > this.deviationThreshold && currentRsi > 60 && currentPos >= 0) {
         signals.push({ pair, targetPosition: -maxPos });
         this.lastTradeBar[pair] = idx;
-      } else if (currentPos !== 0 && Math.abs(deviation) < 0.005) {
+      } else if (currentPos !== 0 && Math.abs(deviation) < this.exitThreshold) {
         signals.push({ pair, targetPosition: 0 });
         this.lastTradeBar[pair] = idx;
       }
