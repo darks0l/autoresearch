@@ -1,15 +1,24 @@
 {
-  "totalRuns": 1,
+  "totalRuns": 2,
   "totalExperiments": 0,
   "totalKept": 0,
   "bestScore": 0,
   "bestExperiment": null,
   "startedAt": "2026-03-21T19:30:58.597Z",
-  "lastRunAt": "2026-03-21T19:30:58.597Z",
+  "lastRunAt": "2026-03-21T20:31:19.085Z",
   "history": [
     {
       "run": 1,
       "at": "2026-03-21T19:30:58.597Z",
+      "model": "claude-sonnet-4.5",
+      "experiments": 0,
+      "kept": 0,
+      "bestScore": 0,
+      "hitRate": "0%"
+    },
+    {
+      "run": 2,
+      "at": "2026-03-21T20:31:19.085Z",
       "model": "claude-sonnet-4.5",
       "experiments": 0,
       "kept": 0,

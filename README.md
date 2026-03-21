@@ -9,7 +9,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-gold.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org)
-[![Tests](https://img.shields.io/badge/Tests-38%2F38-brightgreen.svg)](test/)
+[![Tests](https://img.shields.io/badge/Tests-45%2F45-brightgreen.svg)](test/)
 [![Base](https://img.shields.io/badge/Chain-Base-blue.svg)](https://base.org)
 [![Bankr Compatible](https://img.shields.io/badge/Bankr-Compatible-purple.svg)](https://bankr.bot)
 [![OpenClaw](https://img.shields.io/badge/OpenClaw-Skill-cyan.svg)](https://openclaw.ai)
@@ -111,6 +111,7 @@ npm test
 | **Execution Engine** | `src/executor.js` | Live trading via Bankr — risk management, position sizing, paper/live modes |
 | **Bankr Integration** | `src/bankr.js` | Bankr LLM Gateway for mutations + wallet for live execution |
 | **Reporter** | `src/reporter.js` | Batch reports, final summaries, Discord/Telegram formatting |
+| **Pair Discovery** | `src/discovery.js` | Manual pair add/remove + auto-scan top Base DEX pools by TVL |
 | **Config** | `src/config.js` | Centralized configuration, model selection, thresholds |
 | **Entry Point** | `src/index.js` | Public API — all exports for skill/library usage |
 
@@ -324,6 +325,67 @@ Built through continuous collaboration between **Meta** (human) and **Darksol** 
 **Primary model**: Claude Opus (claude-opus-4-6)
 **Mutation model**: Claude Sonnet / Bankr Gateway
 
+## Pair Management
+
+Pairs can be managed manually or discovered automatically from on-chain data. Custom pairs persist to `data/custom-pairs.json` and are automatically included in backtests.
+
+```bash
+# List all active pairs (built-in + custom)
+node scripts/pairs.js list
+
+# Add a custom pair
+node scripts/pairs.js add "DEGEN/WETH" 0x4ed4e862860bed51a9570b96d89af5e1b0efefed 0x4200000000000000000000000000000000000006 uniswap 3000
+
+# Remove a custom pair
+node scripts/pairs.js remove "DEGEN/WETH"
+
+# Scan top Base DEX pools by TVL (preview)
+node scripts/pairs.js discover
+
+# Auto-discover and add top pools
+node scripts/pairs.js auto --max 5 --min-tvl 1000000
+```
+
+**Programmatic API:**
+```javascript
+import { addPair, removePair, listPairs, autoDiscoverAndAdd } from './src/discovery.js';
+
+// Add any Base DEX pair on the fly
+addPair({ name: 'VIRTUAL/WETH', token0: '0x0b3e...', token1: '0x4200...', dex: 'uniswap', fee: 3000 });
+
+// Auto-scan top Uniswap V3 pools and add missing ones
+const result = await autoDiscoverAndAdd({ minTvlUsd: 500_000, maxNewPairs: 5 });
+```
+
+## Report Generation
+
+Generate comprehensive human-readable reports from experiment history. Supports Markdown and styled HTML output.
+
+```bash
+# Full report to stdout
+node scripts/report.js
+
+# Save as Markdown
+node scripts/report.js --out docs/REPORT.md
+
+# Save as styled HTML (dark theme, viewable in browser)
+node scripts/report.js --html docs/report.html
+
+# Top N experiments + pair filter
+node scripts/report.js --top 20 --pair ETH/USDC
+```
+
+**Report sections:**
+- 📊 Summary card (score, Sharpe, return, drawdown, win rate)
+- 📈 Strategy evolution timeline (every kept experiment with score deltas)
+- 📉 ASCII score progression chart
+- 💹 Per-pair breakdown (when available)
+- ⚙️ Current strategy parameters (auto-extracted from code)
+- 🔧 Active trading pairs (built-in + custom)
+- 🏆 Top N experiments ranked by score
+- ❌ Failure pattern analysis (last 10 rejected experiments)
+- 🔩 Full configuration dump
+
 ## Live Execution
 
 ```bash
@@ -365,9 +427,9 @@ The Hurst exponent is estimated via Rescaled Range (R/S) analysis over the last 
 
 | Metric | Value |
 |--------|-------|
-| Source modules | 12 |
+| Source modules | 13 |
 | Indicators | 10 |
-| Tests | 38/38 passing |
+| Tests | 45/45 passing |
 | Runtime dependencies | 0 |
 | Experiments run | 119 (fully autonomous) |
 | Best score (real data) | **2.838** (Sharpe 2.838, +5.6% return, 5.9% max DD) |
@@ -389,13 +451,14 @@ AutoResearch complements Synthesis Agent: where Synthesis Agent **executes** str
 
 ```bash
 npm test
-# 38 tests, 0 failures, ~110ms
+# 45 tests, 0 failures, ~150ms
 
 # Test suites:
 # - indicators.test.js — 10 indicator unit tests
 # - backtest.test.js — backtester with scoring validation
 # - regime.test.js — regime detection (trend, volatility, Hurst, combined)
 # - executor.test.js — execution engine (paper trades, risk limits, state tracking)
+# - discovery.test.js — pair management (add, remove, deduplicate, persist)
 ```
 
 ## Inspiration & Acknowledgments
@@ -414,7 +477,8 @@ npm test
 | [Conversation Log](docs/CONVERSATION_LOG.md) | Complete human-agent collaboration record |
 | [Test Results](docs/TEST_RESULTS.md) | Full test output — 38/38 passing |
 | [On-Chain Receipts](docs/ON_CHAIN_RECEIPTS.md) | Verified Basescan TX + Bankr LLM credit usage |
-| [Experiment Index](docs/EXPERIMENT_INDEX.md) | All 117 experiments with scores and status |
+| [Experiment Index](docs/EXPERIMENT_INDEX.md) | All experiments with scores and status |
+| [Strategy Report](docs/REPORT.md) | Full human-readable report (run `node scripts/report.js`) |
 
 ## License
 
