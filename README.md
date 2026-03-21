@@ -277,6 +277,16 @@ const response = await fetch('https://llm.bankr.bot/v1/chat/completions', {
 await callLLM(`Swap 0.1 ETH to USDC on Base with max 0.5% slippage`);
 ```
 
+### Live Trade Proof
+
+First live trade executed via Bankr on Base:
+
+```
+Swap 1 USDC → 0.000464 ETH on Base
+TX: 0x752f73935fa93862fb37d14c09054785fdd983ce9bcc928af7ece91d3d69b4b8
+```
+[Verify on Basescan →](https://basescan.org/tx/0x752f73935fa93862fb37d14c09054785fdd983ce9bcc928af7ece91d3d69b4b8)
+
 ## Dependencies
 
 | Package | Purpose |
@@ -338,7 +348,7 @@ The Hurst exponent is estimated via Rescaled Range (R/S) analysis over the last 
 | Indicators | 10 |
 | Tests | 38/38 passing |
 | Runtime dependencies | 0 |
-| Experiments run | 75 (fully autonomous) |
+| Experiments run | 106 (fully autonomous) |
 | Best score vs baseline | **+75.8%** improvement |
 | Base DEX pairs | 4 |
 | Benchmark strategies | 3 |
