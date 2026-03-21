@@ -78,6 +78,26 @@ export const CONFIG = {
     liveMode: false,
   },
 
+  // Regime detection
+  regime: {
+    fastEma: 20,
+    slowEma: 50,
+    atrPeriod: 14,
+    lookback: 100,
+    hurstLags: 50,
+    confidenceThreshold: 0.6,
+  },
+
+  // Execution engine
+  execution: {
+    maxPositionPct: 0.15,
+    dailyLossLimit: 5.0,
+    perTradeLimitUsd: 500,
+    minTradeUsd: 10,
+    slippageBps: 50,
+    allowedPairs: ['ETH/USDC', 'ETH/USDC-30', 'cbETH/WETH', 'AERO/USDC'],
+  },
+
   // Reporting
   reporting: {
     // Report every N experiments

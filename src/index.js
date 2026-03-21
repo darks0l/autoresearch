@@ -18,3 +18,8 @@ export { formatBatchReport, formatFinalReport, formatExperimentResult } from './
 export { getBalance, callLLM, executeTrade } from './bankr.js';
 export { CONFIG } from './config.js';
 export * from './indicators.js';
+
+// Production modules
+export { detectRegime, trendStrength, volatilityRegime, hurstExponent, regimeSummary } from './regime.js';
+export { executeSignals, getExecutionState, resetExecutionState, runLiveLoop } from './executor.js';
+export { loadHistorical, fetchCurrentMarket, buildLiveBarData } from './datafeed.js';

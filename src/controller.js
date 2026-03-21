@@ -13,6 +13,7 @@ import {
   initMemory, nextExperimentId, logExperiment,
   getExperimentSummary, getPatternInsights, loadIndex,
 } from './memory.js';
+import { detectRegime, regimeSummary } from './regime.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const STRATEGY_PATH = resolve(__dirname, '../strategies/strategy.js');
@@ -74,6 +75,14 @@ From indicators.js: sma, ema, rsi, macd, bollingerBands, atr, vwap, roc, stddev,
 - Hourly bars, 500-bar history window
 - Fee model: 2-5 bps maker/taker + 1-3 bps slippage
 - Scoring: sharpe × √(min(trades/50, 1.0)) - drawdown_penalty - turnover_penalty
+
+## Regime Detection (available)
+The system includes a regime detector (src/regime.js) with:
+- Trend strength (dual EMA crossover + slope)
+- Volatility regime (ATR percentile ranking)
+- Hurst exponent (R/S analysis for mean-reversion vs trending)
+You can import and use: detectRegime, trendStrength, volatilityRegime from '../src/regime.js'
+Consider: regime-adaptive position sizing, trend-following in trending regimes, wider thresholds in high-vol
 
 ## Your Task
 Propose ONE specific change. You MUST respond in this EXACT format:
