@@ -6,6 +6,7 @@
  * - Momentum breakout entries (Donchian channel)
  * - ATR trailing stops with profit-taking exits
  * - ROC-based position sizing (simple trend detection)
+ * - Multi-timeframe trend filter (50-EMA slope)
  * - Skip shorting unless clear mean-reversion pair
  */
 import { rsi, atr, ema, sma, bollingerBands, roc } from '../src/indicators.js';
@@ -15,6 +16,7 @@ export class Strategy {
     this.lookback = 20;        // Donchian channel lookback
     this.emaFast = 10;
     this.emaSlow = 30;
+    this.emaLongTerm = 50;     // Long-term trend filter
     this.rsiPeriod = 14;
     this.atrPeriod = 14;
     this.atrTrailMultiple = 1.5;
@@ -23,6 +25,7 @@ export class Strategy {
     this.cooldown = 6;
     this.maxPositions = 3;
     this.rocPeriod = 20;       // ROC for momentum detection
+    this.slopeWindow = 5;      // Window for EMA slope calculation
     this.lastTradeBar = {};
     this.stops = {};
     this.peaks = {};
@@ -43,6 +46,14 @@ export class Strategy {
     return Math.max(0.5, Math.min(1.5, multiplier));
   }
 
+  // Calculate EMA slope
+  calculateEmaSlope(emaValues, idx) {
+    if (idx < this.slopeWindow) return 0;
+    const current = emaValues[idx];
+    const previous = emaValues[idx - this.slopeWindow];
+    return (current - previous) / previous;
+  }
+
   onBar(barData, portfolio) {
     const signals = [];
     const totalEquity = portfolio.cash +
@@ -61,23 +72,29 @@ export class Strategy {
       // Indicators
       const emaFastVals = ema(closes, this.emaFast);
       const emaSlowVals = ema(closes, this.emaSlow);
+      const emaLongTermVals = ema(closes, this.emaLongTerm);
       const rsiValues = rsi(closes, this.rsiPeriod);
       const atrValues = atr(highs, lows, closes, this.atrPeriod);
       const rocValues = roc(closes, this.rocPeriod);
 
       const f = emaFastVals[idx];
       const s = emaSlowVals[idx];
+      const lt = emaLongTermVals[idx];
       const r = rsiValues[idx];
       const a = atrValues[idx];
       const rocVal = rocValues[idx];
 
-      if (isNaN(f) || isNaN(s) || isNaN(r) || isNaN(a)) continue;
+      if (isNaN(f) || isNaN(s) || isNaN(lt) || isNaN(r) || isNaN(a)) continue;
 
       const last = this.lastTradeBar[pair] || -Infinity;
       if (idx - last < this.cooldown) continue;
 
       const currentPos = portfolio.positions[pair] || 0;
       const uptrend = f > s;
+      
+      // Long-term trend filter
+      const ltSlope = this.calculateEmaSlope(emaLongTermVals, idx);
+      const longTermUptrend = ltSlope > 0;
 
       // Donchian channel
       const channelHighs = highs.slice(Math.max(0, idx - this.lookback), idx);
@@ -104,8 +121,8 @@ export class Strategy {
           this.stops[pair] = price - this.atrTrailMultiple * a;
         }
 
-        // Exit conditions: stop hit, profit target, or trend reversal
-        if (price <= (this.stops[pair] || 0) || price >= profitTarget || (!uptrend && r > 65)) {
+        // Exit conditions: stop hit, profit target, trend reversal, or long-term downtrend
+        if (price <= (this.stops[pair] || 0) || price >= profitTarget || (!uptrend && r > 65) || !longTermUptrend) {
           signals.push({ pair, targetPosition: 0 });
           this.lastTradeBar[pair] = idx;
           delete this.stops[pair];
@@ -116,8 +133,8 @@ export class Strategy {
         continue; // Hold position
       }
 
-      // New entries: long only in uptrend
-      if (uptrend && currentPos <= 0 && openPositions < this.maxPositions) {
+      // New entries: long only in uptrend AND long-term uptrend
+      if (uptrend && longTermUptrend && currentPos <= 0 && openPositions < this.maxPositions) {
         // Breakout entry: price breaks above Donchian high
         const breakout = price >= channelHigh * 0.998;
         // Dip entry: RSI pulls back in uptrend

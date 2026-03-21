@@ -65,24 +65,74 @@
 - Key finding: strategy overfit to synthetic data, performs differently on real CoinGecko data
 - Cron job set: every 1h, 15 experiments per batch via OpenClaw
 
+**14:54 EDT** — Real data breakthrough (`4c1e0a1`)
+- **Critical discovery:** Strategy scored 0.740 on synthetic data but **-1.460 on real data** — textbook overfitting
+- Rebuilt strategy from scratch: VWAP mean-reversion → adaptive trend-following
+- `strategies/strategy-adaptive.js` — Donchian breakout + EMA filter + RSI dip-buying + ATR trailing stops
+- **Score: -1.46 → 2.838 on real data** — complete turnaround
+- Old VWAP strategy preserved as `strategy-vwap-synth.js`
+- 117 experiments, 38 tests passing
+
+**14:59 EDT** — Submission update & security fix (`456f59c`)
+- Updated Devfolio submission with real data results
+- **SECURITY:** Found hardcoded Synthesis API key in scripts — removed, rewrote git history, force-pushed
+- All scripts now use `SYNTHESIS_API_KEY` env var
+
+**15:14 EDT** — Bankr skills PR & submission packaging (`530930c`)
+- PR #262 opened at https://github.com/BankrBot/skills/pull/262
+- Created `agent.json` with ERC-8004 identity (token #31929)
+- Generated `agent_log.json` from experiment index (120 events)
+- Built auto-sync pipeline: daemon auto-commits results to GitHub after each batch
+
+**15:29 EDT** — Pair discovery module (`aeff778`)
+- `src/discovery.js` (8.3KB) — Manual add/remove + auto-scan top Base DEX pools by TVL
+- `scripts/pairs.js` — CLI for pair management
+- 45 tests passing (7 new discovery tests)
+
+**15:40 EDT** — Report generator (`6d204bb`)
+- `scripts/report.js` (13.5KB) — Human-readable strategy reports with ASCII score progression
+- Outputs Markdown + styled dark-theme HTML
+- 13 source modules total
+
+**17:24 EDT** — Daemon mutation fix (`b43f986`)
+- **Root cause found:** `BANKR_API_KEY` wasn't in env, so mutations silently returned no-op text
+- Fixed `config.js` to auto-load API key from `~/.bankr/config.json` as fallback
+- **Daemon run #4 (first real mutations):** 10 experiments, 3 kept (30% hit rate)
+- Score: 2.838 → 2.919 (Hurst regime sizing) → 2.923 (faster Hurst) → **3.668** (tighter ATR trail 1.5)
+- Sharpe: 4.002, DD: 9.3%, 42 trades
+
+**17:30 EDT** — Daemon run #5 (`auto-sync`)
+- 15 experiments (exp137–exp151), 2 kept (13% hit rate)
+- exp137 (3.741): ROC momentum + ATR profit-taking exit, DD 7.1%
+- **exp151 (3.777): Multi-timeframe trend filter (50-EMA slope + EMA cross alignment)**
+- New all-time best: **3.777**
+
+**18:37 EDT** — Daemon run #6 (crashed mid-batch)
+- 8 of 15 experiments ran (exp153–exp160), 0 kept
+- Closest: exp153 at 3.663 (volatility breakout filter)
+- Crash didn't corrupt state, daemon continues next cycle
+
+**18:50 EDT** — Documentation update
+- Updated BUILD_LOG.md and CONVERSATION_LOG.md with full daemon era
+- README updated with exp128 benchmark, daemon run #4 results
+- Sync script enhanced to auto-update stats on each push
+
 ---
 
 ## Build Stats
 
 | Metric | Value |
 |--------|-------|
-| Total commits | 8 |
-| Lines added | 2,209 |
-| Lines removed | 177 |
-| Source modules | 12 |
-| Test suites | 4 |
-| Tests passing | 38/38 |
+| Total commits | 15+ |
+| Source modules | 13 |
+| Test suites | 6 |
+| Tests passing | 45/45 |
 | Runtime dependencies | 0 |
 | Build time | ~75 minutes (first commit → production) |
-| Experiments run | 116 |
-| Best score | 0.740 (+75.8% over baseline) |
+| Experiments run | 160+ (daemon still running) |
+| Best score | 3.777 (exp151, +797% over 0.421 baseline) |
 | Live trades | 1 (verified on Basescan) |
-| Bankr LLM credits used | ~$0.60 |
+| Bankr LLM credits used | ~$1.90 |
 | Models used | claude-haiku-4.5, claude-sonnet-4.5 (via Bankr Gateway) |
 
 ---

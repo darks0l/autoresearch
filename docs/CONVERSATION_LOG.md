@@ -98,25 +98,95 @@
 
 ---
 
+## Session 2 — March 21, 2026, 14:54–18:55 EDT (Daemon Era)
+
+### Phase 7: Real Data Breakthrough (14:54)
+
+**Darksol:** Discovered the VWAP reversion strategy was overfit — scored 0.740 on synthetic data but **-1.460 on real CoinGecko data**. Complete strategy redesign:
+- Built `strategy-trend.js` (trend-following attempt, -0.753)
+- Built `strategy-adaptive.js` — Donchian breakout + EMA trend filter + RSI dip-buying + ATR trailing stops
+- **Score: -1.46 → 2.838 on real data.** The agent learned that real crypto markets trend.
+
+### Phase 8: Submission Finalization (14:54–15:29)
+
+**Darksol:**
+- Updated Devfolio submission with real data results
+- **Security catch:** Found hardcoded Synthesis API key in scripts — removed, rewrote git history, force-pushed
+- Created `agent.json` with ERC-8004 identity (token #31929)
+- Generated `agent_log.json` from experiment index
+- Built auto-sync pipeline (daemon auto-commits to GitHub)
+- Opened PR #262 to BankrBot/skills repo
+- Built pair discovery module (manual + auto-scan by TVL)
+- Built report generator with ASCII score progression charts
+- 45 tests passing, 13 source modules
+
+### Phase 9: Daemon Comes Alive (17:24–18:55)
+
+**Meta:** "Get the daemon running."
+
+**Darksol:** Found root cause of silent daemon failures — `BANKR_API_KEY` wasn't in environment, causing all mutations to return no-op text. Fixed config to auto-load from `~/.bankr/config.json`.
+
+**Daemon run #4 (first real mutations, claude-sonnet-4.5):**
+- 10 experiments, 3 kept (30% hit rate)
+- Score progression: 2.838 → 2.919 → 2.923 → **3.668**
+- **Key discovery:** Regime-based position sizing via Hurst exponent + tighter ATR trailing stops (2.0→1.5)
+- Sharpe reached 4.002
+
+**Daemon run #5:**
+- 15 experiments, 2 kept (13% hit rate)
+- exp137 (3.741): ROC momentum replaces Hurst + ATR profit-taking exit, DD 7.1%
+- **exp151 (3.777): Multi-timeframe trend filter (50-EMA slope + short-term EMA cross alignment)**
+- New all-time best: **3.777**
+
+**Daemon run #6 (crashed mid-batch):**
+- 8 of 15 experiments ran (exp153–exp160), 0 kept
+- Closest: exp153 at 3.663 (volatility breakout filter)
+- Two experiments produced zero trades (over-filtering)
+
+**Meta:** "Kill it after 250 experiments."
+
+**Current state:** 160 experiments, best score 3.777, daemon running toward 250-experiment cutoff. ~6 more hourly runs.
+
+---
+
 ## Key Decisions Made During Build
 
 1. **Single-file strategy mutation** — Keep it simple. One file, one source of truth. LLM rewrites the whole file each time.
 2. **Keep/revert with full logging** — Every experiment recorded, even failures. LCM indexes everything.
 3. **Haiku for fast iteration, Sonnet for quality** — Started with haiku (cheap, fast), upgraded to sonnet (better mutations) as we found diminishing returns.
-4. **Real data → synthetic data discovery** — Strategy tuned on synthetic data; real data performance is different. This is itself a finding worth sharing.
+4. **Real data → overfitting discovery** — Strategy tuned on synthetic data scored -1.46 on real data. Complete redesign required. This is itself a valuable finding.
 5. **Zero runtime dependencies** — All indicators, backtest, memory implemented in pure Node.js. Nothing to install, nothing to break.
+6. **250-experiment cutoff** — Diminishing returns observed above 3.8. Strategy architecture may need fundamental rethinking to break through.
+
+---
+
+## Score Progression (Key Milestones)
+
+```
+0.421 ████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ Baseline (VWAP reversion)
+0.610 ██████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 30 experiments (ATR sizing)
+0.740 ████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 75 experiments (parameter plateau)
+-1.46 ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ Real data (overfitting exposed)
+2.838 ██████████████████████████░░░░░░░░░░░░░░░ Strategy redesign (trend-following)
+3.668 ████████████████████████████████████░░░░░░ Regime sizing + tighter stops
+3.777 █████████████████████████████████████░░░░░ Multi-TF trend filter (current best)
+5.000 ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ Target (not yet reached)
+```
 
 ---
 
 ## Agent Capabilities Demonstrated
 
-- **Autonomous coding** — 12 modules, 2,209 lines added, zero copy-paste
-- **Self-directed research** — 116 experiments with no human intervention per experiment
-- **API integration** — Bankr LLM Gateway, CoinGecko, DeFiLlama, Moltbook
+- **Autonomous coding** — 13 modules, 45 tests, zero copy-paste
+- **Self-directed research** — 160+ experiments with no human intervention per experiment
+- **Overfitting detection** — Caught synthetic data overfitting, redesigned from scratch
+- **API integration** — Bankr LLM Gateway, CoinGecko, DeFiLlama, Moltbook, Devfolio
 - **On-chain execution** — Live DEX swap on Base via natural language
 - **Persistent memory** — LCM-powered experiment history that makes each mutation smarter
-- **Testing discipline** — 38 tests, all passing, covering all major modules
-- **Multi-platform publishing** — GitHub, GitLab, Moltbook, Discord
+- **Testing discipline** — 45 tests, all passing, covering all major modules
+- **Multi-platform publishing** — GitHub, GitLab, Moltbook, Discord, Devfolio
+- **Security awareness** — Caught leaked API key in git, rewrote history
+- **Daemon orchestration** — Autonomous hourly experiment cycles with auto-sync to GitHub
 
 ---
 
