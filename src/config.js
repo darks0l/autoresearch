@@ -1,6 +1,23 @@
 // AutoResearch Configuration
 // All defaults — override via environment or config file
 
+import { readFileSync, existsSync } from 'fs';
+import { join } from 'path';
+import { homedir } from 'os';
+
+// Auto-load Bankr API key from ~/.bankr/config.json if not in env
+function loadBankrKey() {
+  if (process.env.BANKR_API_KEY) return process.env.BANKR_API_KEY;
+  try {
+    const configPath = join(homedir(), '.bankr', 'config.json');
+    if (existsSync(configPath)) {
+      const data = JSON.parse(readFileSync(configPath, 'utf8'));
+      return data.apiKey || '';
+    }
+  } catch { /* ignore */ }
+  return '';
+}
+
 export const CONFIG = {
   // Data sources
   data: {
@@ -71,7 +88,7 @@ export const CONFIG = {
 
   // Bankr integration
   bankr: {
-    apiKey: process.env.BANKR_API_KEY || '',
+    apiKey: loadBankrKey(),
     llmGateway: 'https://llm.bankr.bot/v1/chat/completions',
     walletAddress: process.env.BANKR_WALLET || '0x8f9fa2bfd50079c1767d63effbfe642216bfcb01',
     // Use Bankr LLM for mutations if available
