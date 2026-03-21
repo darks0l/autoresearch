@@ -1,8 +1,8 @@
 # AutoResearch — Experiment Index
 
-> 152 experiments, 34 kept, 118 rejected
-> Best: 3.777 (exp151) | Baseline: 0.421
-> Last updated: 2026-03-21T21:40:17.796Z
+> 164 experiments, 38 kept, 126 rejected
+> Best: 5.31 (exp163) | Baseline: 0.421
+> Last updated: 2026-03-21T23:31:54.992Z
 
 | # | Score | Status | Hypothesis |
 |---|-------|--------|------------|
@@ -158,3 +158,15 @@
 | exp149 | -999 | ❌ | Replace the complex Donchian/ROC momentum system with a simpler high-conviction  |
 | exp150 | 3.655 | ❌ | Add a volatility-adjusted profit target that scales from 1.5x to 3.0x ATR based  |
 | exp151 | 3.777 | ✅ | Add a multi-timeframe trend filter that calculates a longer-term 50-period EMA s |
+| baseline | 3.777 | ✅ | Initial strategy — baseline measurement |
+| exp153 | 3.663 | ❌ | Add a volatility breakout filter that requires current ATR to be above its 20-pe |
+| exp154 | -999 | ❌ | Replace the momentum-based position sizing with a regime-adaptive approach that  |
+| exp155 | 1.564 | ❌ | Replace the complex multi-filter entry system with a pure momentum breakout appr |
+| exp156 | 0.306 | ❌ | Add a volume confirmation filter that requires current volume to be above the 20 |
+| exp157 | -999 | ❌ | Replace the complex multi-filter entry system with a simpler volume-weighted mom |
+| exp158 | 2.806 | ❌ | Replace momentum-based position sizing with a drawdown-aware risk reducer that c |
+| exp159 | 1.457 | ❌ | Replace the multi-filter entry system with a pure volatility breakout strategy t |
+| exp160 | 2.637 | ❌ | Replace the fixed ATR trailing stop with a dynamic regime-aware stop that tighte |
+| exp161 | 4.512 | ✅ | STRUCTURAL: Ensemble voting (Donchian+RSI+MACD) + macro 100-EMA trend filter + c |
+| baseline | 4.512 | ✅ | Initial strategy — baseline measurement |
+| exp163 | 5.31 | ✅ | Replace the ensemble voting system with a pure trend-following breakout strategy |
