@@ -1,8 +1,8 @@
 # AutoResearch — Experiment Index
 
-> 164 experiments, 38 kept, 126 rejected
-> Best: 5.31 (exp163) | Baseline: 0.421
-> Last updated: 2026-03-21T23:31:54.992Z
+> 171 experiments, 40 kept, 131 rejected
+> Best: 7.327 (exp170) | Baseline: 0.421
+> Last updated: 2026-03-22T00:37:54.887Z
 
 | # | Score | Status | Hypothesis |
 |---|-------|--------|------------|
@@ -170,3 +170,10 @@
 | exp161 | 4.512 | ✅ | STRUCTURAL: Ensemble voting (Donchian+RSI+MACD) + macro 100-EMA trend filter + c |
 | baseline | 4.512 | ✅ | Initial strategy — baseline measurement |
 | exp163 | 5.31 | ✅ | Replace the ensemble voting system with a pure trend-following breakout strategy |
+| baseline | 5.31 | ✅ | Initial strategy — baseline measurement |
+| exp165 | 4.717 | ❌ | Replace the fixed 3.0x ATR profit target with a dynamic adaptive target that sca |
+| exp166 | 4.755 | ❌ | Replace the fixed 1.5x ATR trailing stop with a momentum-adaptive stop that tigh |
+| exp167 | 4.114 | ❌ | Replace the single-stage volatility scaling with a multi-regime position sizing  |
+| exp168 | 3.934 | ❌ | Replace the fixed breakout lookback period with a volatility-adaptive lookback t |
+| exp169 | 4.159 | ❌ | Replace the fixed 50-period trend EMA with a dual-timeframe trend confirmation s |
+| exp170 | 7.327 | ✅ | Replace the fixed volatility expansion filter (ATR > ATR_SMA) with a percentile- |
