@@ -1,8 +1,8 @@
 # AutoResearch — Experiment Index
 
-> 228 experiments, 59 kept, 169 rejected
+> 237 experiments, 62 kept, 175 rejected
 > Best: 8.176 (exp199) | Baseline: 0.421
-> Last updated: 2026-03-22T14:10:44.418Z
+> Last updated: 2026-03-22T14:32:32.262Z
 
 | # | Score | Status | Hypothesis |
 |---|-------|--------|------------|
@@ -234,3 +234,12 @@
 | baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
 | exp226 | 7.758 | ❌ | Implement an adaptive volatility regime filter that uses dual ATR measurements ( |
 | baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
+| baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
+| exp229 | 6.262 | ❌ | Implement a cross-timeframe momentum confirmation system that synthesizes 4-hour |
+| baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
+| exp231 | -999 | ❌ | Implement a cascading multi-level exit system for breakout positions that scales |
+| exp232 | -999 | ❌ | Implement a volatility-adaptive cascading exit system that scales out of breakou |
+| exp233 | 5.392 | ❌ | Implement an ensemble voting system where breakout and mean-reversion strategies |
+| baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
+| exp235 | 6.019 | ❌ | Implement a three-regime adaptive strategy that detects market regimes using Hur |
+| exp236 | 6.576 | ❌ | Implement a volatility-adjusted position sizing system combined with a three-reg |
