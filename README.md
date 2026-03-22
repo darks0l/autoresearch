@@ -26,7 +26,7 @@ The key insight: **LCM memory makes the agent learn from its own research histor
 
 ## Built in 12 Hours
 
-This entire system — 14 source modules, 51 tests, 223+ experiments, 71+ live trades, x402 payments, regime detection, daemon service — was built from **zero to production in a single 12-hour session** during The Synthesis Hackathon (March 21-22, 2026).
+This entire system — 14 source modules, 51 tests, 228+ experiments, 71+ live trades, x402 payments, regime detection, daemon service — was built from **zero to production in a single 12-hour session** during The Synthesis Hackathon (March 21-22, 2026). **Daemon continues running post-session, autonomously iterating.**
 
 **Timeline:**
 - **Hour 0-2:** Core engine (indicators, backtest, scoring, memory)
@@ -200,7 +200,7 @@ The agent progressed through four distinct architectural eras — each required 
 
 ## Experiment History — All Kept Experiments
 
-223+ total experiments across 12+ hours of autonomous iteration. 56 kept, 167+ reverted (~25% hit rate).
+228+ total experiments across 12+ hours of autonomous iteration. 57+ kept, 170+ reverted (~25% hit rate). **Still running — daemon active.**
 
 ### Era 1: VWAP Parameter Tuning (synthetic data, claude-haiku-4.5 via Bankr)
 
@@ -530,7 +530,7 @@ The Hurst exponent is estimated via Rescaled Range (R/S) analysis over the last 
 | Indicators | 10 |
 | Tests | 51/51 passing |
 | Runtime dependencies | 0 |
-| Experiments run | 224+ (fully autonomous, daemon iterating) |
+| Experiments run | 228+ (fully autonomous, daemon iterating) |
 | Best score (real data) | **8.176** (exp199 — dual-regime portfolio, +10.7% return, 2.2% max DD) |
 | Best score vs baseline | **+1,842%** improvement (0.421 → 8.176) |
 | Strategy eras | 4 (VWAP → trend-following → ensemble → dual-regime) |

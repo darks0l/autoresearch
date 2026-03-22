@@ -1,8 +1,8 @@
 # AutoResearch — Experiment Index
 
-> 224 experiments, 56 kept, 168 rejected
+> 228 experiments, 59 kept, 169 rejected
 > Best: 8.176 (exp199) | Baseline: 0.421
-> Last updated: 2026-03-22T13:59:26.729Z
+> Last updated: 2026-03-22T14:10:44.418Z
 
 | # | Score | Status | Hypothesis |
 |---|-------|--------|------------|
@@ -230,3 +230,7 @@
 | exp221 | -999 | ❌ | Implement a volatility-adjusted partial profit-taking system that scales out 50% |
 | baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
 | exp223 | 8.15 | ❌ | Implement a cross-pair correlation-based signal generator that detects divergenc |
+| baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
+| baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
+| exp226 | 7.758 | ❌ | Implement an adaptive volatility regime filter that uses dual ATR measurements ( |
+| baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
