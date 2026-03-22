@@ -217,6 +217,59 @@ The plateau detector eliminates step 4. The system recognizes its own ceiling an
 
 Each era required a structural break, not parameter tuning, to advance.
 
+## Out-of-Sample Validation (Required)
+
+**Every strategy MUST be validated before claiming real performance.** In-sample scores are meaningless without out-of-sample proof.
+
+### Validation Flow
+
+```bash
+# Run the full validation suite
+node scripts/oos-validation.js
+```
+
+This runs three phases automatically:
+
+| Phase | What | How |
+|-------|------|-----|
+| **1. Full baseline** | Confirm in-sample score | Backtest on all cached data |
+| **2. Walk-forward split** | 70/30 train/test on same data | Strategy trained on first 70%, tested on last 30% |
+| **3. Fresh data** | CoinGecko 30-day OHLC never seen before | Fetch new data, backtest cold |
+
+### Interpreting Results
+
+| Metric | Good | Acceptable | Red Flag |
+|--------|------|------------|----------|
+| Train→Test degradation | < 20% | 20-50% | > 50% |
+| Test Sharpe | > 2.0 | 1.0-2.0 | < 0.5 |
+| Fresh data Sharpe | > 1.0 | 0.5-1.0 | < 0 (overfit) |
+| Fresh data score | > 0 | Slightly negative | Deeply negative |
+
+### When to Validate
+
+- **After every structural change** (new strategy architecture)
+- **After daemon finds new best** (periodically, not every experiment)
+- **Before any live trading** (mandatory)
+- **Before claiming performance** in reports or submissions
+
+### Building It Into Your Flow
+
+If you're using this skill to discover strategies, the suggested workflow is:
+
+1. **Discover** — Run autoresearch experiments (daemon or manual)
+2. **Validate** — Run `oos-validation.js` on every new best score
+3. **Iterate** — If validation fails, the strategy is overfit. Force structural changes.
+4. **Paper trade** — Run `scripts/run-live.js --paper` on live data for 24-48h
+5. **Live trade** — Only after paper trading confirms viability
+
+**The daemon should NOT skip validation.** Bake validation into your reporting: include OOS results alongside in-sample scores.
+
+### Output
+
+Results are saved to:
+- `data/oos-validation.json` — machine-readable
+- `docs/OOS_VALIDATION.md` — human-readable report
+
 ## Rules (for the agent)
 
 1. **Only edit `strategies/strategy.js`** — this is the single mutable file

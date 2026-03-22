@@ -1,0 +1,58 @@
+[
+  {
+    "n": 1,
+    "trade": "Swap 0.0005 ETH to USDC on Base",
+    "tx": "0x6325bc077d1e297598f60a63358dd9aea3ab537b057b6d3d5d1a91b4f0175cbe",
+    "success": true,
+    "ts": "2026-03-22T12:48:12.213Z"
+  },
+  {
+    "n": 2,
+    "trade": "Swap 1 USDC to ETH on Base",
+    "tx": "0xebddd16cb625dac0c1b6f6904065dd86a85d8ba226b1bf6bbbfce2db02c6b025",
+    "success": true,
+    "ts": "2026-03-22T12:48:42.023Z"
+  },
+  {
+    "n": 3,
+    "trade": "Swap 0.0005 ETH to USDC on Base",
+    "tx": "0xdebc0e43fffe8ca6226fa70ed0db7937d9afd75f4d635e854bccad4fe2b5d26b",
+    "success": true,
+    "ts": "2026-03-22T12:49:17.126Z"
+  },
+  {
+    "n": 4,
+    "trade": "Swap 1 USDC to ETH on Base",
+    "tx": "0xf3515d50428c1b7b132be65b1cbaa292e005002337012124b53d734f4220b2e5",
+    "success": true,
+    "ts": "2026-03-22T12:49:57.725Z"
+  },
+  {
+    "n": 5,
+    "trade": "Swap 0.0005 ETH to USDC on Base",
+    "tx": "0xd2793fad830be2a0fa9fd39c06d84b4428e28074fad6d6fdd92fc2524e638b9c",
+    "success": true,
+    "ts": "2026-03-22T12:50:27.866Z"
+  },
+  {
+    "n": 6,
+    "trade": "Swap 1 USDC to ETH on Base",
+    "tx": "0xa46adcf9a9e5ebb0cf6aa9b06ad86fb2cb5d4074d53afbc2df989145ca9e3057",
+    "success": true,
+    "ts": "2026-03-22T12:51:29.855Z"
+  },
+  {
+    "n": 7,
+    "trade": "Swap 0.0005 ETH to USDC on Base",
+    "tx": "0xa9f2c99e3eedbe7921318bd955f0d257fe4fe4af23dc9e873b28717afd3b9cc9",
+    "success": true,
+    "ts": "2026-03-22T12:52:04.973Z"
+  },
+  {
+    "n": 8,
+    "trade": "Swap 1 USDC to ETH on Base",
+    "tx": "0xc3940204b768bf9ac788ffa25e5b03958c4fedf118855716291e1ba804fefec0",
+    "success": true,
+    "ts": "2026-03-22T12:52:40.481Z"
+  }
+]

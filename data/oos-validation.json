@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-03-22T12:52:05.027Z",
+  "full": {
+    "score": 8.176,
+    "sharpe": 8.176,
+    "trades": 134
+  },
+  "train": {
+    "score": 8.646,
+    "sharpe": 8.646,
+    "trades": 118
+  },
+  "test": {
+    "score": 7.163,
+    "sharpe": 8.009,
+    "trades": 40
+  },
+  "degradation": "-17.2%",
+  "fresh": {
+    "score": -1.139,
+    "sharpe": -2.152,
+    "trades": 14
+  }
+}
