@@ -1,0 +1,22 @@
+{
+  "protocol": "x402",
+  "standard": "EIP-3009",
+  "chain": "Base",
+  "chainId": 8453,
+  "facilitator": "0x2c8BcFC4EED3d0F3e25FdAfE084851A19cd59a80",
+  "facilitatorUrl": "https://facilitator.darksol.net",
+  "txHash": "0xa30089066f2224a43e08f688749d1a2e2949d5a9e18ed294391db85b9e4f74d8",
+  "blockNumber": 43698256,
+  "gasUsed": "101242",
+  "from": "0x3e6e304421993D7E95a77982E11C93610DD4fFC5",
+  "to": "0x3e6e304421993D7E95a77982E11C93610DD4fFC5",
+  "amount": "0.10",
+  "amountRaw": "100000",
+  "token": "USDC",
+  "tokenAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  "service": "/strategy/signal",
+  "serviceDescription": "AutoResearch live trading signal",
+  "agent": "ERC-8004 #31929",
+  "timestamp": "2026-03-22T13:24:16.402Z",
+  "explorerUrl": "https://basescan.org/tx/0xa30089066f2224a43e08f688749d1a2e2949d5a9e18ed294391db85b9e4f74d8"
+}
