@@ -1,6 +1,7 @@
 import fs from 'fs';
 
-const bankrConfig = JSON.parse(fs.readFileSync('C:/Users/favcr/.bankr/config.json', 'utf8'));
+import { homedir } from 'os';
+const bankrConfig = JSON.parse(fs.readFileSync(homedir() + '/.bankr/config.json', 'utf8'));
 const API_KEY = bankrConfig.apiKey;
 const results = [];
 
