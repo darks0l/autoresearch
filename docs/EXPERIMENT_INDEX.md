@@ -1,8 +1,8 @@
 # AutoResearch — Experiment Index
 
-> 208 experiments, 50 kept, 158 rejected
+> 212 experiments, 52 kept, 160 rejected
 > Best: 8.176 (exp199) | Baseline: 0.421
-> Last updated: 2026-03-22T06:40:16.154Z
+> Last updated: 2026-03-22T07:39:53.153Z
 
 | # | Score | Status | Hypothesis |
 |---|-------|--------|------------|
@@ -213,4 +213,8 @@
 | exp204 | 7.668 | ❌ | Implement a triple-timeframe momentum confirmation system that synthesizes 4-bar |
 | baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
 | exp206 | -3.345 | ❌ | Implement a multi-timeframe confluence system that synthesizes 6-hour, 12-hour,  |
+| baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
+| baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
+| exp209 | 5.269 | ❌ | Implement a cross-pair correlation-based entry filter that only triggers breakou |
+| exp210 | 7.843 | ❌ | Implement a volatility-regime-adaptive position scaling system that dynamically  |
 | baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
