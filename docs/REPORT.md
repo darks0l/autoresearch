@@ -1,14 +1,14 @@
 # 📊 AutoResearch — Strategy Report
-> Generated: 2026-03-22T10:53:03.872Z
+> Generated: 2026-03-22T13:59:22.747Z
 > Engine: @darksol/autoresearch | Pairs: 4 | Model: claude-sonnet-4.5
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
-| Total experiments | **222** |
-| Kept / Reverted | 55 ✅ / 167 ❌ |
-| Hit rate | 24.8% |
+| Total experiments | **224** |
+| Kept / Reverted | 56 ✅ / 168 ❌ |
+| Hit rate | 25.0% |
 | Best score | **8.176** (exp199) |
 | Best Sharpe | 8.176 |
 | Total return | 6.64% |
@@ -78,6 +78,7 @@ Each row is a **kept** experiment — a change that improved the strategy.
 | baseline | 8.176 | 0.000 | Initial strategy — baseline measurement |
 | baseline | 8.176 | 0.000 | Initial strategy — baseline measurement |
 | baseline | 8.176 | 0.000 | Initial strategy — baseline measurement |
+| baseline | 8.176 | 0.000 | Initial strategy — baseline measurement |
 
 ## Score Progression
 
@@ -129,6 +130,7 @@ exp183   ███████████████████████�
 baseline █████████████████████████████████████████████████ 7.991
 baseline █████████████████████████████████████████████████ 7.991
 exp199   ██████████████████████████████████████████████████ 8.176
+baseline ██████████████████████████████████████████████████ 8.176
 baseline ██████████████████████████████████████████████████ 8.176
 baseline ██████████████████████████████████████████████████ 8.176
 baseline ██████████████████████████████████████████████████ 8.176
@@ -199,7 +201,6 @@ baseline ███████████████████████�
 
 Last 10 rejected experiments — avoid repeating these:
 
-- **exp206** (-3.345): Implement a multi-timeframe confluence system that synthesizes 6-hour, 12-hour, and 24-hour trend signals by calculating
 - **exp209** (5.269): Implement a cross-pair correlation-based entry filter that only triggers breakout trades when the pair shows divergence 
 - **exp210** (7.843): Implement a volatility-regime-adaptive position scaling system that dynamically adjusts position sizes based on real-tim
 - **exp213** (7.137): Implement a cross-pair momentum divergence system that detects when a pair shows strong breakout signals while the baske
@@ -209,6 +210,7 @@ Last 10 rejected experiments — avoid repeating these:
 - **exp219** (4.457): Implement a cross-pair volume-weighted momentum scoring system that ranks pairs by their volume-adjusted ROC strength an
 - **exp220** (-999.000): Implement a position-sizing pyramid system that adds to winning breakout trades in thirds (entry at breakout, +33% at +1
 - **exp221** (-999.000): Implement a volatility-adjusted partial profit-taking system that scales out 50% of breakout positions at +2 ATR profit 
+- **exp223** (8.150): Implement a cross-pair correlation-based signal generator that detects divergence between ETH/USDC and cbETH/WETH price 
 
 ## Configuration
 
