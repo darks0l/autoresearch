@@ -186,18 +186,36 @@ This is not a one-shot tool. AutoResearch exists to continuously improve:
 2. **Iterate** — Run experiments in batches. When parameter tuning plateaus, make **structural changes** (new strategy architectures, new signal sources, ensemble methods). The daemon handles parameter tuning; the agent handles architectural evolution.
 3. **Document** — Every experiment is logged. Every structural change is documented in BUILD_LOG.md and CONVERSATION_LOG.md. The git history IS the experiment log. Future agents can read the full evolution chain.
 
-### Structural Changes
+### Self-Improvement Protocol (Auto-Escalation)
 
-When the daemon hits a score ceiling (8+ consecutive reverts, diminishing returns), the agent should:
-- Identify the architectural limitation (not parameter limitation)
-- Design a new strategy structure (ensemble, multi-timeframe, cross-pair, etc.)
-- Build it manually, backtest it, log it as a new experiment
-- Let the daemon resume parameter tuning on the new architecture
+The controller has built-in plateau detection that automatically escalates mutation strategy when the system gets stuck. This is critical — without it, the LLM will endlessly propose small parameter tweaks that can never break through an architectural ceiling.
 
-**Score progression through structural eras:**
-- Era 1: VWAP mean-reversion → peaked at 0.740 (synthetic), -1.46 (real)
+**Three tiers, automatic escalation:**
+
+| Tier | Name | Trigger | Behavior |
+|------|------|---------|----------|
+| 0 | Explore | Default / after any improvement | Normal mutations — any approach allowed |
+| 1 | Structural | 5 consecutive failures | Forces structural changes only. No parameter tweaks. New signal logic, indicator combos, regime-switching, ensemble voting |
+| 2 | Architect | 10 consecutive failures | Demands architectural overhaul. Multi-strategy ensemble, cross-pair correlation, regime state machines, complete paradigm shift |
+
+**Auto-reset:** Any successful improvement (score beats best) resets back to tier 0.
+
+**Why this matters:**
+Without auto-escalation, a common failure pattern emerges:
+1. Strategy reaches a local optimum via parameter tuning
+2. LLM keeps proposing parameter tweaks (they're easiest to generate)
+3. Every experiment fails because the ceiling is architectural, not parametric
+4. Human has to step in and say "try something structural"
+
+The plateau detector eliminates step 4. The system recognizes its own ceiling and automatically shifts the LLM prompt to demand bigger changes.
+
+**Score progression through structural eras (proof it works):**
+- Era 1: VWAP mean-reversion → peaked at 0.740 (synthetic), -1.46 (real data)
 - Era 2: Adaptive trend-following → peaked at 3.777
-- Era 3: Ensemble voting + macro filter → 4.512 (current)
+- Era 3: Pure breakout + ATR percentile filter → 7.327
+- Era 4: Adaptive profit targets + vol-adaptive lookback → 7.991+
+
+Each era required a structural break, not parameter tuning, to advance.
 
 ## Rules (for the agent)
 
@@ -208,8 +226,9 @@ When the daemon hits a score ceiling (8+ consecutive reverts, diminishing return
 5. Time budget: 120 seconds per backtest
 6. Always log experiments to memory before moving on
 7. Query experiment history before proposing mutations
-8. **When plateaued:** Propose structural changes, not more parameter tweaks
+8. **When plateaued:** The controller auto-escalates (tier 0→1→2). Trust the plateau detector — it forces structural changes after 5 failures and architectural overhauls after 10. If you're running manually, follow the same pattern.
 9. **Always document:** Update BUILD_LOG.md and CONVERSATION_LOG.md on structural changes
+10. **Watch for false plateaus:** If the LLM generates broken code (syntax errors, 0 trades) that counts as failures toward escalation. That's intentional — bad code generation IS a signal that the current approach is exhausted.
 
 ---
 

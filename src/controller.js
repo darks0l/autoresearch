@@ -19,6 +19,77 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const STRATEGY_PATH = resolve(__dirname, '../strategies/strategy.js');
 
 /**
+ * Plateau Detection & Auto-Escalation
+ * 
+ * The system tracks consecutive failures and automatically escalates
+ * from parameter tweaks → structural changes → architectural overhauls.
+ * This prevents the common failure mode where an LLM keeps trying
+ * small parameter changes that can never break through a ceiling.
+ * 
+ * Tiers:
+ *   0 = "explore"    (first 5 failures) — normal mutations, any approach
+ *   1 = "structural" (5-10 failures)    — forces structural changes only
+ *   2 = "architect"  (10+ failures)     — demands architectural overhaul
+ * 
+ * Resets to tier 0 on any successful improvement.
+ */
+const plateauState = {
+  consecutiveFailures: 0,
+  lastBestScore: null,
+  tier: 0,
+  tierThresholds: [5, 10],  // failures before escalating to next tier
+};
+
+function detectPlateau(kept, currentBest) {
+  if (kept) {
+    // Improvement! Reset plateau state
+    const oldTier = plateauState.tier;
+    plateauState.consecutiveFailures = 0;
+    plateauState.tier = 0;
+    plateauState.lastBestScore = currentBest;
+    if (oldTier > 0) {
+      console.log(`  [plateau] ✅ Breakthrough! Resetting from tier ${oldTier} → 0`);
+    }
+    return;
+  }
+
+  plateauState.consecutiveFailures++;
+  const prevTier = plateauState.tier;
+
+  if (plateauState.consecutiveFailures >= plateauState.tierThresholds[1]) {
+    plateauState.tier = 2;
+  } else if (plateauState.consecutiveFailures >= plateauState.tierThresholds[0]) {
+    plateauState.tier = 1;
+  }
+
+  if (plateauState.tier > prevTier) {
+    const tierNames = ['explore', 'structural', 'architect'];
+    console.log(`  [plateau] ⚠️ ${plateauState.consecutiveFailures} consecutive failures → escalating to tier ${plateauState.tier} (${tierNames[plateauState.tier]})`);
+  }
+}
+
+function getPlateauDirective() {
+  if (plateauState.tier === 0) return '';
+
+  if (plateauState.tier === 1) {
+    return `\n\n## ⚠️ PLATEAU DETECTED (${plateauState.consecutiveFailures} consecutive failures)
+The last ${plateauState.consecutiveFailures} experiments ALL failed. Parameter tweaks are not working.
+You MUST propose a STRUCTURAL change — new signal logic, new indicator combinations, 
+regime-switching, ensemble voting, or multi-pair correlation. 
+DO NOT change just a number. Change HOW the strategy thinks.`;
+  }
+
+  return `\n\n## 🚨 DEEP PLATEAU (${plateauState.consecutiveFailures} consecutive failures)
+${plateauState.consecutiveFailures} experiments have failed in a row. The current architecture is exhausted.
+You MUST propose an ARCHITECTURAL OVERHAUL:
+- Completely different entry/exit paradigm (e.g., switch from breakout to mean-reversion + trend hybrid)
+- Multi-strategy ensemble with weighted voting across 3+ sub-strategies
+- Cross-pair arbitrage or correlation-based signals
+- Regime-switching state machine with distinct strategy per regime
+DO NOT tweak parameters. DO NOT make small changes. REBUILD the core logic.`;
+}
+
+/**
  * Generate a strategy mutation using an LLM
  */
 async function generateMutation(currentCode, experimentSummary, patternInsights, currentScore) {
@@ -116,7 +187,7 @@ CRITICAL RULES:
 - Only import from '../src/indicators.js' — available exports: vwap, rsi, atr, ema, sma, macd, bollingerBands, roc, stddev, percentileRank
 - The class MUST be named Strategy with an onBar(barData, portfolio) method
 - You MUST include \`export class Strategy\` and \`export default { Strategy }\`
-- Do NOT add any dependencies or imports beyond indicators.js`;
+- Do NOT add any dependencies or imports beyond indicators.js${getPlateauDirective()}`;
 }
 
 /**
@@ -362,6 +433,10 @@ export async function runAutoresearch(options = {}) {
     experimentCount++;
     batchResults.push(record);
 
+    // Plateau detection — auto-escalate if stuck
+    const latestIndex = await loadIndex();
+    detectPlateau(kept, latestIndex.bestScore);
+
     if (onExperiment) {
       await onExperiment(record, experimentCount, maxExperiments);
     }
@@ -392,4 +467,5 @@ export async function runAutoresearch(options = {}) {
   return finalIndex;
 }
 
-export default { runExperiment, runAutoresearch };
+export { plateauState, detectPlateau, getPlateauDirective };
+export default { runExperiment, runAutoresearch, plateauState };
