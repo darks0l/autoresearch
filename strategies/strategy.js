@@ -1,61 +1,90 @@
 /**
- * strategy-pure-trend-breakout.js — Simplified Trend-Following Breakout
+ * strategy-dual-regime-adaptive.js — Dual Strategy Portfolio Allocation
  * 
- * STRUCTURAL CHANGE: Eliminate mean-reversion components entirely.
- * Focus on high-conviction breakouts in established uptrends only.
+ * STRUCTURAL CHANGE: Run TWO independent strategies in parallel:
+ * 1. Pure Trend Breakout (existing logic)
+ * 2. Counter-Trend Mean-Reversion (Bollinger Band bounces)
  * 
- * Entry Logic:
- * 1. Price breaks above dynamic Donchian upper band (adaptive lookback)
- * 2. Price is above 50-period EMA (macro trend confirmation)
- * 3. ATR is in top 60th percentile (strong volatility breakout)
- * 4. Optional momentum filter: 10-period ROC > 0
+ * Capital allocation dynamically adjusts based on Hurst exponent:
+ * - Hurst > 0.55 (trending): 70% breakout, 30% mean-reversion
+ * - Hurst < 0.45 (ranging): 30% breakout, 70% mean-reversion
+ * - Hurst 0.45-0.55 (neutral): 50% breakout, 50% mean-reversion
  * 
- * Exit Logic:
- * 1. Trailing stop at 1.5x ATR below peak
- * 2. Adaptive profit target: 2.0x-4.0x ATR based on trend strength
- * 3. Price falls below 50-period EMA (trend reversal)
- * 
- * Position Sizing:
- * - Base size scaled by inverse volatility
- * - Single conviction level (no voting)
- * - Maximum 3 concurrent positions
+ * Each strategy maintains independent positions and risk management.
  */
-import { rsi, atr, ema, sma, macd, roc, percentileRank } from '../src/indicators.js';
+import { rsi, atr, ema, sma, macd, roc, percentileRank, bollingerBands, stddev } from '../src/indicators.js';
 
 export class Strategy {
   constructor() {
-    // Trend filter
-    this.trendEmaPeriod = 50;
+    // Hurst exponent for regime detection
+    this.hurstLookback = 50;
     
-    // Breakout detection (adaptive)
+    // Breakout strategy parameters
+    this.trendEmaPeriod = 50;
     this.breakoutLookbackLow = 15;
     this.breakoutLookbackHigh = 25;
     this.volRegimeThreshold = 70;
-    
-    // Volatility expansion filter
     this.atrPeriod = 10;
     this.atrPercentileLookback = 50;
     this.atrPercentileThreshold = 60;
-    
-    // Momentum filter
     this.rocPeriod = 10;
-    
-    // Risk management
     this.atrTrailMultiple = 1.5;
     this.atrProfitMultipleMin = 2.0;
     this.atrProfitMultipleMax = 4.0;
-    this.trendStrengthThreshold = 0.10;  // 10% above trend EMA for max profit target
+    this.trendStrengthThreshold = 0.10;
     
-    // Position sizing
+    // Mean-reversion strategy parameters
+    this.bbPeriod = 20;
+    this.bbStdDev = 2.0;
+    this.rsiPeriod = 14;
+    this.rsiOversold = 30;
+    this.rsiOverbought = 70;
+    this.mrProfitTarget = 0.015; // 1.5% profit target
+    this.mrStopLoss = 0.01; // 1% stop loss
+    
+    // Portfolio allocation
     this.basePositionSize = 0.15;
     this.maxPositions = 3;
     this.cooldown = 3;
     
-    // State
-    this.lastTradeBar = {};
-    this.stops = {};
-    this.peaks = {};
-    this.entries = {};
+    // State tracking (separate for each strategy)
+    this.breakout = {
+      lastTradeBar: {},
+      stops: {},
+      peaks: {},
+      entries: {}
+    };
+    
+    this.meanRev = {
+      lastTradeBar: {},
+      entries: {},
+      targets: {},
+      stops: {}
+    };
+  }
+
+  calculateHurst(prices, lookback) {
+    if (prices.length < lookback) return 0.5;
+    
+    const returns = [];
+    for (let i = 1; i < lookback; i++) {
+      returns.push(Math.log(prices[prices.length - lookback + i] / prices[prices.length - lookback + i - 1]));
+    }
+    
+    const mean = returns.reduce((a, b) => a + b, 0) / returns.length;
+    const cumDev = [];
+    let sum = 0;
+    for (let i = 0; i < returns.length; i++) {
+      sum += returns[i] - mean;
+      cumDev.push(sum);
+    }
+    
+    const range = Math.max(...cumDev) - Math.min(...cumDev);
+    const std = Math.sqrt(returns.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / returns.length);
+    
+    if (std === 0 || range === 0) return 0.5;
+    const rs = range / std;
+    return Math.log(rs) / Math.log(returns.length);
   }
 
   onBar(barData, portfolio) {
@@ -73,98 +102,150 @@ export class Strategy {
       const idx = closes.length - 1;
       const price = closes[idx];
 
-      // Compute indicators
+      // Calculate Hurst exponent for regime detection
+      const hurst = this.calculateHurst(closes, this.hurstLookback);
+      
+      // Determine allocation weights
+      let breakoutWeight = 0.5;
+      let meanRevWeight = 0.5;
+      
+      if (hurst > 0.55) {
+        breakoutWeight = 0.7;
+        meanRevWeight = 0.3;
+      } else if (hurst < 0.45) {
+        breakoutWeight = 0.3;
+        meanRevWeight = 0.7;
+      }
+
+      // Compute common indicators
       const trendEma = ema(closes, this.trendEmaPeriod);
       const atrValues = atr(highs, lows, closes, this.atrPeriod);
       const atrPercentile = percentileRank(atrValues, this.atrPercentileLookback);
       const rocValues = roc(closes, this.rocPeriod);
+      const bb = bollingerBands(closes, this.bbPeriod, this.bbStdDev);
+      const rsiValues = rsi(closes, this.rsiPeriod);
 
       const a = atrValues[idx];
       const trendEmaVal = trendEma[idx];
       const atrPctRank = atrPercentile[idx];
       const rocVal = rocValues[idx];
+      const bbUpper = bb.upper[idx];
+      const bbLower = bb.lower[idx];
+      const bbMiddle = bb.middle[idx];
+      const rsiVal = rsiValues[idx];
 
-      if (isNaN(a) || isNaN(trendEmaVal) || isNaN(atrPctRank)) continue;
+      if (isNaN(a) || isNaN(trendEmaVal)) continue;
 
       const currentPos = portfolio.positions[pair] || 0;
-      const last = this.lastTradeBar[pair] || -Infinity;
 
-      // === MANAGE EXISTING POSITION ===
-      if (currentPos > 0) {
-        // Update trailing stop
-        if (!this.peaks[pair] || price > this.peaks[pair]) {
-          this.peaks[pair] = price;
-          this.stops[pair] = price - this.atrTrailMultiple * a;
+      // === BREAKOUT STRATEGY MANAGEMENT ===
+      const breakoutPos = currentPos > 0 && this.breakout.entries[pair] ? currentPos : 0;
+      
+      if (breakoutPos > 0) {
+        if (!this.breakout.peaks[pair] || price > this.breakout.peaks[pair]) {
+          this.breakout.peaks[pair] = price;
+          this.breakout.stops[pair] = price - this.atrTrailMultiple * a;
         }
 
-        const entryPrice = this.entries[pair] || price;
+        const entryPrice = this.breakout.entries[pair];
         let exit = false;
         
-        // Hard trailing stop
-        if (this.stops[pair] && price <= this.stops[pair]) exit = true;
+        if (this.breakout.stops[pair] && price <= this.breakout.stops[pair]) exit = true;
         
-        // Adaptive profit target based on trend strength
         const trendStrength = (price - trendEmaVal) / trendEmaVal;
         let profitMultiple = this.atrProfitMultipleMin;
-        
         if (trendStrength >= this.trendStrengthThreshold) {
-          // Strong trend: use maximum profit target
           profitMultiple = this.atrProfitMultipleMax;
         } else if (trendStrength > 0) {
-          // Moderate trend: interpolate between min and max
-          const ratio = trendStrength / this.trendStrengthThreshold;
           profitMultiple = this.atrProfitMultipleMin + 
-            (this.atrProfitMultipleMax - this.atrProfitMultipleMin) * ratio;
+            (this.atrProfitMultipleMax - this.atrProfitMultipleMin) * (trendStrength / this.trendStrengthThreshold);
         }
         
         if (price >= entryPrice + profitMultiple * a) exit = true;
-        
-        // Trend reversal - price below trend EMA
         if (price < trendEmaVal) exit = true;
 
         if (exit) {
           signals.push({ pair, targetPosition: 0 });
-          this.lastTradeBar[pair] = idx;
-          delete this.stops[pair];
-          delete this.peaks[pair];
-          delete this.entries[pair];
+          this.breakout.lastTradeBar[pair] = idx;
+          delete this.breakout.stops[pair];
+          delete this.breakout.peaks[pair];
+          delete this.breakout.entries[pair];
+          continue;
         }
-        continue;
       }
 
-      // === ENTRY LOGIC ===
-      if (idx - last < this.cooldown) continue;
-      if (openPositions >= this.maxPositions) continue;
-
-      // 1. Trend filter: price must be above trend EMA
-      if (price < trendEmaVal) continue;
-
-      // 2. Adaptive breakout filter based on volatility regime
-      const breakoutLookback = atrPctRank >= this.volRegimeThreshold 
-        ? this.breakoutLookbackLow   // High vol: shorter lookback (more sensitive)
-        : this.breakoutLookbackHigh;  // Low vol: longer lookback (more conservative)
+      // === MEAN-REVERSION STRATEGY MANAGEMENT ===
+      const meanRevPos = currentPos < 0 && this.meanRev.entries[pair] ? currentPos : 0;
       
-      if (idx < breakoutLookback) continue;
-      const channelHigh = Math.max(...highs.slice(idx - breakoutLookback, idx));
-      if (price < channelHigh * 0.998) continue;
+      if (meanRevPos < 0) {
+        const entryPrice = this.meanRev.entries[pair];
+        const targetPrice = this.meanRev.targets[pair];
+        const stopPrice = this.meanRev.stops[pair];
+        
+        let exit = false;
+        if (price >= targetPrice) exit = true;
+        if (price >= stopPrice) exit = true;
+        if (!isNaN(rsiVal) && rsiVal > this.rsiOverbought) exit = true;
 
-      // 3. Volatility expansion: ATR must be in top percentile
-      if (atrPctRank < this.atrPercentileThreshold) continue;
+        if (exit) {
+          signals.push({ pair, targetPosition: 0 });
+          this.meanRev.lastTradeBar[pair] = idx;
+          delete this.meanRev.entries[pair];
+          delete this.meanRev.targets[pair];
+          delete this.meanRev.stops[pair];
+          continue;
+        }
+      }
 
-      // 4. Momentum filter: positive rate of change
-      if (isNaN(rocVal) || rocVal <= 0) continue;
+      if (currentPos !== 0) continue;
 
-      // Position sizing with volatility scaling
-      const atrPct = a / price;
-      const volScale = Math.min(2.0, Math.max(0.5, 0.015 / atrPct));
-      const maxPos = totalEquity * this.basePositionSize * volScale;
+      // === BREAKOUT ENTRY LOGIC ===
+      const breakoutLast = this.breakout.lastTradeBar[pair] || -Infinity;
+      if (idx - breakoutLast >= this.cooldown && openPositions < this.maxPositions) {
+        if (price >= trendEmaVal && !isNaN(atrPctRank)) {
+          const breakoutLookback = atrPctRank >= this.volRegimeThreshold 
+            ? this.breakoutLookbackLow 
+            : this.breakoutLookbackHigh;
+          
+          if (idx >= breakoutLookback) {
+            const channelHigh = Math.max(...highs.slice(idx - breakoutLookback, idx));
+            if (price >= channelHigh * 0.998 && atrPctRank >= this.atrPercentileThreshold) {
+              if (!isNaN(rocVal) && rocVal > 0) {
+                const atrPct = a / price;
+                const volScale = Math.min(2.0, Math.max(0.5, 0.015 / atrPct));
+                const maxPos = totalEquity * this.basePositionSize * breakoutWeight * volScale;
 
-      signals.push({ pair, targetPosition: maxPos });
-      this.lastTradeBar[pair] = idx;
-      this.peaks[pair] = price;
-      this.stops[pair] = price - this.atrTrailMultiple * a;
-      this.entries[pair] = price;
+                signals.push({ pair, targetPosition: maxPos });
+                this.breakout.lastTradeBar[pair] = idx;
+                this.breakout.peaks[pair] = price;
+                this.breakout.stops[pair] = price - this.atrTrailMultiple * a;
+                this.breakout.entries[pair] = price;
+                continue;
+              }
+            }
+          }
+        }
+      }
+
+      // === MEAN-REVERSION ENTRY LOGIC ===
+      const meanRevLast = this.meanRev.lastTradeBar[pair] || -Infinity;
+      if (idx - meanRevLast >= this.cooldown && openPositions < this.maxPositions) {
+        if (!isNaN(bbLower) && !isNaN(rsiVal)) {
+          // Short on overbought bounce from upper band
+          if (price >= bbUpper * 0.998 && rsiVal > this.rsiOverbought) {
+            const maxPos = totalEquity * this.basePositionSize * meanRevWeight;
+            
+            signals.push({ pair, targetPosition: -maxPos });
+            this.meanRev.lastTradeBar[pair] = idx;
+            this.meanRev.entries[pair] = price;
+            this.meanRev.targets[pair] = price * (1 - this.mrProfitTarget);
+            this.meanRev.stops[pair] = price * (1 + this.mrStopLoss);
+            continue;
+          }
+        }
+      }
     }
+    
     return signals;
   }
 }

@@ -20,6 +20,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const STATE_FILE = join(ROOT, 'data', 'daemon-state.json');
 
+// Catch unhandled rejections — log and continue, don't crash
+process.on('unhandledRejection', (reason) => {
+  console.error(`\n⚠️  Unhandled rejection (caught by daemon): ${reason?.message || reason}`);
+  if (reason?.stack) console.error(reason.stack);
+});
+process.on('uncaughtException', (err) => {
+  console.error(`\n⚠️  Uncaught exception (caught by daemon): ${err.message}`);
+  if (err.stack) console.error(err.stack);
+});
+
 // Parse CLI args
 const args = process.argv.slice(2);
 function getArg(name, defaultVal) {

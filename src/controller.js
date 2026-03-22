@@ -96,21 +96,30 @@ async function generateMutation(currentCode, experimentSummary, patternInsights,
   const model = CONFIG.research.mutationModel;
   const prompt = buildMutationPrompt(currentCode, experimentSummary, patternInsights, currentScore);
 
-  // Try Bankr LLM Gateway first if configured
+  // Try Bankr LLM Gateway with retry (up to 3 attempts)
   if (CONFIG.bankr.useBankrLLM && CONFIG.bankr.apiKey) {
-    try {
-      return await callBankrLLM(prompt);
-    } catch (e) {
-      console.log(`  [bankr-llm] Failed: ${e.message}, falling back...`);
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        return await callBankrLLM(prompt);
+      } catch (e) {
+        console.log(`  [bankr-llm] Attempt ${attempt}/3 failed: ${e.message}`);
+        if (attempt < 3) {
+          const backoff = attempt * 5000;
+          console.log(`  [bankr-llm] Retrying in ${backoff / 1000}s...`);
+          await new Promise(r => setTimeout(r, backoff));
+        } else {
+          console.log('  [bankr-llm] All retries exhausted, falling back...');
+        }
+      }
     }
   }
 
-  // Fall back to direct model call (for OpenClaw agent context)
-  // In production, this runs inside an OpenClaw sub-agent
+  // Fall back: no LLM available, return null code to signal skip
+  console.log('  [mutation] No LLM available — skipping this experiment');
   return {
-    hypothesis: 'Manual mutation — implement via OpenClaw agent',
-    code: currentCode,
-    description: prompt,
+    hypothesis: 'No LLM available — skipped',
+    code: null,
+    description: '',
   };
 }
 
@@ -419,33 +428,58 @@ export async function runAutoresearch(options = {}) {
       break;
     }
 
-    // Generate mutation
-    const mutation = await mutationFn(currentCode, experimentSummary, patternInsights, currentScore);
+    // Generate mutation (with error isolation)
+    let mutation;
+    try {
+      mutation = await mutationFn(currentCode, experimentSummary, patternInsights, currentScore);
+    } catch (mutErr) {
+      console.log(`  [error] Mutation generation failed: ${mutErr.message}`);
+      experimentCount++;
+      detectPlateau(false, currentScore);
+      continue;
+    }
 
     if (!mutation || !mutation.code) {
       console.log('  [skip] No valid mutation generated');
       experimentCount++;
+      detectPlateau(false, currentScore);
       continue;
     }
 
-    // Run experiment
-    const { kept, record } = await runExperiment(allPairs, mutation);
+    // Run experiment (with error isolation — one bad experiment must not crash the loop)
+    let kept = false;
+    let record = null;
+    try {
+      const result = await runExperiment(allPairs, mutation);
+      kept = result.kept;
+      record = result.record;
+    } catch (expErr) {
+      console.log(`  [error] Experiment crashed: ${expErr.message}`);
+      // Make sure strategy is reverted
+      try { await revertStrategy(); } catch { /* best effort */ }
+      kept = false;
+    }
+
     experimentCount++;
-    batchResults.push(record);
+    if (record) batchResults.push(record);
 
     // Plateau detection — auto-escalate if stuck
     const latestIndex = await loadIndex();
     detectPlateau(kept, latestIndex.bestScore);
 
-    if (onExperiment) {
-      await onExperiment(record, experimentCount, maxExperiments);
+    if (onExperiment && record) {
+      try {
+        await onExperiment(record, experimentCount, maxExperiments);
+      } catch { /* non-critical */ }
     }
 
     // Batch reporting
     if (batchResults.length >= batchSize) {
       batchCount++;
       if (onBatch) {
-        await onBatch(batchResults, batchCount, index);
+        try {
+          await onBatch(batchResults, batchCount, index);
+        } catch { /* non-critical */ }
       }
       batchResults.length = 0;
     }
