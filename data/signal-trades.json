@@ -69,5 +69,117 @@
     "signal": "HOLD",
     "price": 2070.34,
     "tx": null
+  },
+  {
+    "cycle": 5,
+    "ts": "2026-03-22T13:40:36.503Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 6,
+    "ts": "2026-03-22T13:41:36.628Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 7,
+    "ts": "2026-03-22T13:42:36.749Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 8,
+    "ts": "2026-03-22T13:43:36.929Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 9,
+    "ts": "2026-03-22T13:44:37.051Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 10,
+    "ts": "2026-03-22T13:45:37.198Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 11,
+    "ts": "2026-03-22T13:46:37.324Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 12,
+    "ts": "2026-03-22T13:47:37.473Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 13,
+    "ts": "2026-03-22T13:48:37.579Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 14,
+    "ts": "2026-03-22T13:49:37.769Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 15,
+    "ts": "2026-03-22T13:50:37.891Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 16,
+    "ts": "2026-03-22T13:51:38.041Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 17,
+    "ts": "2026-03-22T13:52:38.201Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 18,
+    "ts": "2026-03-22T13:53:38.321Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 19,
+    "ts": "2026-03-22T13:54:38.453Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 20,
+    "ts": "2026-03-22T13:55:38.570Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
   }
 ]

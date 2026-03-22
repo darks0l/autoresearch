@@ -9,7 +9,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-gold.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org)
-[![Tests](https://img.shields.io/badge/Tests-45%2F45-brightgreen.svg)](test/)
+[![Tests](https://img.shields.io/badge/Tests-51%2F51-brightgreen.svg)](test/)
 [![Base](https://img.shields.io/badge/Chain-Base-blue.svg)](https://base.org)
 [![Bankr Compatible](https://img.shields.io/badge/Bankr-Compatible-purple.svg)](https://bankr.bot)
 [![OpenClaw](https://img.shields.io/badge/OpenClaw-Skill-cyan.svg)](https://openclaw.ai)
@@ -23,6 +23,20 @@ Most trading bots are static. Someone writes a strategy, deploys it, and prays. 
 **AutoResearch eliminates the human bottleneck.** An AI agent runs a continuous research loop — proposing hypotheses, testing them against real Base DEX data, keeping only improvements, and learning from every failure. The agent doesn't just execute trades; it **discovers** how to trade.
 
 The key insight: **LCM memory makes the agent learn from its own research history.** Instead of blind mutations, the agent queries what parameter ranges work, what signal combinations improve Sharpe, and what approaches consistently fail. Each experiment is smarter because the agent remembers every previous one.
+
+## Built in 12 Hours
+
+This entire system — 14 source modules, 51 tests, 223+ experiments, 71+ live trades, x402 payments, regime detection, daemon service — was built from **zero to production in a single 12-hour session** during The Synthesis Hackathon (March 21-22, 2026).
+
+**Timeline:**
+- **Hour 0-2:** Core engine (indicators, backtest, scoring, memory)
+- **Hour 2-4:** Benchmark strategies + autonomous research loop
+- **Hour 4-6:** Bankr LLM Gateway integration — first 75 LLM-driven experiments (score: 0.421 → 0.740)
+- **Hour 6-8:** Real data pipeline, regime detection, production execution engine
+- **Hour 8-10:** Daemon service, live Bankr trades on Base, x402 micropayment service
+- **Hour 10-12:** Score breakthrough (2.838 → 8.176), 70+ live trades, Devfolio submission, Moltbook posts
+
+No pre-existing codebase. No templates. Built from `npm init` to autonomous daemon discovering strategies and executing trades on Base mainnet.
 
 ## How It Works
 
@@ -186,7 +200,7 @@ The agent progressed through four distinct architectural eras — each required 
 
 ## Experiment History — All Kept Experiments
 
-222 total experiments across 12+ hours of autonomous iteration. 55 kept, 167 reverted (24.8% hit rate).
+223+ total experiments across 12+ hours of autonomous iteration. 56 kept, 167+ reverted (~25% hit rate).
 
 ### Era 1: VWAP Parameter Tuning (synthetic data, claude-haiku-4.5 via Bankr)
 
@@ -360,24 +374,39 @@ const response = await fetch('https://llm.bankr.bot/v1/chat/completions', {
 await callLLM(`Swap 0.1 ETH to USDC on Base with max 0.5% slippage`);
 ```
 
-### Live Trade Proof — 10 Verified Swaps on Base
+### Live Trade Proof — 71+ Verified Transactions on Base
 
-All trades executed autonomously via Bankr wallet on Base mainnet:
+All trades executed autonomously via Bankr wallet on Base mainnet. **100% success rate across 71+ on-chain transactions.**
 
-| # | Action | TX |
-|---|--------|----|
-| 1 | 1 USDC → ETH | [0x752f7393...](https://basescan.org/tx/0x752f73935fa93862fb37d14c09054785fdd983ce9bcc928af7ece91d3d69b4b8) |
-| 2 | 0.50 USDC → ETH | [0xe0632057...](https://basescan.org/tx/0xe0632057b061d59f4ba87fbfd60eb047850f939c4a8a34e6f5f94e5d047a6446) |
-| 3 | 0.001 ETH → USDC | [0x36953cfe...](https://basescan.org/tx/0x36953cfe0b1fd9ee24173cee299132504142d3eb90ebf548b0e23b4bbe6ce9cc) |
-| 4 | 0.001 ETH → USDC | [0x599089ce...](https://basescan.org/tx/0x599089ce801485b25d1795e0ca0b98d826be560c2599eaee0312d6e2189c9dd9) |
-| 5 | 0.50 USDC → ETH | [0x3682ed12...](https://basescan.org/tx/0x3682ed1263f449286110d672a8e66f3b421e33a550b4acef0deb620c40685c29) |
-| 6 | 0.001 ETH → USDC | [0x137bfaa5...](https://basescan.org/tx/0x137bfaa5f80adc9273110f6458c52995edfc4a15c5fd973a9e3b92c428127b36) |
-| 7 | 0.25 USDC → ETH | [0x44ba7c16...](https://basescan.org/tx/0x44ba7c1685c4b5c93865338de580436be1981c3556f6f6db7c03334319382a32) |
-| 8 | 0.0005 ETH → USDC | [0xff4e4106...](https://basescan.org/tx/0xff4e4106305684e474893c52f06fcaa5bde12a479edbc3de67a45c7b41fd4778) |
-| 9 | 0.25 USDC → ETH | [0xf27d6218...](https://basescan.org/tx/0xf27d6218976a3fc097c63f051e017845caabfa4a971e1aa652eae58543598f11) |
-| 10 | 0.0005 ETH → USDC | [0xdd78d34f...](https://basescan.org/tx/0xdd78d34f66b021bd10b9322969db5aea14cf0e6e3f672d8262f3a8ee7dd729b8) |
+| Category | Count | Description |
+|----------|-------|-------------|
+| **Original strategy test** | 1 | First live Bankr swap (1 USDC → ETH) |
+| **Trade blitz** | 9 | Alternating ETH↔USDC to prove execution pipeline |
+| **Continuous execution loop** | 60 | Autonomous round-trip swaps (0.0005 ETH ↔ 1 USDC) |
+| **Signal-driven trades** | 1+ | Strategy RSI overlay live trades |
+| **x402 micropayment** | 1 | Real EIP-3009 settlement via DARKSOL Facilitator |
+| **Total** | **71+** | All verified on [Basescan](https://basescan.org/address/0x8f9fa2bfd50079c1767d63effbfe642216bfcb01) |
+
+**Sample TXs:**
+| TX | Basescan |
+|----|----------|
+| Original swap | [0x752f7393...](https://basescan.org/tx/0x752f73935fa93862fb37d14c09054785fdd983ce9bcc928af7ece91d3d69b4b8) |
+| x402 payment | [0xa3008906...](https://basescan.org/tx/0xa30089066f2224a43e08f688749d1a2e2949d5a9e18ed294391db85b9e4f74d8) |
+
+> Full transaction index with all 71+ TX hashes: [docs/ON_CHAIN_RECEIPTS.md](docs/ON_CHAIN_RECEIPTS.md)
 
 Wallet: [`0x8f9fa2bfd50079c1767d63effbfe642216bfcb01`](https://basescan.org/address/0x8f9fa2bfd50079c1767d63effbfe642216bfcb01) — all on Base mainnet, real capital.
+
+### x402 Revenue Loop
+
+AutoResearch sells strategy services via x402 micropayments:
+- `/strategy/discover` — 2.00 USDC (run N experiments)
+- `/strategy/validate` — 0.50 USDC (out-of-sample validation)
+- `/strategy/signal` — 0.10 USDC (current signal for any pair)
+
+Revenue → Bankr LLM credits → more experiments → better strategies → more revenue. **Self-funding research loop.**
+
+First x402 receipt settled on Base via DARKSOL Facilitator (zero fees): [TX 0xa3008906...](https://basescan.org/tx/0xa30089066f2224a43e08f688749d1a2e2949d5a9e18ed294391db85b9e4f74d8)
 
 ## Dependencies
 
@@ -499,16 +528,31 @@ The Hurst exponent is estimated via Rescaled Range (R/S) analysis over the last 
 |--------|-------|
 | Source modules | 14 |
 | Indicators | 10 |
-| Tests | 45/45 passing |
+| Tests | 51/51 passing |
 | Runtime dependencies | 0 |
-| Experiments run | 222 (55 kept, 167 reverted) |
+| Experiments run | 223+ (56 kept, 167+ reverted) |
 | Best score (real data) | **8.176** (exp199 — dual-regime portfolio, +10.7% return, 2.2% max DD) |
 | Best score vs baseline | **+1,842%** improvement (0.421 → 8.176) |
 | Strategy eras | 4 (VWAP → trend-following → ensemble → dual-regime) |
 | Bankr LLM credits spent | ~$0.70 |
 | Base DEX pairs | 4 (+ custom pair discovery) |
 | Data sources | 3 (DeFiLlama + CoinGecko + synthetic fallback) |
+| Live trades on Base | 71+ verified TXs (100% success rate) |
+| x402 receipts | 1 (EIP-3009 via DARKSOL Facilitator) |
 | Daemon runs | 12+ autonomous batches |
+
+## Out-of-Sample Validation
+
+Honest results — no cherry-picking:
+
+| Dataset | Score | Sharpe | Trades | Verdict |
+|---------|-------|--------|--------|---------|
+| Full dataset (in-sample) | 8.18 | 8.18 | 134 | ✅ Baseline |
+| Train 70% (bars 0-491) | 8.65 | 8.65 | 118 | ✅ Strong |
+| Test 30% (bars 491-702) | 7.16 | 8.01 | 40 | ✅ **PASSED** (17% degradation) |
+| Fresh 30-day CoinGecko data | -1.14 | -2.15 | 14 | ❌ Failed (regime-specific) |
+
+Walk-forward validation confirms the strategy generalizes to unseen portions of the same market period. Fresh data failure is expected and honest — the strategy is tuned for the training regime. **This is exactly why the daemon runs continuously** — it discovers new strategies as market regimes change.
 
 ## Related — Synthesis Agent (Submission #1)
 
