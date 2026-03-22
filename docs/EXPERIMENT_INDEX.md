@@ -1,8 +1,8 @@
 # AutoResearch — Experiment Index
 
-> 171 experiments, 40 kept, 131 rejected
-> Best: 7.327 (exp170) | Baseline: 0.421
-> Last updated: 2026-03-22T00:37:54.887Z
+> 208 experiments, 50 kept, 158 rejected
+> Best: 8.176 (exp199) | Baseline: 0.421
+> Last updated: 2026-03-22T06:40:16.154Z
 
 | # | Score | Status | Hypothesis |
 |---|-------|--------|------------|
@@ -177,3 +177,40 @@
 | exp168 | 3.934 | ❌ | Replace the fixed breakout lookback period with a volatility-adaptive lookback t |
 | exp169 | 4.159 | ❌ | Replace the fixed 50-period trend EMA with a dual-timeframe trend confirmation s |
 | exp170 | 7.327 | ✅ | Replace the fixed volatility expansion filter (ATR > ATR_SMA) with a percentile- |
+| baseline | 7.327 | ✅ | Initial strategy — baseline measurement |
+| exp172 | 6.763 | ❌ | Replace the fixed 60th percentile ATR threshold with a dynamic adaptive threshol |
+| exp173 | 4.875 | ❌ | Replace the fixed 3.0x ATR profit target with a momentum-adaptive profit target  |
+| exp174 | 7.01 | ❌ | Replace the fixed 1.5x ATR trailing stop with a momentum-adaptive trailing stop  |
+| exp175 | 6.837 | ❌ | Replace the fixed 0.998 breakout threshold (allowing near-misses) with a strict  |
+| exp176 | 5.372 | ❌ | Replace the single 50-period trend EMA with a dual-timeframe trend filter using  |
+| exp177 | 3.13 | ❌ | Replace the fixed 20-period Donchian breakout with a volume-weighted momentum fi |
+| exp178 | 6.419 | ❌ | Replace the fixed 60th percentile ATR threshold with a dual-timeframe ATR expans |
+| exp179 | -999 | ❌ | Replace the rigid 20-period Donchian breakout with a volume-adjusted momentum en |
+| exp180 | 7.875 | ✅ | Replace the fixed 3.0x ATR profit target with an adaptive profit target that sca |
+| baseline | 7.875 | ✅ | Initial strategy — baseline measurement |
+| exp182 | -999 | ❌ | Replace the fixed 20-period Donchian breakout with a volume-weighted price momen |
+| exp183 | 7.991 | ✅ | Replace the fixed 20-period Donchian breakout with a dynamic breakout lookback t |
+| exp184 | 7.082 | ❌ | Replace the trailing stop mechanism with a volatility-adjusted Chandelier Exit t |
+| exp185 | 0.248 | ❌ | Replace the adaptive Donchian breakout with a dual-timeframe momentum confirmati |
+| exp186 | 5.436 | ❌ | Replace the adaptive Donchian breakout with a strict triple-confirmation entry r |
+| exp187 | -0.022 | ❌ | Replace the adaptive Donchian breakout with a momentum-quality filter requiring  |
+| exp188 | 4.585 | ❌ | Replace the adaptive Donchian breakout with a momentum acceleration filter requi |
+| exp189 | 1.439 | ❌ | Replace the percentile-based ATR expansion filter with a dual-condition volatili |
+| baseline | 7.991 | ✅ | Initial strategy — baseline measurement |
+| exp191 | 5.389 | ❌ | Implement a regime-switching framework that runs the current pure-trend strategy |
+| exp192 | 3.126 | ❌ | Implement a multi-timeframe momentum confirmation system that synthesizes fast ( |
+| exp193 | 7.991 | ❌ | Implement a multi-pair correlation divergence overlay that detects when correlat |
+| exp194 | 1.649 | ❌ | Implement a triple-timeframe momentum cascade system that synthesizes fast (5-ba |
+| exp195 | -999 | ❌ | Implement a multi-stage exit cascade system that exits positions in thirds at pr |
+| exp196 | 7.092 | ❌ | Implement a dual-strategy ensemble system that runs both the existing pure-trend |
+| baseline | 7.991 | ✅ | Initial strategy — baseline measurement |
+| exp198 | 7.991 | ❌ | Implement a multi-pair correlation divergence detection system that identifies w |
+| exp199 | 8.176 | ✅ | Implement a dual-strategy portfolio allocation system that runs a pure breakout  |
+| exp200 | 4.828 | ❌ | Implement a volatility-regime adaptive exit system that dynamically switches bet |
+| exp201 | 8.176 | ❌ | Manual mutation — implement via OpenClaw agent |
+| baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
+| exp203 | 7.993 | ❌ | Implement a volatility-breakout filter that only enters mean-reversion shorts wh |
+| exp204 | 7.668 | ❌ | Implement a triple-timeframe momentum confirmation system that synthesizes 4-bar |
+| baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
+| exp206 | -3.345 | ❌ | Implement a multi-timeframe confluence system that synthesizes 6-hour, 12-hour,  |
+| baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
