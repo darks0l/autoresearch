@@ -360,15 +360,24 @@ const response = await fetch('https://llm.bankr.bot/v1/chat/completions', {
 await callLLM(`Swap 0.1 ETH to USDC on Base with max 0.5% slippage`);
 ```
 
-### Live Trade Proof
+### Live Trade Proof — 10 Verified Swaps on Base
 
-First live trade executed via Bankr on Base:
+All trades executed autonomously via Bankr wallet on Base mainnet:
 
-```
-Swap 1 USDC → 0.000464 ETH on Base
-TX: 0x752f73935fa93862fb37d14c09054785fdd983ce9bcc928af7ece91d3d69b4b8
-```
-[Verify on Basescan →](https://basescan.org/tx/0x752f73935fa93862fb37d14c09054785fdd983ce9bcc928af7ece91d3d69b4b8)
+| # | Action | TX |
+|---|--------|----|
+| 1 | 1 USDC → ETH | [0x752f7393...](https://basescan.org/tx/0x752f73935fa93862fb37d14c09054785fdd983ce9bcc928af7ece91d3d69b4b8) |
+| 2 | 0.50 USDC → ETH | [0xe0632057...](https://basescan.org/tx/0xe0632057b061d59f4ba87fbfd60eb047850f939c4a8a34e6f5f94e5d047a6446) |
+| 3 | 0.001 ETH → USDC | [0x36953cfe...](https://basescan.org/tx/0x36953cfe0b1fd9ee24173cee299132504142d3eb90ebf548b0e23b4bbe6ce9cc) |
+| 4 | 0.001 ETH → USDC | [0x599089ce...](https://basescan.org/tx/0x599089ce801485b25d1795e0ca0b98d826be560c2599eaee0312d6e2189c9dd9) |
+| 5 | 0.50 USDC → ETH | [0x3682ed12...](https://basescan.org/tx/0x3682ed1263f449286110d672a8e66f3b421e33a550b4acef0deb620c40685c29) |
+| 6 | 0.001 ETH → USDC | [0x137bfaa5...](https://basescan.org/tx/0x137bfaa5f80adc9273110f6458c52995edfc4a15c5fd973a9e3b92c428127b36) |
+| 7 | 0.25 USDC → ETH | [0x44ba7c16...](https://basescan.org/tx/0x44ba7c1685c4b5c93865338de580436be1981c3556f6f6db7c03334319382a32) |
+| 8 | 0.0005 ETH → USDC | [0xff4e4106...](https://basescan.org/tx/0xff4e4106305684e474893c52f06fcaa5bde12a479edbc3de67a45c7b41fd4778) |
+| 9 | 0.25 USDC → ETH | [0xf27d6218...](https://basescan.org/tx/0xf27d6218976a3fc097c63f051e017845caabfa4a971e1aa652eae58543598f11) |
+| 10 | 0.0005 ETH → USDC | [0xdd78d34f...](https://basescan.org/tx/0xdd78d34f66b021bd10b9322969db5aea14cf0e6e3f672d8262f3a8ee7dd729b8) |
+
+Wallet: [`0x8f9fa2bfd50079c1767d63effbfe642216bfcb01`](https://basescan.org/address/0x8f9fa2bfd50079c1767d63effbfe642216bfcb01) — all on Base mainnet, real capital.
 
 ## Dependencies
 

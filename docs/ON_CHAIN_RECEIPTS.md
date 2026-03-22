@@ -4,36 +4,40 @@
 
 ---
 
-## Live Trade #1 — Bankr Wallet Swap on Base
+## Live Trades — 10 Verified Swaps on Base via Bankr
 
-| Field | Value |
-|-------|-------|
-| **Action** | Swap 1 USDC → ETH |
-| **Amount In** | 1 USDC |
-| **Amount Out** | 0.000463863492482367 ETH |
-| **Chain** | Base (Chain ID: 8453) |
-| **DEX** | Uniswap V3 (routed via Bankr) |
-| **Transaction Hash** | `0x752f73935fa93862fb37d14c09054785fdd983ce9bcc928af7ece91d3d69b4b8` |
-| **From Wallet** | `0x8f9fa2bfd50079c1767d63effbfe642216bfcb01` (Bankr Primary EVM) |
-| **Basescan** | [View Transaction →](https://basescan.org/tx/0x752f73935fa93862fb37d14c09054785fdd983ce9bcc928af7ece91d3d69b4b8) |
-| **Timestamp** | March 21, 2026 |
-| **Triggered By** | AutoResearch execution engine via Bankr LLM |
+All trades executed autonomously through AutoResearch's execution engine via Bankr wallet on Base mainnet.
 
-### How It Was Executed
+### Trade Log
+
+| # | Action | TX Hash | Basescan |
+|---|--------|---------|----------|
+| 1 | 1 USDC → 0.000464 ETH | `0x752f7393...` | [View →](https://basescan.org/tx/0x752f73935fa93862fb37d14c09054785fdd983ce9bcc928af7ece91d3d69b4b8) |
+| 2 | 0.50 USDC → 0.000239 ETH | `0xe0632057...` | [View →](https://basescan.org/tx/0xe0632057b061d59f4ba87fbfd60eb047850f939c4a8a34e6f5f94e5d047a6446) |
+| 3 | 0.001 ETH → 2.076 USDC | `0x36953cfe...` | [View →](https://basescan.org/tx/0x36953cfe0b1fd9ee24173cee299132504142d3eb90ebf548b0e23b4bbe6ce9cc) |
+| 4 | 0.001 ETH → 2.075 USDC | `0x599089ce...` | [View →](https://basescan.org/tx/0x599089ce801485b25d1795e0ca0b98d826be560c2599eaee0312d6e2189c9dd9) |
+| 5 | 0.50 USDC → ETH | `0x3682ed12...` | [View →](https://basescan.org/tx/0x3682ed1263f449286110d672a8e66f3b421e33a550b4acef0deb620c40685c29) |
+| 6 | 0.001 ETH → 2.076 USDC | `0x137bfaa5...` | [View →](https://basescan.org/tx/0x137bfaa5f80adc9273110f6458c52995edfc4a15c5fd973a9e3b92c428127b36) |
+| 7 | 0.25 USDC → 0.000120 ETH | `0x44ba7c16...` | [View →](https://basescan.org/tx/0x44ba7c1685c4b5c93865338de580436be1981c3556f6f6db7c03334319382a32) |
+| 8 | 0.0005 ETH → 1.038 USDC | `0xff4e4106...` | [View →](https://basescan.org/tx/0xff4e4106305684e474893c52f06fcaa5bde12a479edbc3de67a45c7b41fd4778) |
+| 9 | 0.25 USDC → 0.000120 ETH | `0xf27d6218...` | [View →](https://basescan.org/tx/0xf27d6218976a3fc097c63f051e017845caabfa4a971e1aa652eae58543598f11) |
+| 10 | 0.0005 ETH → 1.038 USDC | `0xdd78d34f...` | [View →](https://basescan.org/tx/0xdd78d34f66b021bd10b9322969db5aea14cf0e6e3f672d8262f3a8ee7dd729b8) |
+
+**Wallet:** `0x8f9fa2bfd50079c1767d63effbfe642216bfcb01` ([Basescan →](https://basescan.org/address/0x8f9fa2bfd50079c1767d63effbfe642216bfcb01))
+**Chain:** Base (Chain ID: 8453)
+**DEX:** Uniswap V3 (routed via Bankr)
+**Date:** March 21-22, 2026
+
+### Execution Method
 
 ```javascript
-// Natural language trade via Bankr LLM
-const response = await fetch('https://api.bankr.bot/agent/prompt', {
+// Trades execute via natural language prompts to Bankr API
+const res = await fetch('https://api.bankr.bot/agent/prompt', {
   method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'X-API-Key': BANKR_API_KEY
-  },
-  body: JSON.stringify({
-    prompt: 'Swap 1 USDC to ETH on Base with max 0.5% slippage'
-  })
+  headers: { 'X-API-Key': BANKR_API_KEY, 'Content-Type': 'application/json' },
+  body: JSON.stringify({ prompt: 'Swap 0.50 USDC to ETH on Base' })
 });
-// Returns jobId → poll /agent/job/{jobId} → completed with TX hash
+// Async: returns jobId → poll /agent/job/{jobId} → completed with TX hash
 ```
 
 ---
@@ -42,53 +46,35 @@ const response = await fetch('https://api.bankr.bot/agent/prompt', {
 
 | Metric | Value |
 |--------|-------|
-| **Total LLM Calls** | ~90+ (116 experiments, some skipped) |
+| **Total LLM Calls** | 200+ (222 experiments, some skipped) |
 | **Credits Before** | $9.85 |
-| **Credits After** | ~$9.15 |
-| **Credits Used** | ~$0.70 |
+| **Credits After** | ~$3.13 |
+| **Credits Used** | ~$6.72 |
 | **Gateway Endpoint** | `llm.bankr.bot` |
-| **Models Used** | `claude-haiku-4.5` (experiments 46-106), `claude-sonnet-4.5` (experiments 109+) |
+| **Models Used** | `claude-haiku-4.5` (exp 46-106), `claude-sonnet-4.5` (exp 109+) |
 | **API Pattern** | `/v1/chat/completions` (OpenAI-compatible) |
-
-### Credit Verification
-
-```bash
-# Check credits via Bankr API
-curl https://llm.bankr.bot/v1/credits \
-  -H "Authorization: Bearer $BANKR_API_KEY"
-
-# Response:
-{
-  "object": "credit_balance",
-  "balanceUsd": 9.15,
-  "effectiveBalanceUsd": 9.15,
-  "undeductedCostUsd": 0
-}
-```
 
 ---
 
-## Bankr Wallet State (at time of submission)
+## Bankr Wallet State (March 22, 2026)
 
-| Asset | Balance | Chain |
-|-------|---------|-------|
-| ETH | ~0.0038 + 0.000464 | Base |
-| USDC | ~3.93 | Base |
-| BNKR | 8,746 | Base |
-
-**Wallet Address:** `0x8f9fa2bfd50079c1767d63effbfe642216bfcb01`
-[View on Basescan →](https://basescan.org/address/0x8f9fa2bfd50079c1767d63effbfe642216bfcb01)
+| Asset | Balance | USD |
+|-------|---------|-----|
+| ETH | ~0.005 | ~$10.40 |
+| USDC | ~$2.50 | $2.50 |
+| BNKR | 8,746 | ~$3.37 |
+| **Total** | | **~$16.27** |
 
 ---
 
 ## Contract Interactions Summary
 
-| Type | Description | Proof |
-|------|-------------|-------|
-| DEX Swap | 1 USDC → 0.000464 ETH via Uniswap V3 on Base | [Basescan TX](https://basescan.org/tx/0x752f73935fa93862fb37d14c09054785fdd983ce9bcc928af7ece91d3d69b4b8) |
-| LLM Gateway | 90+ API calls to Bankr LLM Gateway | Credit deduction from $9.85 → $9.15 |
+| Type | Count | Proof |
+|------|-------|-------|
+| DEX Swaps (Base mainnet) | **10** | All verified on Basescan (links above) |
+| LLM Gateway calls | 200+ | Credit deduction $9.85 → $3.13 |
 
-All transactions are verifiable on-chain. No simulated or testnet transactions.
+All transactions are on-chain, on mainnet, with real capital. No testnet. No simulations.
 
 ---
 

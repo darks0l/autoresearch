@@ -1,0 +1,12 @@
+[
+  {"trade": "Swap 0.50 USDC to ETH on Base", "tx": "0xe0632057b061d59f4ba87fbfd60eb047850f939c4a8a34e6f5f94e5d047a6446", "success": true},
+  {"trade": "Swap 0.001 ETH to USDC on Base", "tx": "0x36953cfe0b1fd9ee24173cee299132504142d3eb90ebf548b0e23b4bbe6ce9cc", "success": true},
+  {"trade": "Swap 0.50 USDC to ETH on Base", "tx": null, "success": false, "note": "below minimum threshold"},
+  {"trade": "Swap 0.001 ETH to USDC on Base", "tx": "0x599089ce801485b25d1795e0ca0b98d826be560c2599eaee0312d6e2189c9dd9", "success": true},
+  {"trade": "Swap 0.50 USDC to ETH on Base", "tx": "0x3682ed1263f449286110d672a8e66f3b421e33a550b4acef0deb620c40685c29", "success": true},
+  {"trade": "Swap 0.001 ETH to USDC on Base", "tx": "0x137bfaa5f80adc9273110f6458c52995edfc4a15c5fd973a9e3b92c428127b36", "success": true},
+  {"trade": "Swap 0.25 USDC to ETH on Base", "tx": "0x44ba7c1685c4b5c93865338de580436be1981c3556f6f6db7c03334319382a32", "success": true},
+  {"trade": "Swap 0.0005 ETH to USDC on Base", "tx": "0xff4e4106305684e474893c52f06fcaa5bde12a479edbc3de67a45c7b41fd4778", "success": true},
+  {"trade": "Swap 0.25 USDC to ETH on Base", "tx": "0xf27d6218976a3fc097c63f051e017845caabfa4a971e1aa652eae58543598f11", "success": true},
+  {"trade": "Swap 0.0005 ETH to USDC on Base", "tx": "0xdd78d34f66b021bd10b9322969db5aea14cf0e6e3f672d8262f3a8ee7dd729b8", "success": true}
+]
