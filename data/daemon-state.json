@@ -1,11 +1,11 @@
 {
-  "totalRuns": 5,
-  "totalExperiments": 30,
-  "totalKept": 5,
-  "bestScore": 3.777,
-  "bestExperiment": "exp151",
+  "totalRuns": 7,
+  "totalExperiments": 37,
+  "totalKept": 7,
+  "bestScore": 7.327,
+  "bestExperiment": "exp170",
   "startedAt": "2026-03-21T19:30:58.597Z",
-  "lastRunAt": "2026-03-21T21:31:31.691Z",
+  "lastRunAt": "2026-03-22T00:34:28.452Z",
   "history": [
     {
       "run": 1,
@@ -51,6 +51,24 @@
       "kept": 2,
       "bestScore": 3.777,
       "hitRate": "13.3%"
+    },
+    {
+      "run": 6,
+      "at": "2026-03-21T23:31:23.889Z",
+      "model": "claude-sonnet-4.5",
+      "experiments": 1,
+      "kept": 1,
+      "bestScore": 5.31,
+      "hitRate": "100.0%"
+    },
+    {
+      "run": 7,
+      "at": "2026-03-22T00:34:28.452Z",
+      "model": "claude-sonnet-4.5",
+      "experiments": 6,
+      "kept": 1,
+      "bestScore": 7.327,
+      "hitRate": "16.7%"
     }
   ]
 }

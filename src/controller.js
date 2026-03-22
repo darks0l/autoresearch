@@ -67,17 +67,28 @@ From indicators.js: sma, ema, rsi, macd, bollingerBands, atr, vwap, roc, stddev,
 - ONLY modify the Strategy class and its methods
 - Keep the same import structure
 - Do NOT add new dependencies
-- Each change should be ONE atomic hypothesis (e.g., "try RSI period 8 instead of 14")
-- Focus on: parameter tuning, signal combinations, entry/exit timing, position sizing
+- Each change should be ONE atomic hypothesis
+
+## IMPORTANT: Score Plateau at ~8.0
+The strategy has been heavily optimized through ${currentScore > 7 ? '190+' : 'many'} experiments.
+Parameter tweaks (changing periods, thresholds, multipliers) are EXHAUSTED — they no longer improve score.
+DO NOT propose small parameter changes. They WILL fail.
+
+## What WILL work (pick ONE):
+1. **Multi-pair correlation signals** — use cross-pair divergence/convergence as entry triggers (e.g., ETH/USDC diverging from cbETH/WETH = opportunity)
+2. **Ensemble sub-strategies** — run 2-3 different strategies and combine their signals with weighted voting or conviction scoring
+3. **Regime-switching** — detect trending vs ranging vs volatile regimes and run completely different strategy logic in each
+4. **Adaptive exit cascading** — trail with multiple stops at different ATR multiples, scale out in thirds
+5. **Mean-reversion overlay** — add a secondary counter-trend system that fires ONLY during range-bound detected regimes (Hurst < 0.5)
+6. **Cross-timeframe momentum** — synthesize multi-period signals (e.g., 4h trend direction from hourly bars using rolling windows of 4, 8, 24 bars)
 
 ## Data Context
 - Base DEX pairs: ETH/USDC (Uniswap V3), AERO/USDC (Aerodrome), cbETH/WETH
-- Hourly bars, ~700-bar history window (REAL CoinGecko market data, NOT synthetic)
+- Hourly bars, ~700-bar history window (REAL CoinGecko market data)
 - Fee model: 2-5 bps maker/taker + 1-3 bps slippage
 - Scoring: sharpe × √(min(trades/50, 1.0)) - drawdown_penalty - turnover_penalty
-- IMPORTANT: Current strategy was previously optimized on SYNTHETIC data and has NEGATIVE score on real data
-- The strategy needs STRUCTURAL changes, not just parameter tweaks
-- Consider: completely different signal logic, regime-based switching, trend-following instead of mean-reversion
+- The onBar method receives (barData, portfolio) where barData has: pair, open, high, low, close, volume, timestamp
+- portfolio has: cash, positions (Map), equity, getPositionSize(pair)
 
 ## Regime Detection (available)
 The system includes a regime detector (src/regime.js) with:
@@ -85,10 +96,9 @@ The system includes a regime detector (src/regime.js) with:
 - Volatility regime (ATR percentile ranking)
 - Hurst exponent (R/S analysis for mean-reversion vs trending)
 You can import and use: detectRegime, trendStrength, volatilityRegime from '../src/regime.js'
-Consider: regime-adaptive position sizing, trend-following in trending regimes, wider thresholds in high-vol
 
 ## Your Task
-Propose ONE specific change. You MUST respond in this EXACT format:
+Propose ONE STRUCTURAL change (not a parameter tweak). You MUST respond in this EXACT format:
 
 HYPOTHESIS: [one sentence describing what you're changing and why]
 
