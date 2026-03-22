@@ -1,11 +1,11 @@
 {
-  "totalRuns": 10,
-  "totalExperiments": 40,
+  "totalRuns": 11,
+  "totalExperiments": 41,
   "totalKept": 7,
-  "bestScore": 7.327,
-  "bestExperiment": "exp170",
+  "bestScore": 8.15,
+  "bestExperiment": "exp223",
   "startedAt": "2026-03-21T19:30:58.597Z",
-  "lastRunAt": "2026-03-22T09:41:32.923Z",
+  "lastRunAt": "2026-03-22T13:30:51.859Z",
   "history": [
     {
       "run": 1,

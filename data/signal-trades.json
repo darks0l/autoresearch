@@ -1,0 +1,73 @@
+[
+  {
+    "cycle": 1,
+    "ts": "2026-03-22T13:29:04.955Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 1,
+    "ts": "2026-03-22T13:30:21.305Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 2,
+    "ts": "2026-03-22T13:32:21.475Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 1,
+    "ts": "2026-03-22T13:33:26.390Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 2,
+    "ts": "2026-03-22T13:34:26.573Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 3,
+    "ts": "2026-03-22T13:35:26.694Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 1,
+    "ts": "2026-03-22T13:35:55.203Z",
+    "signal": "BUY",
+    "price": 2070.34,
+    "tx": "unknown",
+    "pnl": null
+  },
+  {
+    "cycle": 2,
+    "ts": "2026-03-22T13:37:36.095Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 3,
+    "ts": "2026-03-22T13:38:36.261Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  },
+  {
+    "cycle": 4,
+    "ts": "2026-03-22T13:39:36.399Z",
+    "signal": "HOLD",
+    "price": 2070.34,
+    "tx": null
+  }
+]
