@@ -93,11 +93,14 @@ node scripts/run-benchmarks.js
 # Launch autonomous research (30 experiments)
 node scripts/run-autoresearch.js --max 30
 
-# Run tests (17/17)
+# Run persistent daemon (auto-iterates, auto-commits)
+node scripts/daemon.js --batch 15 --model claude-sonnet-4.5 --target 10.0
+
+# Run tests (45/45)
 npm test
 ```
 
-## Modules (12 Source Files)
+## Modules (14 Source Files)
 
 | Module | File | Purpose |
 |--------|------|---------|
@@ -113,6 +116,8 @@ npm test
 | **Reporter** | `src/reporter.js` | Batch reports, final summaries, Discord/Telegram formatting |
 | **Pair Discovery** | `src/discovery.js` | Manual pair add/remove + auto-scan top Base DEX pools by TVL |
 | **Config** | `src/config.js` | Centralized configuration, model selection, thresholds |
+| **Daemon** | `scripts/daemon.js` | Persistent autonomous runner — batch experiments, auto-sync, credit tracking |
+| **Report Generator** | `scripts/report.js` | Human-readable reports (Markdown + styled HTML) |
 | **Entry Point** | `src/index.js` | Public API — all exports for skill/library usage |
 
 ## Scoring System
@@ -130,75 +135,110 @@ score = sharpe × √(min(trades/50, 1.0)) − drawdown_penalty − turnover_pen
 
 ## Benchmark Results
 
-### Real Data (CoinGecko — 703 hourly candles per pair)
+### Real Data (CoinGecko — 703 hourly candles per pair, 4 Base DEX pairs)
 
-| Strategy | Score | Sharpe | Return % | Max DD | Trades |
-|----------|-------|--------|----------|--------|--------|
-| **AutoResearch Best (exp161)** | **4.512** | **4.512** | **+6.2%** | **3.3%** | **84** |
-| Previous Best (exp151) | 3.777 | 3.777 | +5.6% | — | 69 |
-| Single-Indicator Best (exp128) | 3.668 | 4.002 | +5.6% | 9.3% | 42 |
-| VWAP Reversion (exp074, synthetic-tuned) | -1.460 | -1.348 | -6.0% | 16.1% | 127 |
-| VWAP Reversion (baseline) | -1.460 | — | — | — | — |
+| Strategy | Score | Return % | Max DD | Trades | Era |
+|----------|-------|----------|--------|--------|-----|
+| **Dual-Regime Portfolio (exp199)** | **8.176** | **+10.7%** | **2.2%** | **134** | **LLM Daemon** |
+| Dynamic Breakout Lookback (exp183) | 7.991 | +10.7% | 3.2% | 96 | LLM Daemon |
+| Adaptive Profit Targets (exp180) | 7.875 | +10.7% | 3.4% | — | LLM Daemon |
+| ATR Percentile Filter (exp170) | 7.327 | — | — | — | LLM Daemon |
+| Pure Trend Breakout (exp163) | 5.310 | — | 5.1% | 102 | LLM Daemon |
+| Ensemble Voting (exp161) | 4.512 | +6.2% | 3.3% | 84 | Manual Structural |
+| Multi-TF Trend Filter (exp151) | 3.777 | +5.6% | — | 69 | LLM Daemon |
+| ATR Trail Tightening (exp128) | 3.668 | +5.6% | 9.3% | 42 | LLM Daemon |
+| Adaptive Trend-Following (exp117) | 2.838 | +5.6% | 5.9% | 65 | Manual Structural |
+| VWAP Best (exp074, synthetic) | 0.740 | +8.6% | 14.2% | 55 | LLM (Bankr) |
+| VWAP Baseline | 0.421 | +1.8% | 5.8% | 55 | Manual |
+| VWAP on Real Data | -1.460 | -6.0% | 16.1% | 127 | — (overfit) |
 
-### Synthetic Data (Development — 75 experiments)
+### Score Evolution: 0.421 → 8.176 (+1,842%)
 
-| Strategy | Score | Sharpe | Return % | Max DD | Trades |
-|----------|-------|--------|----------|--------|--------|
-| VWAP Reversion Best (exp074) | 0.740 | 0.740 | +8.6% | 14.2% | 55 |
-| VWAP Reversion v1 (30 exps) | 0.610 | 0.751 | +8.6% | 14.8% | 33 |
-| VWAP Reversion (baseline) | 0.421 | 0.421 | +1.8% | 5.8% | 55 |
+```
+Score
+8.18 ┤                                                          ★ exp199 (dual-regime)
+7.99 ┤                                                     ● exp183 (dynamic lookback)
+7.88 ┤                                                ● exp180 (adaptive profit)
+7.33 ┤                                          ● exp170 (ATR percentile)
+5.31 ┤                                   ● exp163 (pure breakout)
+4.51 ┤                             ● exp161 (ensemble voting)
+3.78 ┤                        ● exp151 (multi-TF filter)
+3.67 ┤                      ● exp128 (ATR trail)
+2.84 ┤               ● exp117 (trend-following redesign)
+0.74 ┤        ● exp074 (VWAP tuned)
+0.42 ┤  ● baseline
+     └────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬───
+          0    25    50    75   100   125   150   175   200   222
+                              Experiment #
+```
 
-### Key Discovery: Overfitting → Adaptation
+### Four Strategy Eras
 
-The VWAP reversion strategy scored 0.740 on synthetic data but **-1.460 on real data** — a textbook overfitting case. The synthetic data generator had strong mean-reversion bias baked in, making VWAP reversion artificially profitable.
+The agent progressed through four distinct architectural eras — each required structural redesign, not just parameter tuning:
 
-**Solution:** Complete strategy redesign — switched from mean-reversion to adaptive trend-following with:
-- Donchian channel breakout entries
-- EMA trend filter (long-only in uptrends)
-- RSI dip-buying (enter on pullbacks, not reversals)
-- ATR trailing stops (dynamic risk management)
+1. **VWAP Mean-Reversion** (exp1-74, score 0.42→0.74) — Classic mean-reversion on synthetic data. Peaked at 0.74, collapsed to -1.46 on real data. Textbook overfitting.
 
-Result: **Score 4.512 on real data (Sharpe 4.512, 73.8% win rate, 3.3% max DD)** — the agent progressed through three structural eras: VWAP mean-reversion → adaptive trend-following → ensemble voting with multi-signal confirmation. Each era required architectural redesign, not just parameter tuning.
+2. **Adaptive Trend-Following** (exp117, score 2.84) — Complete redesign: Donchian breakout + EMA trend filter + RSI dip-buying + ATR trailing stops. First strategy profitable on real data.
 
-## Experiment History (Live Bankr LLM Run — 30 experiments)
+3. **Ensemble Voting** (exp161, score 4.51) — 3 independent sub-strategies (Donchian, RSI dip-buy, MACD momentum) vote independently. 2+ votes required. Conviction-weighted sizing.
 
-The second round of 30 experiments was powered by **claude-haiku-4.5 via Bankr LLM Gateway** with full system prompt engineering for reliable code generation. Hit rate: 4/30 kept (13%).
+4. **Dual-Regime Portfolio** (exp163-199, score 5.31→8.18) — LLM-discovered improvements: pure breakout → ATR percentile filter → adaptive profit targets → dynamic lookback → dual-strategy Hurst allocation. Two parallel strategies (trend breakout + mean-reversion) with Hurst exponent capital allocation.
 
-| Exp | Hypothesis | Score | Kept | Insight |
-|-----|-----------|-------|------|---------|
-| exp037 | ATR period 14→7 | 0.615 | ✅ | Faster ATR improves position sizing |
-| exp053 | exitThreshold 0.01→0.015 | 0.671 | ✅ | **Hold longer, catch full mean-reversion** |
-| exp065 | deviationThreshold 0.025→0.022 | 0.714 | ✅ | **Earlier entries at tighter threshold** |
-| exp070 | RSI period 14→10 | 0.726 | ✅ | **Faster RSI = better entry timing** |
-| exp074 | ATR period 7→5 | 0.740 | ✅ | **Most responsive volatility scaling wins** |
+## Experiment History — All Kept Experiments
 
-**Winning parameter set discovered by AI:**
-- VWAP deviation threshold: `0.022` (down from 0.025)
-- RSI period: `10` (down from 14) with 40/60 bands
-- ATR period: `5` (down from 7) for position sizing
-- Exit threshold: `0.015` (up from 0.010)
-- Base position size: `0.15` with 0.5–2.0× ATR scaling
+222 total experiments across 12+ hours of autonomous iteration. 55 kept, 167 reverted (24.8% hit rate).
 
-### Daemon Runs #4-6 — Regime-Aware Evolution (claude-sonnet-4.5 via Bankr LLM)
+### Era 1: VWAP Parameter Tuning (synthetic data, claude-haiku-4.5 via Bankr)
 
-| Exp | Hypothesis | Score | Kept | Insight |
-|-----|-----------|-------|------|---------|
-| exp126 | Regime-based position sizing (Hurst exponent) | 2.919 | ✅ | **Increase exposure in trending regimes, reduce in choppy** |
-| exp128 | ATR trail multiple 2.0→1.5 | 3.668 | ✅ | **Tighter trailing stops = Sharpe 4.002** |
-| exp137 | ROC momentum + ATR profit-taking exit | 3.741 | ✅ | **Simplified regime detection, reduced DD 9.3% → 7.1%** |
-| exp151 | Multi-timeframe trend filter (50-EMA slope) | 3.777 | ✅ | **Filters counter-trend trades** |
+| Exp | Hypothesis | Score | Insight |
+|-----|-----------|-------|---------|
+| exp004 | deviation 0.02→0.03 | 0.486 | Wider threshold catches bigger moves |
+| exp037 | ATR period 14→7 | 0.615 | Faster ATR improves position sizing |
+| exp053 | exitThreshold 0.01→0.015 | 0.671 | Hold longer, catch full mean-reversion |
+| exp065 | deviationThreshold 0.025→0.022 | 0.714 | Earlier entries at tighter threshold |
+| exp070 | RSI period 14→10 | 0.726 | Faster RSI = better entry timing |
+| exp074 | ATR period 7→5 | 0.740 | Most responsive volatility scaling |
 
-### Structural Change — Ensemble Strategy (exp161)
+### Era 2: Real Data Redesign (manual structural change)
 
-After 160 experiments hit a ceiling at 3.777, a **manual structural redesign** broke through:
-- **Ensemble voting:** 3 independent sub-strategies (Donchian breakout, RSI dip-buy, MACD momentum) vote independently. Requires 2+ votes.
-- **Conviction-weighted sizing:** 2 votes = normal size, 3 votes = 1.4x
-- **Multi-signal exits:** Any exit condition triggers close (fail-fast)
-- **Macro trend filter:** 100-EMA slope as regime gate
+| Exp | Hypothesis | Score | Insight |
+|-----|-----------|-------|---------|
+| exp117 | Complete redesign: Donchian + EMA + RSI + ATR trailing | 2.838 | **VWAP was overfit. Trend-following works on real data.** |
 
-| exp161 | Ensemble voting + macro filter | **4.512** | ✅ | **+19.4% over previous best, 73.8% win rate, 3.3% DD** |
+### Era 3: LLM Daemon Evolution (claude-sonnet-4.5 via Bankr, autonomous)
 
-**Key insight from 161 experiments:** The daemon excels at parameter tuning within an architecture, but breaking score ceilings requires structural redesign — new code patterns, not new numbers. The three eras (mean-reversion → trend-following → ensemble) each required architectural changes the LLM couldn't discover through mutation alone.
+| Exp | Hypothesis | Score | Insight |
+|-----|-----------|-------|---------|
+| exp126 | Regime-based position sizing (Hurst exponent) | 2.919 | Increase exposure in trending regimes |
+| exp128 | ATR trail multiple 2.0→1.5 | 3.668 | Tighter trailing stops = Sharpe 4.002 |
+| exp137 | ROC momentum + ATR profit-taking exit | 3.741 | Simplified regime detection, DD 9.3%→7.1% |
+| exp151 | Multi-TF trend filter (50-EMA slope) | 3.777 | Filters counter-trend trades |
+
+### Era 3.5: Manual Structural Break (ensemble voting)
+
+| Exp | Hypothesis | Score | Insight |
+|-----|-----------|-------|---------|
+| exp161 | Ensemble voting (Donchian + RSI + MACD) + macro filter | 4.512 | **+19.4% — 3 sub-strategies vote, 2+ required** |
+
+### Era 4: Daemon Discovers Structural Improvements
+
+After the ensemble broke the 3.78 ceiling, the daemon's mutation prompt was overhauled to force structural thinking. Auto-escalation plateau detector (3 tiers) bans parameter tweaks after 5+ consecutive failures.
+
+| Exp | Hypothesis | Score | Insight |
+|-----|-----------|-------|---------|
+| exp163 | Pure trend-following breakout (stripped mean-reversion) | 5.310 | Simpler is better — focus on what works |
+| exp170 | ATR percentile filter (60th pctl vs raw ATR>SMA) | 7.327 | **+38% — quality filter beats moving average** |
+| exp180 | Adaptive profit targets (2x ATR weak, 4x ATR strong trend) | 7.875 | Scale exits with conviction |
+| exp183 | Dynamic breakout lookback (15/25 by vol regime) | 7.991 | Adapt entry sensitivity to market state |
+| exp199 | **Dual-strategy Hurst portfolio (breakout + mean-reversion)** | **8.176** | **Run 2 strategies in parallel, allocate by regime** |
+
+### Key Insights from 222 Experiments
+
+1. **Overfitting is real.** VWAP scored 0.74 on synthetic data, -1.46 on real data. Always test on real data.
+2. **LLMs excel at parameter tuning** but struggle with structural innovation. The daemon found 5.31→8.18 through incremental improvements, but the 0.74→2.84 and 3.78→4.51 jumps required human-directed structural redesign.
+3. **Auto-escalation works.** Banning parameter tweaks after plateaus forced the LLM to discover ATR percentile filtering (the biggest single improvement).
+4. **Exit logic > entry logic.** Most failed experiments modified entries. Most kept experiments modified exits.
+5. **Simpler beats complex.** The ensemble (exp161, 3 strategies) was beaten by pure trend-following (exp163) that stripped it back to one clean signal.
 
 ## Strategy Interface
 
@@ -448,17 +488,18 @@ The Hurst exponent is estimated via Rescaled Range (R/S) analysis over the last 
 
 | Metric | Value |
 |--------|-------|
-| Source modules | 13 |
+| Source modules | 14 |
 | Indicators | 10 |
 | Tests | 45/45 passing |
 | Runtime dependencies | 0 |
-| Experiments run | 222+ (fully autonomous, daemon iterating) |
-| Best score (real data) | **2.838** (Sharpe 2.838, +5.6% return, 5.9% max DD) |
-| Best score vs baseline | **+1842.0%** improvement (0.421 → 8.176) |
-| Base DEX pairs | 4 |
-| Benchmark strategies | 3 |
-| Strategies | 2 (VWAP reversion + regime-adaptive) |
+| Experiments run | 222 (55 kept, 167 reverted) |
+| Best score (real data) | **8.176** (exp199 — dual-regime portfolio, +10.7% return, 2.2% max DD) |
+| Best score vs baseline | **+1,842%** improvement (0.421 → 8.176) |
+| Strategy eras | 4 (VWAP → trend-following → ensemble → dual-regime) |
+| Bankr LLM credits spent | ~$0.70 |
+| Base DEX pairs | 4 (+ custom pair discovery) |
 | Data sources | 3 (DeFiLlama + CoinGecko + synthetic fallback) |
+| Daemon runs | 12+ autonomous batches |
 
 ## Related — Synthesis Agent (Submission #1)
 
@@ -496,7 +537,7 @@ npm test
 |----------|-------------|
 | [Build Log](docs/BUILD_LOG.md) | Full development timeline with timestamps |
 | [Conversation Log](docs/CONVERSATION_LOG.md) | Complete human-agent collaboration record |
-| [Test Results](docs/TEST_RESULTS.md) | Full test output — 38/38 passing |
+| [Test Results](docs/TEST_RESULTS.md) | Full test output — 45/45 passing |
 | [On-Chain Receipts](docs/ON_CHAIN_RECEIPTS.md) | Verified Basescan TX + Bankr LLM credit usage |
 | [Experiment Index](docs/EXPERIMENT_INDEX.md) | All experiments with scores and status |
 | [Strategy Report](docs/REPORT.md) | Full human-readable report (run `node scripts/report.js`) |

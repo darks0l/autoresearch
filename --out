@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoResearch — Strategy Report</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      background: #0a0a0a; color: #e0e0e0;
+      max-width: 960px; margin: 0 auto; padding: 2rem;
+      line-height: 1.6;
+    }
+    h1 { color: #ffd700; font-size: 1.8rem; margin: 1.5rem 0 0.5rem; border-bottom: 2px solid #333; padding-bottom: 0.5rem; }
+    h2 { color: #b8860b; font-size: 1.3rem; margin: 1.5rem 0 0.5rem; }
+    blockquote { color: #888; border-left: 3px solid #333; padding-left: 1rem; margin: 0.5rem 0; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+    th { background: #1a1a1a; color: #ffd700; text-align: left; padding: 0.5rem; border: 1px solid #333; }
+    td { padding: 0.5rem; border: 1px solid #222; }
+    tr:nth-child(even) { background: #111; }
+    tr:hover { background: #1a1a0a; }
+    code { background: #1a1a1a; padding: 0.15rem 0.4rem; border-radius: 3px; color: #ffd700; font-size: 0.9em; }
+    pre { background: #111; padding: 1rem; border-radius: 6px; overflow-x: auto; margin: 1rem 0; border: 1px solid #333; }
+    strong { color: #ffd700; }
+    li { margin: 0.3rem 0 0.3rem 1.5rem; }
+    hr { border: none; border-top: 1px solid #333; margin: 2rem 0; }
+    a { color: #b8860b; }
+    .emoji { font-size: 1.2em; }
+  </style>
+</head>
+<body>
+<h1>📊 AutoResearch — Strategy Report</h1>
+<blockquote>Generated: 2026-03-22T10:52:59.339Z</blockquote>
+<blockquote>Engine: @darksol/autoresearch | Pairs: 4 | Model: claude-sonnet-4.5</blockquote>
+<br>
+<h2>Summary</h2>
+<br>
+<table>
+<thead><tr><th>Metric</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Total experiments</td><td><strong>222</strong></td></tr>
+<tr><td>Kept / Reverted</td><td>55 ✅ / 167 ❌</td></tr>
+<tr><td>Hit rate</td><td>24.8%</td></tr>
+<tr><td>Best score</td><td><strong>8.176</strong> (exp199)</td></tr>
+<tr><td>Best Sharpe</td><td>8.176</td></tr>
+<tr><td>Total return</td><td>6.64%</td></tr>
+<tr><td>Max drawdown</td><td>2.18%</td></tr>
+<tr><td>Trades</td><td>134</td></tr>
+<tr><td>Win rate</td><td>53.7%</td></tr>
+<tr><td>Score target</td><td>20</td></tr>
+</tbody></table>
+<br>
+<h2>Strategy Evolution</h2>
+<br>
+Each row is a <strong>kept</strong> experiment — a change that improved the strategy.
+<br>
+<table>
+<thead><tr><th>#</th><th>Score</th><th>Δ</th><th>Hypothesis</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>0.421</td><td>—</td></tr>
+<tr><td>4</td><td>0.486</td><td>+0.065</td></tr>
+<tr><td>11</td><td>0.523</td><td>+0.037</td></tr>
+<tr><td>12</td><td>0.531</td><td>+0.008</td></tr>
+<tr><td>17</td><td>0.540</td><td>+0.009</td></tr>
+<tr><td>29</td><td>0.564</td><td>+0.024</td></tr>
+<tr><td>30</td><td>0.610</td><td>+0.046</td></tr>
+<tr><td>baseline</td><td>0.610</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>0.610</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>0.610</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>exp037</td><td>0.615</td><td>+0.005</td><td>I will decrease the <code>atrPeriod</code> from 14 to 7 to make the position sizing more reactive to recent vol</td></tr>
+<tr><td>baseline</td><td>0.615</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>0.615</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>exp053</td><td>0.671</td><td>+0.056</td><td>I will increase the <code>exitThreshold</code> from 0.01 to 0.015 to hold winning positions longer before takin</td></tr>
+<tr><td>exp065</td><td>0.714</td><td>+0.043</td><td>I will reduce the <code>deviationThreshold</code> from 0.025 to 0.022 to capture earlier mean-reversion entries</td></tr>
+<tr><td>exp070</td><td>0.726</td><td>+0.012</td><td>Reduce the <code>rsiPeriod</code> from 14 to 10 to make RSI more responsive to recent price action, allowing ea</td></tr>
+<tr><td>exp074</td><td>0.740</td><td>+0.014</td><td>Reduce the <code>atrPeriod</code> from 7 to 5 to make volatility-based position sizing more responsive to recen</td></tr>
+<tr><td>baseline</td><td>0.740</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>0.157</td><td>-0.583</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>-1.460</td><td>-1.617</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>-1.460</td><td>—</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>-1.460</td><td>—</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>-1.460</td><td>—</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>exp117</td><td>2.838</td><td>—</td><td>Complete strategy redesign: switched from VWAP reversion (overfit to synthetic data) to adaptive tre</td></tr>
+<tr><td>baseline</td><td>2.838</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>2.838</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>2.838</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>2.838</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>exp126</td><td>2.919</td><td>+0.081</td><td>Add regime-based position sizing by increasing exposure in trending regimes (high Hurst exponent) an</td></tr>
+<tr><td>exp127</td><td>2.923</td><td>+0.004</td><td>Reduce Hurst lookback from 50 to 30 bars to make regime detection more responsive to recent market c</td></tr>
+<tr><td>exp128</td><td>3.668</td><td>+0.745</td><td>Reduce ATR trail multiple from 2.0 to 1.5 to exit winners earlier and capture profits more aggressiv</td></tr>
+<tr><td>baseline</td><td>3.668</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>exp137</td><td>3.741</td><td>+0.073</td><td>Replace the Hurst exponent regime detection with a simpler trend-following approach using price mome</td></tr>
+<tr><td>exp151</td><td>3.777</td><td>+0.036</td><td>Add a multi-timeframe trend filter that calculates a longer-term 50-period EMA slope and only takes</td></tr>
+<tr><td>baseline</td><td>3.777</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>exp161</td><td>4.512</td><td>+0.735</td><td>STRUCTURAL: Ensemble voting (Donchian+RSI+MACD) + macro 100-EMA trend filter + conviction-weighted s</td></tr>
+<tr><td>baseline</td><td>4.512</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>exp163</td><td>5.310</td><td>+0.798</td><td>Replace the ensemble voting system with a pure trend-following breakout strategy that only enters wh</td></tr>
+<tr><td>baseline</td><td>5.310</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>exp170</td><td>7.327</td><td>+2.017</td><td>Replace the fixed volatility expansion filter (ATR > ATR_SMA) with a percentile-based expansion trig</td></tr>
+<tr><td>baseline</td><td>7.327</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>exp180</td><td>7.875</td><td>+0.548</td><td>Replace the fixed 3.0x ATR profit target with an adaptive profit target that scales with trend stren</td></tr>
+<tr><td>baseline</td><td>7.875</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>exp183</td><td>7.991</td><td>+0.116</td><td>Replace the fixed 20-period Donchian breakout with a dynamic breakout lookback that adapts to volati</td></tr>
+<tr><td>baseline</td><td>7.991</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>7.991</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>exp199</td><td>8.176</td><td>+0.185</td><td>Implement a dual-strategy portfolio allocation system that runs a pure breakout strategy and a count</td></tr>
+<tr><td>baseline</td><td>8.176</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>8.176</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>8.176</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>8.176</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>8.176</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>8.176</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>8.176</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>baseline</td><td>8.176</td><td>0.000</td><td>Initial strategy — baseline measurement</td></tr>
+</tbody></table>
+<br>
+<h2>Score Progression</h2>
+<br>
+``<code>
+1        ███ 0.421
+4        ███ 0.486
+11       ███ 0.523
+12       ███ 0.531
+17       ███ 0.540
+29       ███ 0.564
+30       ████ 0.610
+baseline ████ 0.610
+baseline ████ 0.610
+baseline ████ 0.610
+exp037   ████ 0.615
+baseline ████ 0.615
+baseline ████ 0.615
+exp053   ████ 0.671
+exp065   ████ 0.714
+exp070   ████ 0.726
+exp074   █████ 0.740
+baseline █████ 0.740
+baseline █ 0.157
+baseline █ -1.460
+baseline █ -1.460
+baseline █ -1.460
+baseline █ -1.460
+exp117   █████████████████ 2.838
+baseline █████████████████ 2.838
+baseline █████████████████ 2.838
+baseline █████████████████ 2.838
+baseline █████████████████ 2.838
+exp126   ██████████████████ 2.919
+exp127   ██████████████████ 2.923
+exp128   ██████████████████████ 3.668
+baseline ██████████████████████ 3.668
+exp137   ███████████████████████ 3.741
+exp151   ███████████████████████ 3.777
+baseline ███████████████████████ 3.777
+exp161   ████████████████████████████ 4.512
+baseline ████████████████████████████ 4.512
+exp163   ████████████████████████████████ 5.310
+baseline ████████████████████████████████ 5.310
+exp170   █████████████████████████████████████████████ 7.327
+baseline █████████████████████████████████████████████ 7.327
+exp180   ████████████████████████████████████████████████ 7.875
+baseline ████████████████████████████████████████████████ 7.875
+exp183   █████████████████████████████████████████████████ 7.991
+baseline █████████████████████████████████████████████████ 7.991
+baseline █████████████████████████████████████████████████ 7.991
+exp199   ██████████████████████████████████████████████████ 8.176
+baseline ██████████████████████████████████████████████████ 8.176
+baseline ██████████████████████████████████████████████████ 8.176
+baseline ██████████████████████████████████████████████████ 8.176
+baseline ██████████████████████████████████████████████████ 8.176
+baseline ██████████████████████████████████████████████████ 8.176
+baseline ██████████████████████████████████████████████████ 8.176
+baseline ██████████████████████████████████████████████████ 8.176
+baseline ██████████████████████████████████████████████████ 8.176
+</code>`<code>
+<br>
+<h2>Pair Analysis</h2>
+<br>
+*Per-pair breakdown not available — run a backtest with </code>--verbose<code> to generate pair-level stats.*
+<br>
+<h2>Current Strategy</h2>
+<br>
+<table>
+<thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>hurstLookback</td><td></code>50<code></td></tr>
+<tr><td>trendEmaPeriod</td><td></code>50<code></td></tr>
+<tr><td>breakoutLookbackLow</td><td></code>15<code></td></tr>
+<tr><td>breakoutLookbackHigh</td><td></code>25<code></td></tr>
+<tr><td>volRegimeThreshold</td><td></code>70<code></td></tr>
+<tr><td>atrPeriod</td><td></code>10<code></td></tr>
+<tr><td>atrPercentileLookback</td><td></code>50<code></td></tr>
+<tr><td>atrPercentileThreshold</td><td></code>60<code></td></tr>
+<tr><td>rocPeriod</td><td></code>10<code></td></tr>
+<tr><td>atrTrailMultiple</td><td></code>1.5<code></td></tr>
+<tr><td>atrProfitMultipleMin</td><td></code>2.0<code></td></tr>
+<tr><td>atrProfitMultipleMax</td><td></code>4.0<code></td></tr>
+<tr><td>trendStrengthThreshold</td><td></code>0.10<code></td></tr>
+<tr><td>bbPeriod</td><td></code>20<code></td></tr>
+<tr><td>bbStdDev</td><td></code>2.0<code></td></tr>
+<tr><td>rsiPeriod</td><td></code>14<code></td></tr>
+<tr><td>rsiOversold</td><td></code>30<code></td></tr>
+<tr><td>rsiOverbought</td><td></code>70<code></td></tr>
+<tr><td>mrProfitTarget</td><td></code>0.015<code></td></tr>
+<tr><td>mrStopLoss</td><td></code>0.01<code></td></tr>
+<tr><td>basePositionSize</td><td></code>0.15<code></td></tr>
+<tr><td>maxPositions</td><td></code>3<code></td></tr>
+<tr><td>cooldown</td><td></code>3<code></td></tr>
+</tbody></table>
+<br>
+<h2>Active Trading Pairs</h2>
+<br>
+<table>
+<thead><tr><th>Pair</th><th>DEX</th><th>Fee</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td>ETH/USDC</td><td>uniswap</td><td>0.05%</td><td>🔒 built-in</td></tr>
+<tr><td>ETH/USDC-30</td><td>uniswap</td><td>0.30%</td><td>🔒 built-in</td></tr>
+<tr><td>cbETH/WETH</td><td>uniswap</td><td>0.05%</td><td>🔒 built-in</td></tr>
+<tr><td>AERO/USDC</td><td>aerodrome</td><td>—</td><td>🔒 built-in</td></tr>
+</tbody></table>
+<br>
+<h2>Top 10 Experiments</h2>
+<br>
+<table>
+<thead><tr><th>Rank</th><th>ID</th><th>Score</th><th>Sharpe</th><th>Status</th><th>Hypothesis</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>exp199</td><td>8.176</td><td>8.176</td><td>✅</td><td>Implement a dual-strategy portfolio allocation system that runs a pure breakout</td></tr>
+<tr><td>2</td><td>exp201</td><td>8.176</td><td>8.176</td><td>❌</td><td>Manual mutation — implement via OpenClaw agent</td></tr>
+<tr><td>3</td><td>baseline</td><td>8.176</td><td>8.176</td><td>✅</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>4</td><td>baseline</td><td>8.176</td><td>8.176</td><td>✅</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>5</td><td>baseline</td><td>8.176</td><td>8.176</td><td>✅</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>6</td><td>baseline</td><td>8.176</td><td>8.176</td><td>✅</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>7</td><td>baseline</td><td>8.176</td><td>8.176</td><td>✅</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>8</td><td>baseline</td><td>8.176</td><td>8.176</td><td>✅</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>9</td><td>baseline</td><td>8.176</td><td>8.176</td><td>✅</td><td>Initial strategy — baseline measurement</td></tr>
+<tr><td>10</td><td>baseline</td><td>8.176</td><td>8.176</td><td>✅</td><td>Initial strategy — baseline measurement</td></tr>
+</tbody></table>
+<br>
+<h2>Failure Patterns</h2>
+<br>
+Last 10 rejected experiments — avoid repeating these:
+<br>
+<li><strong>exp206</strong> (-3.345): Implement a multi-timeframe confluence system that synthesizes 6-hour, 12-hour, and 24-hour trend signals by calculating</li>
+<li><strong>exp209</strong> (5.269): Implement a cross-pair correlation-based entry filter that only triggers breakout trades when the pair shows divergence </li>
+<li><strong>exp210</strong> (7.843): Implement a volatility-regime-adaptive position scaling system that dynamically adjusts position sizes based on real-tim</li>
+<li><strong>exp213</strong> (7.137): Implement a cross-pair momentum divergence system that detects when a pair shows strong breakout signals while the baske</li>
+<li><strong>exp214</strong> (1.090): Implement a multi-pair relative strength ranking system that only enters breakout trades on pairs showing top-quartile m</li>
+<li><strong>exp215</strong> (-999.000): Implement a volatility-adaptive stop-loss layering system that uses multiple ATR-based stops at different distances (tig</li>
+<li><strong>exp216</strong> (5.575): Implement a volatility-adaptive multi-timeframe momentum filter that synthesizes 3 different lookback periods (short=5, </li>
+<li><strong>exp219</strong> (4.457): Implement a cross-pair volume-weighted momentum scoring system that ranks pairs by their volume-adjusted ROC strength an</li>
+<li><strong>exp220</strong> (-999.000): Implement a position-sizing pyramid system that adds to winning breakout trades in thirds (entry at breakout, +33% at +1</li>
+<li><strong>exp221</strong> (-999.000): Implement a volatility-adjusted partial profit-taking system that scales out 50% of breakout positions at +2 ATR profit </li>
+<br>
+<h2>Configuration</h2>
+<br>
+<table>
+<thead><tr><th>Setting</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Mutation model</td><td></code>claude-sonnet-4.5<code></td></tr>
+<tr><td>Max experiments</td><td>200</td></tr>
+<tr><td>Score target</td><td>20</td></tr>
+<tr><td>Backtest capital</td><td>$100,000</td></tr>
+<tr><td>Trade floor</td><td>50 trades</td></tr>
+<tr><td>Max drawdown limit</td><td>50%</td></tr>
+<tr><td>Bankr LLM</td><td>✅ Enabled</td></tr>
+<tr><td>Live mode</td><td>📝 Paper</td></tr>
+</tbody></table>
+<br>
+---
+*Generated by </code>node scripts/report.js` — @darksol/autoresearch* 🌑
+</body>
+</html>
