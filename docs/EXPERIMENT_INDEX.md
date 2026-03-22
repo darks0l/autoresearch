@@ -1,8 +1,8 @@
 # AutoResearch — Experiment Index
 
-> 212 experiments, 52 kept, 160 rejected
+> 222 experiments, 55 kept, 167 rejected
 > Best: 8.176 (exp199) | Baseline: 0.421
-> Last updated: 2026-03-22T07:39:53.153Z
+> Last updated: 2026-03-22T09:44:26.373Z
 
 | # | Score | Status | Hypothesis |
 |---|-------|--------|------------|
@@ -218,3 +218,13 @@
 | exp209 | 5.269 | ❌ | Implement a cross-pair correlation-based entry filter that only triggers breakou |
 | exp210 | 7.843 | ❌ | Implement a volatility-regime-adaptive position scaling system that dynamically  |
 | baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
+| baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
+| exp213 | 7.137 | ❌ | Implement a cross-pair momentum divergence system that detects when a pair shows |
+| exp214 | 1.09 | ❌ | Implement a multi-pair relative strength ranking system that only enters breakou |
+| exp215 | -999 | ❌ | Implement a volatility-adaptive stop-loss layering system that uses multiple ATR |
+| exp216 | 5.575 | ❌ | Implement a volatility-adaptive multi-timeframe momentum filter that synthesizes |
+| baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
+| baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
+| exp219 | 4.457 | ❌ | Implement a cross-pair volume-weighted momentum scoring system that ranks pairs  |
+| exp220 | -999 | ❌ | Implement a position-sizing pyramid system that adds to winning breakout trades  |
+| exp221 | -999 | ❌ | Implement a volatility-adjusted partial profit-taking system that scales out 50% |

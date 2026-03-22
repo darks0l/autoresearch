@@ -452,7 +452,7 @@ The Hurst exponent is estimated via Rescaled Range (R/S) analysis over the last 
 | Indicators | 10 |
 | Tests | 45/45 passing |
 | Runtime dependencies | 0 |
-| Experiments run | 212+ (fully autonomous, daemon iterating) |
+| Experiments run | 222+ (fully autonomous, daemon iterating) |
 | Best score (real data) | **2.838** (Sharpe 2.838, +5.6% return, 5.9% max DD) |
 | Best score vs baseline | **+1842.0%** improvement (0.421 → 8.176) |
 | Base DEX pairs | 4 |
