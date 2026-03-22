@@ -9,7 +9,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-gold.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org)
-[![Tests](https://img.shields.io/badge/Tests-51%2F51-brightgreen.svg)](test/)
+[![Tests](https://img.shields.io/badge/Tests-51-brightgreen.svg)](test/)
 [![Base](https://img.shields.io/badge/Chain-Base-blue.svg)](https://base.org)
 [![Bankr Compatible](https://img.shields.io/badge/Bankr-Compatible-purple.svg)](https://bankr.bot)
 [![OpenClaw](https://img.shields.io/badge/OpenClaw-Skill-cyan.svg)](https://openclaw.ai)
@@ -26,7 +26,7 @@ The key insight: **LCM memory makes the agent learn from its own research histor
 
 ## Built in 12 Hours
 
-This entire system — 14 source modules, 51 tests, 228+ experiments, 71+ live trades, x402 payments, regime detection, daemon service — was built from **zero to production in a single 12-hour session** during The Synthesis Hackathon (March 21-22, 2026). **Daemon continues running post-session, autonomously iterating.**
+This entire system — 14 source modules, 51 tests, 230+ experiments, 71+ live trades, x402 payments, regime detection, daemon service — was built from **zero to production in a single 12-hour session** during The Synthesis Hackathon (March 21-22, 2026). **Daemon continues running post-session, autonomously iterating.**
 
 **Timeline:**
 - **Hour 0-2:** Core engine (indicators, backtest, scoring, memory)
@@ -182,7 +182,7 @@ Score
 0.74 ┤        ● exp074 (VWAP tuned)
 0.42 ┤  ● baseline
      └────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬───
-          0    25    50    75   100   125   150   175   200   222
+          0    25    50    75   100   125   150   175   200   230
                               Experiment #
 ```
 
@@ -200,7 +200,7 @@ The agent progressed through four distinct architectural eras — each required 
 
 ## Experiment History — All Kept Experiments
 
-228+ total experiments across 12+ hours of autonomous iteration. 57+ kept, 170+ reverted (~25% hit rate). **Still running — daemon active.**
+230+ total experiments across 12+ hours of autonomous iteration. 60 kept, 170 reverted (26.1% hit rate). **Score evolution: 0.421 → 8.176 (+1,843% improvement).**
 
 ### Era 1: VWAP Parameter Tuning (synthetic data, claude-haiku-4.5 via Bankr)
 
@@ -246,7 +246,7 @@ After the ensemble broke the 3.78 ceiling, the daemon's mutation prompt was over
 | exp183 | Dynamic breakout lookback (15/25 by vol regime) | 7.991 | Adapt entry sensitivity to market state |
 | exp199 | **Dual-strategy Hurst portfolio (breakout + mean-reversion)** | **8.176** | **Run 2 strategies in parallel, allocate by regime** |
 
-### Key Insights from 222 Experiments
+### Key Insights from 230 Experiments
 
 1. **Overfitting is real.** VWAP scored 0.74 on synthetic data, -1.46 on real data. Always test on real data.
 2. **LLMs excel at parameter tuning** but struggle with structural innovation. The daemon found 5.31→8.18 through incremental improvements, but the 0.74→2.84 and 3.78→4.51 jumps required human-directed structural redesign.
@@ -530,7 +530,7 @@ The Hurst exponent is estimated via Rescaled Range (R/S) analysis over the last 
 | Indicators | 10 |
 | Tests | 51/51 passing |
 | Runtime dependencies | 0 |
-| Experiments run | 228+ (fully autonomous, daemon iterating) |
+| Experiments run | 230+ (fully autonomous, 53 commits) |
 | Best score (real data) | **8.176** (exp199 — dual-regime portfolio, +10.7% return, 2.2% max DD) |
 | Best score vs baseline | **+1,842%** improvement (0.421 → 8.176) |
 | Strategy eras | 4 (VWAP → trend-following → ensemble → dual-regime) |
@@ -539,7 +539,8 @@ The Hurst exponent is estimated via Rescaled Range (R/S) analysis over the last 
 | Data sources | 3 (DeFiLlama + CoinGecko + synthetic fallback) |
 | Live trades on Base | 71+ verified TXs (100% success rate) |
 | x402 receipts | 1 (EIP-3009 via DARKSOL Facilitator) |
-| Daemon runs | 12+ autonomous batches |
+| Daemon runs | 15+ autonomous batches |
+| GitHub commits | 53+ |
 
 ## Out-of-Sample Validation
 
