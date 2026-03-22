@@ -386,16 +386,28 @@ export async function runAutoresearch(options = {}) {
   await initMemory();
 
   // Load historical data once
-  console.log('Loading historical data...');
-  const allPairs = await loadAllPairs('1h');
-  console.log('Data loaded.\n');
+  let allPairs;
+  try {
+    console.log('Loading historical data...');
+    allPairs = await loadAllPairs('1h');
+    console.log(`Data loaded: ${allPairs.length} pairs.\n`);
+  } catch (dataErr) {
+    console.error(`❌ Data loading failed: ${dataErr.message}`);
+    throw dataErr; // Can't continue without data
+  }
 
   // Baseline backtest
-  console.log('Running baseline backtest...');
-  const baselineStrategy = await importStrategy();
-  const baselineResult = runBacktest(baselineStrategy, allPairs);
-  console.log(`Baseline score: ${baselineResult.score}`);
-  console.log(formatResult(baselineResult));
+  let baselineResult;
+  try {
+    console.log('Running baseline backtest...');
+    const baselineStrategy = await importStrategy();
+    baselineResult = runBacktest(baselineStrategy, allPairs);
+    console.log(`Baseline score: ${baselineResult.score}`);
+    console.log(formatResult(baselineResult));
+  } catch (baseErr) {
+    console.error(`❌ Baseline failed: ${baseErr.message}`);
+    throw baseErr; // Can't continue without baseline
+  }
 
   await logExperiment({
     id: 'baseline',

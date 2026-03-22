@@ -103,25 +103,36 @@ async function main() {
   let batchExperiments = 0;
 
   try {
-    await runAutoresearch({
+    console.log('   [daemon] Starting runAutoresearch...');
+    const result = await runAutoresearch({
       onExperiment: (exp) => {
-        batchExperiments++;
-        state.totalExperiments++;
-        if (exp.kept) {
-          batchKept++;
-          state.totalKept++;
-        }
-        const score = exp.score ?? exp.result?.score ?? 0;
-        if (score > batchBest) batchBest = score;
-        if (score > state.bestScore) {
-          state.bestScore = score;
-          state.bestExperiment = exp.id;
+        try {
+          batchExperiments++;
+          state.totalExperiments++;
+          if (exp.kept) {
+            batchKept++;
+            state.totalKept++;
+          }
+          const score = exp?.result?.score ?? exp?.score ?? 0;
+          console.log(`   [daemon] onExperiment: ${exp.id} score=${score} kept=${exp.kept}`);
+          if (score > batchBest) batchBest = score;
+          if (score > state.bestScore) {
+            state.bestScore = score;
+            state.bestExperiment = exp.id;
+          }
+          // Save state after each experiment (crash-safe)
+          saveState(state);
+        } catch (cbErr) {
+          console.error(`   [daemon] onExperiment callback error: ${cbErr.message}`);
         }
       },
       onBatch: (results, batchNum, index) => {
-        console.log(`\n   Batch ${batchNum} complete. Kept: ${results.filter(r => r.kept).length}/${results.length}`);
+        try {
+          console.log(`\n   Batch ${batchNum} complete. Kept: ${results.filter(r => r.kept).length}/${results.length}`);
+        } catch { /* non-critical */ }
       }
     });
+    console.log(`   [daemon] runAutoresearch completed. Result: ${JSON.stringify({ total: result?.totalExperiments, best: result?.bestScore })}`);
   } catch (err) {
     console.error(`\n❌ Run error: ${err.message}`);
     if (err.stack) console.error(err.stack);
