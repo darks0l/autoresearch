@@ -24,3 +24,6 @@ export { detectRegime, trendStrength, volatilityRegime, hurstExponent, regimeSum
 export { executeSignals, getExecutionState, resetExecutionState, runLiveLoop } from './executor.js';
 export { loadHistorical, fetchCurrentMarket, buildLiveBarData } from './datafeed.js';
 export { addPair, removePair, listPairs, discoverPools, autoDiscoverAndAdd } from './discovery.js';
+
+// x402 Service
+export { server, PRICES, RECEIVER_WALLET } from './server.js';
