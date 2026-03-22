@@ -415,73 +415,82 @@ export async function runAutoresearch(options = {}) {
   const batchResults = [];
 
   while (experimentCount < maxExperiments) {
-    // Build context for mutation
-    const currentCode = await loadStrategy();
-    const experimentSummary = await getExperimentSummary();
-    const patternInsights = await getPatternInsights();
-    const index = await loadIndex();
-    const currentScore = index.bestScore || baselineResult.score;
-
-    // Check score target
-    if (currentScore >= CONFIG.research.scoreTarget) {
-      console.log(`\n🎯 Score target reached: ${currentScore} >= ${CONFIG.research.scoreTarget}`);
-      break;
-    }
-
-    // Generate mutation (with error isolation)
-    let mutation;
     try {
-      mutation = await mutationFn(currentCode, experimentSummary, patternInsights, currentScore);
-    } catch (mutErr) {
-      console.log(`  [error] Mutation generation failed: ${mutErr.message}`);
-      experimentCount++;
-      detectPlateau(false, currentScore);
-      continue;
-    }
+      // Build context for mutation
+      const currentCode = await loadStrategy();
+      const experimentSummary = await getExperimentSummary();
+      const patternInsights = await getPatternInsights();
+      const index = await loadIndex();
+      const currentScore = index.bestScore || baselineResult.score;
 
-    if (!mutation || !mutation.code) {
-      console.log('  [skip] No valid mutation generated');
-      experimentCount++;
-      detectPlateau(false, currentScore);
-      continue;
-    }
+      // Check score target
+      if (currentScore >= CONFIG.research.scoreTarget) {
+        console.log(`\n🎯 Score target reached: ${currentScore} >= ${CONFIG.research.scoreTarget}`);
+        break;
+      }
 
-    // Run experiment (with error isolation — one bad experiment must not crash the loop)
-    let kept = false;
-    let record = null;
-    try {
-      const result = await runExperiment(allPairs, mutation);
-      kept = result.kept;
-      record = result.record;
-    } catch (expErr) {
-      console.log(`  [error] Experiment crashed: ${expErr.message}`);
-      // Make sure strategy is reverted
-      try { await revertStrategy(); } catch { /* best effort */ }
-      kept = false;
-    }
-
-    experimentCount++;
-    if (record) batchResults.push(record);
-
-    // Plateau detection — auto-escalate if stuck
-    const latestIndex = await loadIndex();
-    detectPlateau(kept, latestIndex.bestScore);
-
-    if (onExperiment && record) {
+      // Generate mutation (with error isolation)
+      let mutation;
       try {
-        await onExperiment(record, experimentCount, maxExperiments);
-      } catch { /* non-critical */ }
-    }
+        mutation = await mutationFn(currentCode, experimentSummary, patternInsights, currentScore);
+      } catch (mutErr) {
+        console.log(`  [error] Mutation generation failed: ${mutErr.message}`);
+        experimentCount++;
+        detectPlateau(false, currentScore);
+        continue;
+      }
 
-    // Batch reporting
-    if (batchResults.length >= batchSize) {
-      batchCount++;
-      if (onBatch) {
+      if (!mutation || !mutation.code) {
+        console.log('  [skip] No valid mutation generated');
+        experimentCount++;
+        detectPlateau(false, currentScore);
+        continue;
+      }
+
+      // Run experiment (with error isolation — one bad experiment must not crash the loop)
+      let kept = false;
+      let record = null;
+      try {
+        const result = await runExperiment(allPairs, mutation);
+        kept = result.kept;
+        record = result.record;
+      } catch (expErr) {
+        console.log(`  [error] Experiment crashed: ${expErr.message}`);
+        // Make sure strategy is reverted
+        try { await revertStrategy(); } catch { /* best effort */ }
+        kept = false;
+      }
+
+      experimentCount++;
+      if (record) batchResults.push(record);
+
+      // Plateau detection — auto-escalate if stuck
+      try {
+        const latestIndex = await loadIndex();
+        detectPlateau(kept, latestIndex.bestScore);
+      } catch { detectPlateau(kept, 0); }
+
+      if (onExperiment && record) {
         try {
-          await onBatch(batchResults, batchCount, index);
+          await onExperiment(record, experimentCount, maxExperiments);
         } catch { /* non-critical */ }
       }
-      batchResults.length = 0;
+
+      // Batch reporting
+      if (batchResults.length >= batchSize) {
+        batchCount++;
+        if (onBatch) {
+          try {
+            await onBatch(batchResults, batchCount, index);
+          } catch { /* non-critical */ }
+        }
+        batchResults.length = 0;
+      }
+    } catch (loopErr) {
+      // Catch-all for anything that escapes inner try/catch blocks
+      console.log(`  [error] Loop iteration failed: ${loopErr.message}`);
+      experimentCount++;
+      detectPlateau(false, 0);
     }
 
     // Small delay to not hammer APIs
