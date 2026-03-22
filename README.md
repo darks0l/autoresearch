@@ -530,7 +530,7 @@ The Hurst exponent is estimated via Rescaled Range (R/S) analysis over the last 
 | Indicators | 10 |
 | Tests | 51/51 passing |
 | Runtime dependencies | 0 |
-| Experiments run | 223+ (56 kept, 167+ reverted) |
+| Experiments run | 224+ (fully autonomous, daemon iterating) |
 | Best score (real data) | **8.176** (exp199 — dual-regime portfolio, +10.7% return, 2.2% max DD) |
 | Best score vs baseline | **+1,842%** improvement (0.421 → 8.176) |
 | Strategy eras | 4 (VWAP → trend-following → ensemble → dual-regime) |

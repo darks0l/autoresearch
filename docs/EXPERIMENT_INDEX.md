@@ -1,8 +1,8 @@
 # AutoResearch — Experiment Index
 
-> 222 experiments, 55 kept, 167 rejected
+> 224 experiments, 56 kept, 168 rejected
 > Best: 8.176 (exp199) | Baseline: 0.421
-> Last updated: 2026-03-22T09:44:26.373Z
+> Last updated: 2026-03-22T13:59:26.729Z
 
 | # | Score | Status | Hypothesis |
 |---|-------|--------|------------|
@@ -228,3 +228,5 @@
 | exp219 | 4.457 | ❌ | Implement a cross-pair volume-weighted momentum scoring system that ranks pairs  |
 | exp220 | -999 | ❌ | Implement a position-sizing pyramid system that adds to winning breakout trades  |
 | exp221 | -999 | ❌ | Implement a volatility-adjusted partial profit-taking system that scales out 50% |
+| baseline | 8.176 | ✅ | Initial strategy — baseline measurement |
+| exp223 | 8.15 | ❌ | Implement a cross-pair correlation-based signal generator that detects divergenc |
