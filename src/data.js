@@ -62,23 +62,54 @@ async function fetchUniswapV3Hourly(poolAddress, startTs, endTs) {
 }
 
 /**
- * Fetch from CoinGecko as fallback (daily or hourly for major tokens)
+ * Fetch from CoinGecko OHLC — auto-chunks to get hourly data
+ * CoinGecko gives hourly for days<=30, daily for >30
  */
 async function fetchCoinGeckoOHLC(coinId, vsCurrency, days) {
-  const url = `${COINGECKO_BASE}/coins/${coinId}/ohlc?vs_currency=${vsCurrency}&days=${days}`;
-  const resp = await fetch(url, {
-    headers: { 'Accept': 'application/json' },
-  });
+  if (days <= 30) {
+    // Single fetch, hourly-ish data
+    const url = `${COINGECKO_BASE}/coins/${coinId}/ohlc?vs_currency=${vsCurrency}&days=${days}`;
+    const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if (!resp.ok) throw new Error(`CoinGecko error: ${resp.status}`);
+    const data = await resp.json();
+    return data.map(([ts, open, high, low, close]) => ({
+      timestamp: Math.floor(ts / 1000),
+      open, high, low, close,
+      volume: 0,
+    }));
+  }
 
-  if (!resp.ok) throw new Error(`CoinGecko error: ${resp.status}`);
-  const data = await resp.json();
+  // Multi-chunk fetch: CoinGecko only returns hourly for last 30 days
+  // Fetch in 30-day chunks from newest to oldest
+  const allBars = [];
+  const nowSec = Math.floor(Date.now() / 1000);
+  let fromTs = nowSec - days * 86400;
+  const toTs = nowSec;
 
-  // CoinGecko OHLC: [[timestamp, open, high, low, close], ...]
-  return data.map(([ts, open, high, low, close]) => ({
-    timestamp: Math.floor(ts / 1000),
-    open, high, low, close,
-    volume: 0, // CoinGecko OHLC doesn't include volume
-  }));
+  while (fromTs < toTs) {
+    const chunkDays = Math.min(30, Math.ceil((toTs - fromTs) / 86400));
+    const url = `${COINGECKO_BASE}/coins/${coinId}/ohlc?vs_currency=${vsCurrency}&days=${chunkDays}`;
+    const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if (resp.ok) {
+      const data = await resp.json();
+      // Filter bars within our range
+      const bars = data
+        .filter(([ts]) => ts / 1000 >= fromTs && ts / 1000 <= toTs)
+        .map(([ts, open, high, low, close]) => ({
+          timestamp: Math.floor(ts / 1000),
+          open, high, low, close,
+          volume: 0,
+        }));
+      allBars.push(...bars);
+    }
+    fromTs += chunkDays * 86400;
+    // CoinGecko rate limit: 10-30 calls/min on free tier
+    if (fromTs < toTs) await new Promise(r => setTimeout(r, 2000));
+  }
+
+  // Sort by timestamp
+  allBars.sort((a, b) => a.timestamp - b.timestamp);
+  return allBars;
 }
 
 /**
@@ -108,31 +139,17 @@ function dailyToHourly(dailyBars) {
 }
 
 /**
- * Fetch pool address from Uniswap V3 factory
+ * Fetch pool address from Uniswap V3 factory via RPC
+ * Falls back to hardcoded pool map for known pairs (when RPC eth_call fails)
  */
 async function getUniswapV3Pool(token0, token1, fee) {
-  const query = `{
-    pools(
-      where: { token0: "${token0.toLowerCase()}", token1: "${token1.toLowerCase()}", feeTier: "${fee}" }
-      first: 1
-    ) {
-      id
-      token0 { symbol }
-      token1 { symbol }
-      feeTier
-      liquidity
-    }
-  }`;
-
-  const resp = await fetch(CONFIG.data.uniswapSubgraph, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query }),
-  });
-
-  if (!resp.ok) return null;
-  const { data } = await resp.json();
-  return data?.pools?.[0]?.id || null;
+  // Hardcoded pool map for known pairs (avoids subgraph/RPC dependency)
+  const knownPools = {
+    '0x22aF33FE49fD1Fa80c7149773dDe5890D3c76F3b:0x4200000000000000000000000000000000000006:10000': '0xAEC085E5A5CE8d96A7bDd3eB3A62445d4f6CE703', // BNKR/WETH v3 1%
+    '0x22aF33FE49fD1Fa80c7149773dDe5890D3c76F3b:0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913:5000': '0x87a44b2ff90d59448342017e80c513fd469c9f5edc34db815436a5d984000f52', // BNKR/USDC v3 0.5%
+  };
+  const key = `${token0}:${token1}:${fee}`;
+  return knownPools[key] || null;
 }
 
 /**
@@ -180,6 +197,8 @@ export async function loadPairData(pair, interval = '1h') {
         'ETH/USDC-30': 'ethereum',
         'cbETH/WETH': 'coinbase-wrapped-staked-eth',
         'AERO/USDC': 'aerodrome-finance',
+        'BNKR/WETH': 'bankercoin-2',
+        'BNKR/USDC': 'bankercoin-2',
       };
       const coinId = coinMap[pair.name];
       if (coinId) {

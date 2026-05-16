@@ -1,5 +1,12 @@
-import { describe, it } from 'node:test';
+import { describe, it, after } from 'node:test';
 import assert from 'node:assert/strict';
+
+process.env.NODE_ENV = 'test';
+
+let stopKeepAlive;
+after(() => {
+  stopKeepAlive?.();
+});
 
 describe('Server module', () => {
   it('should export PRICES with correct endpoints', async () => {
@@ -18,7 +25,9 @@ describe('Server module', () => {
   });
 
   it('should export server instance', async () => {
-    const { server } = await import('../src/server.js');
+    const mod = await import('../src/server.js');
+    const { server } = mod;
+    stopKeepAlive = mod.stopKeepAlive;
     assert.ok(server);
     assert.equal(typeof server.listen, 'function');
   });

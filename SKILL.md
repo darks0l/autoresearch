@@ -122,6 +122,8 @@ This skill is compatible with the Bankr ecosystem:
 | `BANKR_WALLET` | Bankr wallet address | No |
 | `BASE_RPC_URL` | Base RPC endpoint | No (defaults to mainnet.base.org) |
 | `AUTORESEARCH_MODEL` | LLM model for mutations | No (defaults to claude-sonnet-4-6) |
+| `AUTORESEARCH_LLM_PROVIDER` | LLM provider: `bankr` (default) or `minimax` | No |
+| `MINIMAX_API_KEY` | MiniMax API key (used when `AUTORESEARCH_LLM_PROVIDER=minimax`) | No |
 
 ## OpenClaw Integration
 

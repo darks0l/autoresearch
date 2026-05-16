@@ -418,35 +418,59 @@ async function handleRequest(req, res) {
 // ─── Server Start ────────────────────────────────────────────────────
 
 const server = http.createServer(handleRequest);
+let keepAliveTimer = null;
 
 server.on('error', (err) => {
   console.error('[SERVER ERROR]', err.message);
-  process.exit(1);
+  if (process.env.NODE_ENV !== 'test') {
+    process.exit(1);
+  }
 });
 
 process.on('uncaughtException', (err) => {
   console.error('[UNCAUGHT]', err);
 });
 
-server.listen(PORT, '127.0.0.1', () => {
-  console.log(`
-╔══════════════════════════════════════════════════╗
-║  AutoResearch x402 Service                       ║
-║  Port: ${String(PORT).padEnd(41)}║
-║  Agent: ERC-8004 #31929                          ║
-║  Payment: x402 via DARKSOL Facilitator (Base)    ║
-╠══════════════════════════════════════════════════╣
-║  Endpoints:                                      ║
-║    /strategy/discover  — 2.00 USDC               ║
-║    /strategy/validate  — 0.50 USDC               ║
-║    /strategy/signal    — 0.10 USDC               ║
-║                                                  ║
-║  Revenue → Bankr LLM → More experiments → ♻️     ║
-╚══════════════════════════════════════════════════╝
-  `);
-});
+function startServer({ port = PORT, host = '127.0.0.1' } = {}) {
+  return new Promise((resolve, reject) => {
+    const onError = (err) => {
+      server.off('listening', onListening);
+      reject(err);
+    };
+    const onListening = () => {
+      server.off('error', onError);
+      resolve(server);
+    };
+    server.once('error', onError);
+    server.once('listening', onListening);
+    server.listen(port, host);
+  });
+}
 
-// Keep event loop alive
-setInterval(() => {}, 1 << 30);
+function startKeepAlive() {
+  if (!keepAliveTimer) {
+    keepAliveTimer = setInterval(() => {}, 1 << 30);
+  }
+  return keepAliveTimer;
+}
 
-export { server, PRICES, RECEIVER_WALLET };
+function stopKeepAlive() {
+  if (keepAliveTimer) {
+    clearInterval(keepAliveTimer);
+    keepAliveTimer = null;
+  }
+}
+
+if (process.env.NODE_ENV !== 'test') {
+  startServer()
+    .then(() => {
+      console.log(`AutoResearch x402 Service listening on 127.0.0.1:${PORT}`);
+    })
+    .catch((err) => {
+      console.error('[SERVER ERROR]', err.message);
+      process.exit(1);
+    });
+  startKeepAlive();
+}
+
+export { server, startServer, startKeepAlive, stopKeepAlive, PRICES, RECEIVER_WALLET };

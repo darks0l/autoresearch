@@ -1,12 +1,25 @@
 {
   "name": "@darksol/autoresearch",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Autonomous trading strategy discovery for Base DEX — Karpathy-style autoresearch with LCM memory",
   "type": "module",
   "main": "src/index.js",
   "bin": {
     "autoresearch": "./scripts/run-autoresearch.js"
   },
+  "files": [
+    "src",
+    "scripts/run-autoresearch.js",
+    "scripts/run-benchmarks.js",
+    "scripts/fetch-data.js",
+    "scripts/oos-validation.js",
+    "scripts/pairs.js",
+    "scripts/serve.js",
+    "strategies",
+    "README.md",
+    "LICENSE",
+    "SKILL.md"
+  ],
   "scripts": {
     "fetch-data": "node scripts/fetch-data.js",
     "benchmarks": "node scripts/run-benchmarks.js",
@@ -29,10 +42,19 @@
   "author": "Darksol <chris00claw@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^17.4.2",
     "ethers": "^6.16.0",
     "playwright": "^1.58.2"
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darks0l/autoresearch.git"
+  },
+  "homepage": "https://github.com/darks0l/autoresearch",
+  "publishConfig": {
+    "access": "public"
   }
 }

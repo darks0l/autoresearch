@@ -18,18 +18,42 @@ function loadBankrKey() {
   return '';
 }
 
+function loadMinimaxKey() {
+  if (process.env.MINIMAX_API_KEY) return process.env.MINIMAX_API_KEY;
+  try {
+    const configPath = join(homedir(), '.mmx', 'config.json');
+    if (existsSync(configPath)) {
+      const data = JSON.parse(readFileSync(configPath, 'utf8'));
+      return data.apiKey || data.accessToken || '';
+    }
+  } catch { /* ignore */ }
+  return '';
+}
+
+function resolveLlmProvider(bankrKey, minimaxKey) {
+  if (process.env.AUTORESEARCH_LLM_PROVIDER) return process.env.AUTORESEARCH_LLM_PROVIDER;
+  if (bankrKey) return 'bankr';
+  if (minimaxKey) return 'minimax';
+  return 'none';
+}
+
+const BANKR_API_KEY = loadBankrKey();
+const MINIMAX_API_KEY = loadMinimaxKey();
+
 export const CONFIG = {
   // Data sources
   data: {
-    // Uniswap V3 Base subgraph
+    // Uniswap V3 Base subgraph (legacy fallback — prefer rpcUrl / direct APIs)
     uniswapSubgraph: 'https://api.studio.thegraph.com/query/48211/uniswap-v3-base/version/latest',
     // Uniswap Developer Platform API key
     uniswapApiKey: process.env.UNISWAP_API_KEY || '',
-    // Aerodrome Base subgraph
+    // Aerodrome Base subgraph (legacy fallback)
     aerodromeSubgraph: 'https://api.studio.thegraph.com/query/50472/aerodrome-base/version/latest',
     // Base RPC for on-chain reads
     rpcUrl: process.env.BASE_RPC_URL || 'https://mainnet.base.org',
-    // Default pairs to track
+    // Uniswap V3 Factory on Base
+    uniswapFactory: '0x33128a8fC17869897dcE68Ed026d694621f6FDfD',
+    // Default spot pairs to track on Base
     pairs: [
       { name: 'ETH/USDC', token0: '0x4200000000000000000000000000000000000006', token1: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', dex: 'uniswap', fee: 500 },
       { name: 'ETH/USDC-30', token0: '0x4200000000000000000000000000000000000006', token1: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', dex: 'uniswap', fee: 3000 },
@@ -66,8 +90,8 @@ export const CONFIG = {
       maxLoss: 50,           // %
     },
     // Validation period
-    validationStart: '2024-07-01',
-    validationEnd: '2025-03-31',
+    validationStart: process.env.AUTORESEARCH_VALIDATION_START || '2024-07-01',
+    validationEnd: process.env.AUTORESEARCH_VALIDATION_END || '2025-03-31',
   },
 
   // AutoResearch loop
@@ -86,15 +110,26 @@ export const CONFIG = {
     logDir: './data/experiments',
   },
 
+  // LLM provider for strategy mutations
+  // Resolution order: explicit env -> Bankr if available -> MiniMax if available -> none
+  llmProvider: resolveLlmProvider(BANKR_API_KEY, MINIMAX_API_KEY),
+
   // Bankr integration
   bankr: {
-    apiKey: loadBankrKey(),
+    apiKey: BANKR_API_KEY,
     llmGateway: 'https://llm.bankr.bot/v1/chat/completions',
     walletAddress: process.env.BANKR_WALLET || '0x8f9fa2bfd50079c1767d63effbfe642216bfcb01',
     // Use Bankr LLM for mutations if available
     useBankrLLM: true,
     // Live execution (paper by default)
     liveMode: false,
+  },
+
+  // MiniMax LLM integration
+  minimax: {
+    apiKey: MINIMAX_API_KEY,
+    baseUrl: process.env.MINIMAX_BASE_URL || 'https://api.minimax.io/v1',
+    model: process.env.AUTORESEARCH_MINIMAX_MODEL || 'MiniMax-M2.7-highspeed',
   },
 
   // Regime detection
@@ -115,6 +150,20 @@ export const CONFIG = {
     minTradeUsd: 10,
     slippageBps: 50,
     allowedPairs: ['ETH/USDC', 'ETH/USDC-30', 'cbETH/WETH', 'AERO/USDC'],
+  },
+
+  markets: {
+    spot: {
+      enabled: true,
+      venues: ['uniswap', 'aerodrome'],
+      defaultUniverse: ['ETH/USDC', 'ETH/USDC-30', 'cbETH/WETH', 'AERO/USDC'],
+    },
+    perps: {
+      enabled: process.env.AUTORESEARCH_ENABLE_PERPS === 'true',
+      venues: (process.env.AUTORESEARCH_PERP_VENUES || 'hyperliquid,dydx').split(',').map(v => v.trim()).filter(Boolean),
+      defaultUniverse: (process.env.AUTORESEARCH_PERP_UNIVERSE || 'BTC-PERP,ETH-PERP,SOL-PERP').split(',').map(v => v.trim()).filter(Boolean),
+      paperOnly: process.env.AUTORESEARCH_PERPS_PAPER_ONLY !== 'false',
+    },
   },
 
   // Reporting

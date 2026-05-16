@@ -50,36 +50,38 @@ function saveCustomPairs(pairs) {
  * @returns {Object} result with status
  */
 export function addPair(pair) {
-  if (!pair.name || !pair.token0 || !pair.token1) {
+  if (!pair?.name || !pair?.token0 || !pair?.token1) {
     return { success: false, error: 'name, token0, and token1 are required' };
   }
 
-  // Normalize addresses
-  pair.token0 = pair.token0.toLowerCase();
-  pair.token1 = pair.token1.toLowerCase();
-  pair.dex = pair.dex || 'uniswap';
-  if (pair.dex === 'uniswap' && !pair.fee) pair.fee = 3000;
+  const normalizedPair = {
+    ...pair,
+    token0: String(pair.token0).toLowerCase(),
+    token1: String(pair.token1).toLowerCase(),
+    dex: pair.dex || 'uniswap',
+  };
+  if (normalizedPair.dex === 'uniswap' && !normalizedPair.fee) normalizedPair.fee = 3000;
 
   const customs = loadCustomPairs();
 
   // Check for duplicates (same tokens + dex + fee)
   const exists = [...CONFIG.data.pairs, ...customs].find(p =>
-    p.token0.toLowerCase() === pair.token0 &&
-    p.token1.toLowerCase() === pair.token1 &&
-    p.dex === pair.dex &&
-    (p.fee || 0) === (pair.fee || 0)
+    String(p.token0).toLowerCase() === normalizedPair.token0 &&
+    String(p.token1).toLowerCase() === normalizedPair.token1 &&
+    p.dex === normalizedPair.dex &&
+    (p.fee || 0) === (normalizedPair.fee || 0)
   );
 
   if (exists) {
-    return { success: false, error: `Pair ${pair.name} already exists` };
+    return { success: false, error: `Pair ${normalizedPair.name} already exists` };
   }
 
-  pair.addedAt = new Date().toISOString();
-  pair.source = 'manual';
-  customs.push(pair);
+  normalizedPair.addedAt = new Date().toISOString();
+  normalizedPair.source = 'manual';
+  customs.push(normalizedPair);
   saveCustomPairs(customs);
 
-  return { success: true, pair, total: CONFIG.data.pairs.length + customs.length };
+  return { success: true, pair: normalizedPair, total: CONFIG.data.pairs.length + customs.length };
 }
 
 /**

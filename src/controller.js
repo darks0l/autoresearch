@@ -90,16 +90,70 @@ DO NOT tweak parameters. DO NOT make small changes. REBUILD the core logic.`;
 }
 
 /**
+ * Call MiniMax LLM for strategy mutation
+ */
+async function callMinimaxLLM(prompt) {
+  const model = CONFIG.minimax.model;
+  const resp = await fetch(`${CONFIG.minimax.baseUrl}/chat/completions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${CONFIG.minimax.apiKey}`,
+    },
+    body: JSON.stringify({
+      model,
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a precise trading strategy code generator. You ALWAYS respond with exactly: a HYPOTHESIS line, then a complete javascript code block, then a PARAMETERS json block. You NEVER skip the code block. You NEVER explain yourself beyond the hypothesis line.',
+        },
+        { role: 'user', content: prompt },
+      ],
+      max_tokens: 4000,
+    }),
+  });
+
+  if (!resp.ok) {
+    const err = await resp.text();
+    throw new Error(`MiniMax LLM error: ${resp.status} — ${err}`);
+  }
+
+  const data = await resp.json();
+  const content = data.choices?.[0]?.message?.content || '';
+  return parseMutationResponse(content);
+}
+
+/**
  * Generate a strategy mutation using an LLM
  */
 async function generateMutation(currentCode, experimentSummary, patternInsights, currentScore) {
-  const model = CONFIG.research.mutationModel;
   const prompt = buildMutationPrompt(currentCode, experimentSummary, patternInsights, currentScore);
+  const provider = CONFIG.llmProvider;
 
-  // Try Bankr LLM Gateway with retry (up to 3 attempts)
+  // MiniMax path
+  if (provider === 'minimax' && CONFIG.minimax.apiKey) {
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        console.log(`  [minimax-llm] Attempt ${attempt}/3...`);
+        return await callMinimaxLLM(prompt);
+      } catch (e) {
+        console.log(`  [minimax-llm] Attempt ${attempt}/3 failed: ${e.message}`);
+        if (attempt < 3) {
+          const backoff = attempt * 5000;
+          console.log(`  [minimax-llm] Retrying in ${backoff / 1000}s...`);
+          await new Promise(r => setTimeout(r, backoff));
+        } else {
+          console.log('  [minimax-llm] All retries exhausted, falling back...');
+        }
+      }
+    }
+  }
+
+  // Bankr path (default)
   if (CONFIG.bankr.useBankrLLM && CONFIG.bankr.apiKey) {
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
+        console.log(`  [bankr-llm] Attempt ${attempt}/3...`);
         return await callBankrLLM(prompt);
       } catch (e) {
         console.log(`  [bankr-llm] Attempt ${attempt}/3 failed: ${e.message}`);

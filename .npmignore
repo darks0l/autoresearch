@@ -1,0 +1,13 @@
+node_modules/
+data/
+demo/
+docs/
+agent.json
+agent_log.json
+BUILD_PLAN.md
+--out
+*.backup
+*.tgz
+.env
+.keys/
+strategies/*.backup

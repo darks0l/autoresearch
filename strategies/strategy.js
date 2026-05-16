@@ -1,23 +1,13 @@
-/**
- * strategy-dual-regime-adaptive.js — Dual Strategy Portfolio Allocation
- * 
- * STRUCTURAL CHANGE: Run TWO independent strategies in parallel:
- * 1. Pure Trend Breakout (existing logic)
- * 2. Counter-Trend Mean-Reversion (Bollinger Band bounces)
- * 
- * Capital allocation dynamically adjusts based on Hurst exponent:
- * - Hurst > 0.55 (trending): 70% breakout, 30% mean-reversion
- * - Hurst < 0.45 (ranging): 30% breakout, 70% mean-reversion
- * - Hurst 0.45-0.55 (neutral): 50% breakout, 50% mean-reversion
- * 
- * Each strategy maintains independent positions and risk management.
- */
-import { rsi, atr, ema, sma, macd, roc, percentileRank, bollingerBands, stddev } from '../src/indicators.js';
+import { rsi, atr, ema, sma, macd, bollingerBands, roc, stddev, percentileRank } from '../src/indicators.js';
 
 export class Strategy {
   constructor() {
     // Hurst exponent for regime detection
     this.hurstLookback = 50;
+    
+    // Cross-timeframe settings
+    this.htfPeriod = 4; // Higher timeframe bars to synthesize (4h from hourly)
+    this.dailyPeriod = 24; // Daily from hourly
     
     // Breakout strategy parameters
     this.trendEmaPeriod = 50;
@@ -39,13 +29,17 @@ export class Strategy {
     this.rsiPeriod = 14;
     this.rsiOversold = 30;
     this.rsiOverbought = 70;
-    this.mrProfitTarget = 0.015; // 1.5% profit target
-    this.mrStopLoss = 0.01; // 1% stop loss
+    this.mrProfitTarget = 0.015;
+    this.mrStopLoss = 0.01;
     
     // Portfolio allocation
     this.basePositionSize = 0.15;
     this.maxPositions = 3;
     this.cooldown = 3;
+    
+    // HTF trend confirmation requirements
+    this.htfTrendConfirm = true;
+    this.dailyTrendConfirm = false; // Optional daily filter
     
     // State tracking (separate for each strategy)
     this.breakout = {
@@ -87,6 +81,32 @@ export class Strategy {
     return Math.log(rs) / Math.log(returns.length);
   }
 
+  synthesizeHigherTimeframe(prices, period) {
+    if (prices.length < period) return prices;
+    
+    const htfPrices = [];
+    for (let i = period - 1; i < prices.length; i++) {
+      let sum = 0;
+      for (let j = i - period + 1; j <= i; j++) {
+        sum += prices[j];
+      }
+      htfPrices.push(sum / period);
+    }
+    return htfPrices;
+  }
+
+  getHTFTrend(htfPrices) {
+    if (htfPrices.length < 20) return 0;
+    
+    const htfEma = ema(htfPrices, 8);
+    const htfEmaIdx = htfEma.length - 1;
+    
+    if (isNaN(htfEma[htfEmaIdx]) || isNaN(htfEma[htfEmaIdx - 1])) return 0;
+    
+    const htfTrend = (htfEma[htfEmaIdx] - htfEma[htfEmaIdx - 1]) / htfEma[htfEmaIdx - 1];
+    return htfTrend;
+  }
+
   onBar(barData, portfolio) {
     const signals = [];
     const totalEquity = portfolio.cash +
@@ -94,7 +114,7 @@ export class Strategy {
     const openPositions = Object.values(portfolio.positions).filter(p => p !== 0).length;
 
     for (const [pair, data] of Object.entries(barData)) {
-      if (!data.history || data.history.length < 60) continue;
+      if (!data.history || data.history.length < 80) continue;
 
       const closes = data.history.map(b => b.close);
       const highs = data.history.map(b => b.high);
@@ -104,6 +124,14 @@ export class Strategy {
 
       // Calculate Hurst exponent for regime detection
       const hurst = this.calculateHurst(closes, this.hurstLookback);
+      
+      // Cross-timeframe analysis
+      const htfCloses = this.synthesizeHigherTimeframe(closes, this.htfPeriod);
+      const htfTrend = this.getHTFTrend(htfCloses);
+      
+      // Optional daily synthesis
+      const dailyCloses = this.synthesizeHigherTimeframe(closes, this.dailyPeriod);
+      const dailyTrend = this.getHTFTrend(dailyCloses);
       
       // Determine allocation weights
       let breakoutWeight = 0.5;
@@ -199,7 +227,7 @@ export class Strategy {
 
       if (currentPos !== 0) continue;
 
-      // === BREAKOUT ENTRY LOGIC ===
+      // === BREAKOUT ENTRY LOGIC WITH HTF CONFIRMATION ===
       const breakoutLast = this.breakout.lastTradeBar[pair] || -Infinity;
       if (idx - breakoutLast >= this.cooldown && openPositions < this.maxPositions) {
         if (price >= trendEmaVal && !isNaN(atrPctRank)) {
@@ -211,16 +239,30 @@ export class Strategy {
             const channelHigh = Math.max(...highs.slice(idx - breakoutLookback, idx));
             if (price >= channelHigh * 0.998 && atrPctRank >= this.atrPercentileThreshold) {
               if (!isNaN(rocVal) && rocVal > 0) {
-                const atrPct = a / price;
-                const volScale = Math.min(2.0, Math.max(0.5, 0.015 / atrPct));
-                const maxPos = totalEquity * this.basePositionSize * breakoutWeight * volScale;
+                // HTF trend confirmation check
+                let htfPass = true;
+                if (this.htfTrendConfirm && htfTrend <= 0) {
+                  htfPass = false;
+                }
+                
+                // Optional daily trend check for stronger confirmation
+                let dailyPass = true;
+                if (this.dailyTrendConfirm && dailyTrend <= 0) {
+                  dailyPass = false;
+                }
+                
+                if (htfPass && dailyPass) {
+                  const atrPct = a / price;
+                  const volScale = Math.min(2.0, Math.max(0.5, 0.015 / atrPct));
+                  const maxPos = totalEquity * this.basePositionSize * breakoutWeight * volScale;
 
-                signals.push({ pair, targetPosition: maxPos });
-                this.breakout.lastTradeBar[pair] = idx;
-                this.breakout.peaks[pair] = price;
-                this.breakout.stops[pair] = price - this.atrTrailMultiple * a;
-                this.breakout.entries[pair] = price;
-                continue;
+                  signals.push({ pair, targetPosition: maxPos });
+                  this.breakout.lastTradeBar[pair] = idx;
+                  this.breakout.peaks[pair] = price;
+                  this.breakout.stops[pair] = price - this.atrTrailMultiple * a;
+                  this.breakout.entries[pair] = price;
+                  continue;
+                }
               }
             }
           }

@@ -4,6 +4,7 @@
  * Usage: node scripts/run-autoresearch.js [--max N]
  */
 
+import 'dotenv/config';
 import { runAutoresearch } from '../src/controller.js';
 import { formatBatchReport, formatFinalReport } from '../src/reporter.js';
 
